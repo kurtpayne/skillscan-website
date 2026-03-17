@@ -1,0 +1,38 @@
+# SkillScan
+
+> Offline static analysis for AI agent skill files. Open-source. Enterprise CI/CD ready. Zero network calls.
+
+SkillScan is a Python-based command-line tool that scans AI agent skill files (MCP tools, Claude skills, OpenAI function definitions) for malicious patterns, prompt injection, data exfiltration channels, container escape techniques, and multi-signal attack chains. All analysis runs locally — no skill file ever leaves the machine.
+
+## Key Facts
+
+- **Language**: Python 3.12+
+- **License**: MIT
+- **Install**: `pip install skillscan-security`
+- **Repository**: https://github.com/kurtpayne/skillscan-security
+- **PyPI**: https://pypi.org/project/skillscan-security/
+
+## Detection Coverage
+
+- 77+ static and chain detection rules
+- Rule categories: MAL (malware), ABU (abuse), EXF (exfiltration), INJ (injection), CHN (chain), CAP (capability abuse)
+- Detects: MCP tool description poisoning, prompt injection, credential harvesting, Docker socket mounts, privileged container execution, cross-server MCP invocation, stealth instruction concealment
+- Output formats: SARIF, JUnit XML, compact text
+- Exit codes: 0 (clean), 1 (findings at threshold), 2 (scan error)
+
+## CI/CD Integration
+
+Reusable GitHub Actions workflow available at:
+`kurtpayne/skillscan-security/.github/workflows/skillscan-scan.yml@main`
+
+Uploads SARIF to GitHub Security tab. Configurable fail-on threshold (block/warn/info).
+
+## Documentation
+
+- [GitHub Actions Integration](https://skillscan.sh/docs#github-actions)
+- [Detection Rules Catalog](https://skillscan.sh/rules)
+- [Full Documentation](https://skillscan.sh/docs)
+- [Pattern Update History](https://github.com/kurtpayne/skillscan-security/blob/main/PATTERN_UPDATES.md)
+- [Architecture](https://github.com/kurtpayne/skillscan-security/blob/main/docs/ARCHITECTURE.md)
+- [Threat Model](https://github.com/kurtpayne/skillscan-security/blob/main/docs/THREAT_MODEL.md)
+- [Contributing](https://github.com/kurtpayne/skillscan-security/blob/main/CONTRIBUTING.md)
