@@ -578,6 +578,61 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── LINTER CALLOUT ── */}
+      <section className="py-20" style={{ borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)" }}>
+        <div className="container">
+          <div
+            className="rounded-2xl p-8 md:p-12 flex flex-col md:flex-row gap-8 items-start"
+            style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.58 0.22 290 / 0.20)" }}
+          >
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-4"
+                style={{ background: "oklch(0.70 0.15 160 / 0.12)", border: "1px solid oklch(0.70 0.15 160 / 0.25)", color: "oklch(0.70 0.15 160)", fontFamily: "'JetBrains Mono', monospace" }}>
+                NEW
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}>
+                Skill File Quality Linter
+              </h2>
+              <p className="text-base leading-relaxed mb-6" style={{ color: "oklch(0.60 0.015 265)" }}>
+                25 quality rules catch weasel words, passive voice, undefined acronyms, missing fields,
+                and dependency graph issues — before they reach production. Configurable via{" "}
+                <code style={{ fontFamily: "'JetBrains Mono', monospace", color: "oklch(0.78 0.18 290)" }}>.skillscan-lint.toml</code>,
+                with Vale styles for inline editor feedback.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a href="/linter" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold btn-primary-glow">
+                  Explore the linter
+                  <ChevronRight className="w-4 h-4" />
+                </a>
+                <a href="https://github.com/kurtpayne/skillscan-lint" target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200"
+                  style={{ background: "oklch(0.18 0.025 265)", border: "1px solid oklch(0.58 0.22 290 / 0.25)", color: "oklch(0.85 0.01 265)" }}>
+                  GitHub <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+            <div className="w-full md:w-72 flex-shrink-0">
+              <div className="rounded-xl overflow-hidden" style={{ border: "1px solid oklch(0.58 0.22 290 / 0.15)" }}>
+                {[
+                  { id: "QL-004", sev: "WARN", msg: "Intensifier: 'very' weakens the claim", color: "oklch(0.72 0.19 45)" },
+                  { id: "QL-009", sev: "ERROR", msg: "Missing description field", color: "oklch(0.65 0.22 25)" },
+                  { id: "QL-016", sev: "WARN", msg: "Superlative: 'best' is unsubstantiated", color: "oklch(0.72 0.19 45)" },
+                  { id: "GR-002", sev: "ERROR", msg: "Dangling ref: 'auth-helper' not found", color: "oklch(0.65 0.22 25)" },
+                  { id: "QL-021", sev: "WARN", msg: "Undefined acronym: 'LLM'", color: "oklch(0.72 0.19 45)" },
+                ].map((item) => (
+                  <div key={item.id} className="flex items-start gap-3 px-4 py-3" style={{ borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)" }}>
+                    <span className="text-xs font-bold flex-shrink-0 mt-0.5" style={{ color: item.color, fontFamily: "'JetBrains Mono', monospace" }}>{item.sev}</span>
+                    <div>
+                      <span className="text-xs font-semibold" style={{ color: "oklch(0.78 0.18 290)", fontFamily: "'JetBrains Mono', monospace" }}>{item.id}</span>
+                      <p className="text-xs mt-0.5" style={{ color: "oklch(0.55 0.015 265)" }}>{item.msg}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* ── FINAL CTA ── */}
       <section className="py-24">
         <div className="container text-center">
