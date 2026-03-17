@@ -7,9 +7,9 @@ import { useState, useEffect } from "react";
 import { Shield, Zap, Lock, GitBranch, Terminal, ChevronRight, Copy, Check, ExternalLink, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import TerminalScan from "@/components/TerminalScan";
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663340703543/GpzBjr25jP63Hgax7fEfrw/hero-bg_24844349.png";
-const CODE_BLOCK_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663340703543/GpzBjr25jP63Hgax7fEfrw/code-block-hero_65e0a4d7.png";
 
 const INSTALL_CMD = "pip install skillscan-security";
 const SCAN_CMD = "skillscan scan ./skills/ --format sarif -o results.sarif";
@@ -235,21 +235,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: code block image */}
+            {/* Right: animated terminal scan */}
             <div className="hidden lg:flex justify-end animate-fade-up-delay-2">
-              <div
-                className="relative rounded-xl overflow-hidden"
-                style={{
-                  background: "oklch(0.10 0.020 265)",
-                  border: "1px solid oklch(0.58 0.22 290 / 0.25)",
-                  boxShadow: "0 0 60px oklch(0.58 0.22 290 / 0.20), 0 24px 64px oklch(0 0 0 / 0.5)",
-                }}
-              >
-                <img
-                  src={CODE_BLOCK_IMG}
-                  alt="SkillScan detecting MCP Tool Description Poisoning in a YAML skill file"
-                  className="w-full max-w-lg block"
-                />
+              <div className="w-full max-w-lg">
+                <TerminalScan />
               </div>
             </div>
           </div>

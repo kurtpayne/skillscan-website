@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Rules from "./pages/Rules";
 import Docs from "./pages/Docs";
+import Updates from "./pages/Updates";
 
 function Router() {
   return (
@@ -14,6 +15,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/rules" component={Rules} />
       <Route path="/docs" component={Docs} />
+      <Route path="/updates" component={Updates} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
