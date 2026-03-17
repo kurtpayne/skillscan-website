@@ -49,7 +49,7 @@ function LineIcon({ type }: { type: ScanLine["type"] }) {
   return <span className="w-3.5 flex-shrink-0" />;
 }
 
-export default function TerminalScan() {
+export default function TerminalScan({ compact = false }: { compact?: boolean }) {
   const [visibleCount, setVisibleCount] = useState(0);
   const [running, setRunning] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -88,6 +88,12 @@ export default function TerminalScan() {
 
   const visibleLines = SCAN_SEQUENCE.slice(0, visibleCount);
   const isComplete = visibleCount >= SCAN_SEQUENCE.length;
+
+  // Compact mode: show only key verdict lines for mobile
+  const compactLines = visibleLines.filter(
+    (l) => l.type === "cmd" || l.type === "block" || l.type === "warn" || l.type === "summary"
+  );
+  const displayLines = compact ? compactLines : visibleLines;
 
   return (
     <div
@@ -133,9 +139,9 @@ export default function TerminalScan() {
       <div
         ref={containerRef}
         className="p-4 overflow-y-auto space-y-1"
-        style={{ minHeight: "320px", maxHeight: "380px" }}
+        style={compact ? { minHeight: "160px", maxHeight: "200px" } : { minHeight: "320px", maxHeight: "380px" }}
       >
-        {visibleLines.map((line, i) => {
+        {displayLines.map((line, i) => {
           if (line.type === "blank") return <div key={i} className="h-2" />;
           return (
             <div key={i} className="flex items-start gap-2 text-xs leading-relaxed">

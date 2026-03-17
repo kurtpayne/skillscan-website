@@ -76,12 +76,13 @@ const features = [
 
 const ruleCategories = [
   { prefix: "MAL", label: "Malware Patterns", count: 28, color: "oklch(0.65 0.22 25)" },
-  { prefix: "ABU", label: "Abuse Patterns", count: 7, color: "oklch(0.72 0.19 45)" },
-  { prefix: "EXF", label: "Exfiltration", count: 12, color: "oklch(0.60 0.20 320)" },
+  { prefix: "EXF", label: "Exfiltration", count: 12, color: "oklch(0.72 0.19 45)" },
+  { prefix: "ABU", label: "Abuse Patterns", count: 7, color: "oklch(0.70 0.15 160)" },
   { prefix: "INJ", label: "Injection", count: 14, color: "oklch(0.58 0.22 290)" },
   { prefix: "CHN", label: "Chain Rules", count: 14, color: "oklch(0.65 0.18 200)" },
   { prefix: "CAP", label: "Capability Abuse", count: 6, color: "oklch(0.70 0.15 160)" },
 ];
+// Note: ruleCategories counts are static display values; live total comes from GitHub API
 
 const scanResults = [
   { status: "pass", rule: "INJ-001", message: "No prompt injection patterns detected", file: "search_tool.yaml" },
@@ -93,10 +94,28 @@ const scanResults = [
 
 export default function Home() {
   const [visibleStats, setVisibleStats] = useState(false);
+  const [ruleCount, setRuleCount] = useState(77);
+  const [rulepackVersion, setRulepackVersion] = useState("0.3");
 
   useEffect(() => {
     const timer = setTimeout(() => setVisibleStats(true), 300);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Fetch live rule count and rulepack version from GitHub
+  useEffect(() => {
+    const url = "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/src/skillscan/data/rules/default.yaml";
+    fetch(url)
+      .then((r) => r.text())
+      .then((text) => {
+        // Extract version from first line: version: "2026.03.17.2"
+        const verMatch = text.match(/^version:\s*["']?([\d.]+)["']?/m);
+        if (verMatch) setRulepackVersion(verMatch[1]);
+        // Count static rule IDs (lines starting with "- id: ")
+        const ids = text.match(/^- id: /gm);
+        if (ids) setRuleCount(ids.length);
+      })
+      .catch(() => { /* keep defaults on error */ });
   }, []);
 
   return (
@@ -135,7 +154,7 @@ export default function Home() {
                     fontFamily: "'JetBrains Mono', monospace",
                   }}
                 >
-                  v0.3 — 77 rules
+                  v{rulepackVersion} — {ruleCount} rules
                 </span>
                 <span
                   className="px-3 py-1 rounded-full text-xs font-medium"
@@ -235,12 +254,17 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: animated terminal scan */}
+            {/* Right: animated terminal scan — desktop */}
             <div className="hidden lg:flex justify-end animate-fade-up-delay-2">
               <div className="w-full max-w-lg">
                 <TerminalScan />
               </div>
             </div>
+          </div>
+
+          {/* Mobile compact terminal — shown below CTAs on small screens */}
+          <div className="lg:hidden mt-8 animate-fade-up-delay-2">
+            <TerminalScan compact />
           </div>
         </div>
       </section>
@@ -253,7 +277,7 @@ export default function Home() {
         <div className="container py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { value: "77+", label: "Detection Rules" },
+              { value: `${ruleCount}+`, label: "Detection Rules" },
               { value: "14", label: "Chain Rules" },
               { value: "81", label: "Showcase Fixtures" },
               { value: "0", label: "Network Calls" },
