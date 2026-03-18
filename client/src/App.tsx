@@ -9,6 +9,7 @@ import Rules from "./pages/Rules";
 import Docs from "./pages/Docs";
 import Linter from "./pages/Linter";
 import Updates from "./pages/Updates";
+import Feed from "./pages/Feed";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/docs" component={Docs} />
       <Route path="/linter" component={Linter} />
       <Route path="/updates" component={Updates} />
+      <Route path="/feed" component={Feed} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
