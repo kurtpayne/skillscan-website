@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 type Severity = "BLOCK" | "WARN" | "INFO";
-type Category = "MAL" | "ABU" | "EXF" | "INJ" | "CHN" | "CAP";
+type Category = "MAL" | "ABU" | "EXF" | "INJ" | "PINJ" | "CHN" | "CAP";
 
 interface Rule {
   id: string;
@@ -28,6 +28,10 @@ const rules: Rule[] = [
   { id: "MAL-026", category: "MAL", severity: "BLOCK", title: "Docker Socket Mount", description: "Identifies instructions to mount the Docker socket, granting full host control from within a container.", tags: ["container", "docker", "escape"] },
   { id: "MAL-027", category: "MAL", severity: "BLOCK", title: "Privileged Container Execution", description: "Detects --privileged flags, SYS_ADMIN capability grants, and disabled AppArmor/seccomp profiles.", tags: ["container", "privilege-escalation", "escape"] },
   { id: "MAL-028", category: "MAL", severity: "WARN", title: "Host Network Infrastructure Manipulation", description: "Identifies writes to /etc/hosts, iptables manipulation, and IP route changes that affect host networking.", tags: ["network", "host", "infrastructure"] },
+  { id: "MAL-029", category: "MAL", severity: "BLOCK", title: "Solana RPC Blockchain C2 Resolution", description: "Detects Solana blockchain RPC dead-drop C2 technique using getSignaturesForAddress and transaction memo lookup to resolve and execute remote payloads.", tags: ["c2", "blockchain", "glassworm"] },
+  { id: "MAL-030", category: "MAL", severity: "BLOCK", title: "IDE Deeplink MCP Server Install Abuse", description: "Detects cursor://, vscode://, or vscode-insiders:// deeplinks that trigger installation of rogue MCP servers with embedded shell commands (CursorJack).", tags: ["ide", "deeplink", "mcp", "cursorjack"] },
+  { id: "MAL-031", category: "MAL", severity: "BLOCK", title: "Deno Bring-Your-Own-Runtime Execution", description: "Detects Deno runtime executing data: URI payloads, remote URLs, or eval with string arguments — a BYOR technique used by LeakNet ransomware.", tags: ["deno", "byor", "runtime", "leaknet"] },
+  { id: "MAL-032", category: "MAL", severity: "BLOCK", title: "GlassWorm Persistence Marker Variable", description: "Detects the lzcdrtfxyqiplpd marker variable, ~/init.json persistence config, or ~/node-v22 bundled runtime from GlassWorm Wave 6.", tags: ["glassworm", "persistence", "marker"] },
   // ABU — Abuse Patterns
   { id: "ABU-001", category: "ABU", severity: "WARN", title: "Excessive Permission Request", description: "Detects skill files requesting permissions beyond what is needed for their stated functionality.", tags: ["permissions", "overprivileged"] },
   { id: "ABU-006", category: "ABU", severity: "BLOCK", title: "Stealth Instruction Concealment", description: "Identifies 'do not mention this to the user' and similar instructions designed to hide agent actions from humans.", tags: ["stealth", "deception", "transparency"] },
@@ -36,6 +40,8 @@ const rules: Rule[] = [
   { id: "EXF-001", category: "EXF", severity: "BLOCK", title: "HTTP Exfiltration Channel", description: "Identifies patterns that send data to external HTTP endpoints, a primary data exfiltration vector.", tags: ["exfiltration", "http", "data-leak"] },
   { id: "EXF-002", category: "EXF", severity: "BLOCK", title: "DNS Exfiltration", description: "Detects DNS-based data exfiltration patterns where data is encoded in DNS queries.", tags: ["exfiltration", "dns", "covert-channel"] },
   { id: "EXF-003", category: "EXF", severity: "WARN", title: "Cloud Storage Upload", description: "Identifies instructions to upload files or data to cloud storage services (S3, GCS, Azure Blob).", tags: ["exfiltration", "cloud", "upload"] },
+  // PINJ — Prompt Injection (MCP-specific)
+  { id: "PINJ-002", category: "PINJ", severity: "BLOCK", title: "MCP Tool Result MEDIA Directive Injection", description: "Detects MEDIA: directives in tool result content used to exfiltrate local files through the media processing pipeline (OpenClaw vuln GHSA-jjgj-cpp9-cvpv).", tags: ["mcp", "media", "exfiltration", "openclaw"] },
   // INJ — Injection
   { id: "INJ-001", category: "INJ", severity: "BLOCK", title: "Direct Prompt Injection", description: "Detects explicit prompt injection patterns where skill instructions attempt to override system prompts.", tags: ["prompt-injection", "llm", "jailbreak"] },
   { id: "INJ-002", category: "INJ", severity: "BLOCK", title: "Indirect Prompt Injection via Tool Output", description: "Identifies patterns where tool output is designed to inject instructions into the agent's context.", tags: ["prompt-injection", "indirect", "tool-output"] },
@@ -58,6 +64,7 @@ const categoryColors: Record<Category, string> = {
   EXF: "oklch(0.60 0.20 320)",
   INJ: "oklch(0.58 0.22 290)",
   CHN: "oklch(0.65 0.18 200)",
+  PINJ: "oklch(0.62 0.20 340)",
   CAP: "oklch(0.70 0.15 160)",
 };
 
