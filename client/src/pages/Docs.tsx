@@ -182,6 +182,7 @@ Options:
   --fail-on [block|warn|info]     Exit code 1 if findings at this level
   --rules PATH                    Custom rules YAML file
   --exclude PATTERN               Glob pattern to exclude files
+  --ml-detect                     Enable ML prompt-injection classifier
   --no-ai                         Disable AI-assisted analysis
   --verbose                       Verbose output
   --help                          Show this message`} />
@@ -189,6 +190,15 @@ Options:
                   Exit codes: <code className="code-badge">0</code> = clean scan,{" "}
                   <code className="code-badge">1</code> = findings at or above fail-on threshold,{" "}
                   <code className="code-badge">2</code> = scan error.
+                </p>
+                <h3 className="text-lg font-semibold mt-6 mb-3" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.85 0.005 265)" }}>Rule commands</h3>
+                <CodeBlock code={`skillscan rule sync          # Pull latest default.yaml from GitHub (SHA-256 change detection)
+skillscan rule status        # Show bundled vs user-local rule versions`} />
+                <h3 className="text-lg font-semibold mt-4 mb-3" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.85 0.005 265)" }}>ML model commands</h3>
+                <CodeBlock code={`skillscan model sync         # Download LoRA adapter from HuggingFace Hub (~50 MB, opt-in)
+skillscan model status       # Show installed version, age, and staleness`} />
+                <p className="mt-2 text-sm" style={{ color: "oklch(0.55 0.015 265)" }}>
+                  The ML adapter is never auto-downloaded. Run <code className="code-badge">model sync</code> once, then use <code className="code-badge">--ml-detect</code> on scans. A <code className="code-badge">PINJ-ML-STALE</code> finding is emitted if the adapter is older than 30 days.
                 </p>
               </section>
 

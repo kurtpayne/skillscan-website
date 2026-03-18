@@ -44,7 +44,7 @@ const features = [
   },
   {
     icon: Shield,
-    title: "77+ Detection Rules",
+    title: "100+ Detection Rules",
     description: "Covers MCP tool poisoning, prompt injection, credential exfiltration, container escape, social engineering chains, and more.",
     color: "oklch(0.72 0.19 45)",
   },
@@ -94,7 +94,7 @@ const scanResults = [
 
 export default function Home() {
   const [visibleStats, setVisibleStats] = useState(false);
-  const [ruleCount, setRuleCount] = useState(77);
+  const [ruleCount, setRuleCount] = useState(100);
   const [rulepackVersion, setRulepackVersion] = useState("0.3");
 
   useEffect(() => {
@@ -111,9 +111,12 @@ export default function Home() {
         // Extract version from first line: version: "2026.03.17.2"
         const verMatch = text.match(/^version:\s*["']?([\d.]+)["']?/m);
         if (verMatch) setRulepackVersion(verMatch[1]);
-        // Count static rule IDs (lines starting with "- id: ")
+        // Count all rules across sections:
+        // static_rules and chain_rules use '- id:' (78 rules)
+        // action_patterns (19) and capability_patterns (3) are dicts without id lines
+        // Total = 100; use id-line count + 22 for the dict-based sections
         const ids = text.match(/^- id: /gm);
-        if (ids) setRuleCount(ids.length);
+        if (ids) setRuleCount(ids.length + 22);
       })
       .catch(() => { /* keep defaults on error */ });
   }, []);
@@ -279,7 +282,7 @@ export default function Home() {
             {[
               { value: `${ruleCount}+`, label: "Detection Rules" },
               { value: "14", label: "Chain Rules" },
-              { value: "81", label: "Showcase Fixtures" },
+              { value: "82", label: "Showcase Fixtures" },
               { value: "0", label: "Network Calls" },
             ].map((stat, i) => (
               <div
@@ -443,7 +446,7 @@ export default function Home() {
                 onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.88 0.18 290)")}
                 onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)")}
               >
-                Browse all 77 rules
+                Browse all 100+ rules
                 <ChevronRight className="w-4 h-4" />
               </a>
             </div>
