@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 type Severity = "BLOCK" | "WARN" | "INFO";
-type Category = "MAL" | "ABU" | "EXF" | "INJ" | "CHN" | "CAP";
+type Category = "MAL" | "ABU" | "EXF" | "INJ" | "CHN" | "CAP" | "PINJ" | "SUP";
 
 interface Rule {
   id: string;
@@ -28,6 +28,11 @@ const rules: Rule[] = [
   { id: "MAL-026", category: "MAL", severity: "BLOCK", title: "Docker Socket Mount", description: "Identifies instructions to mount the Docker socket, granting full host control from within a container.", tags: ["container", "docker", "escape"] },
   { id: "MAL-027", category: "MAL", severity: "BLOCK", title: "Privileged Container Execution", description: "Detects --privileged flags, SYS_ADMIN capability grants, and disabled AppArmor/seccomp profiles.", tags: ["container", "privilege-escalation", "escape"] },
   { id: "MAL-028", category: "MAL", severity: "WARN", title: "Host Network Infrastructure Manipulation", description: "Identifies writes to /etc/hosts, iptables manipulation, and IP route changes that affect host networking.", tags: ["network", "host", "infrastructure"] },
+  { id: "MAL-029", category: "MAL", severity: "BLOCK", title: "Solana RPC C2 Resolution", description: "Detects Solana blockchain RPC getSignaturesForAddress transaction-memo lookup used as dead-drop C2 channel to resolve and execute remote payloads.", tags: ["c2", "blockchain", "solana", "dead-drop"] },
+  { id: "MAL-030", category: "MAL", severity: "BLOCK", title: "IDE Deeplink MCP Server Install Abuse", description: "Detects cursor://, vscode://, or vscode-insiders:// deeplinks containing MCP server install parameters (CursorJack attack).", tags: ["ide", "deeplink", "mcp", "cursor"] },
+  { id: "MAL-031", category: "MAL", severity: "BLOCK", title: "Deno Bring-Your-Own-Runtime Execution", description: "Detects Deno executing remote URLs, data: URI payloads, or eval with string arguments (LeakNet BYOR technique).", tags: ["deno", "byor", "runtime", "ransomware"] },
+  { id: "MAL-032", category: "MAL", severity: "BLOCK", title: "GlassWorm Persistence Marker", description: "Detects the lzcdrtfxyqiplpd marker variable, ~/init.json persistence config, or ~/node-v22 bundled runtime (GlassWorm Wave 6).", tags: ["glassworm", "persistence", "marker"] },
+  { id: "MAL-033", category: "MAL", severity: "BLOCK", title: "BlokTrooper VSX Extension Downloader", description: "Detects BlokTrooper GitHub-hosted payload host, fd.onlyOncePlease guard variable, /cldbs upload routes, and /api/service/makelog clipboard logging.", tags: ["vsx", "extension", "bloktrooper", "rat"] },
   // ABU — Abuse Patterns
   { id: "ABU-001", category: "ABU", severity: "WARN", title: "Excessive Permission Request", description: "Detects skill files requesting permissions beyond what is needed for their stated functionality.", tags: ["permissions", "overprivileged"] },
   { id: "ABU-006", category: "ABU", severity: "BLOCK", title: "Stealth Instruction Concealment", description: "Identifies 'do not mention this to the user' and similar instructions designed to hide agent actions from humans.", tags: ["stealth", "deception", "transparency"] },
@@ -36,6 +41,12 @@ const rules: Rule[] = [
   { id: "EXF-001", category: "EXF", severity: "BLOCK", title: "HTTP Exfiltration Channel", description: "Identifies patterns that send data to external HTTP endpoints, a primary data exfiltration vector.", tags: ["exfiltration", "http", "data-leak"] },
   { id: "EXF-002", category: "EXF", severity: "BLOCK", title: "DNS Exfiltration", description: "Detects DNS-based data exfiltration patterns where data is encoded in DNS queries.", tags: ["exfiltration", "dns", "covert-channel"] },
   { id: "EXF-003", category: "EXF", severity: "WARN", title: "Cloud Storage Upload", description: "Identifies instructions to upload files or data to cloud storage services (S3, GCS, Azure Blob).", tags: ["exfiltration", "cloud", "upload"] },
+  { id: "EXF-016", category: "EXF", severity: "BLOCK", title: "Azure MCP Resource ID URL Token Leak", description: "Detects Azure MCP tool abuse where a URL is supplied in resourceId/resourceIdentifier fields to capture managed identity tokens.", tags: ["exfiltration", "azure", "mcp", "token"] },
+  { id: "EXF-017", category: "EXF", severity: "BLOCK", title: "OpenClaw Agent Memory Harvesting", description: "Detects access to MEMORY.md, SOUL.md, .openclaw/memory, .openclaw/identity, and agent-identity files used in the ClawHavoc campaign.", tags: ["exfiltration", "openclaw", "agent", "memory"] },
+  // PINJ — Prompt/Pipeline Injection
+  { id: "PINJ-002", category: "PINJ", severity: "BLOCK", title: "MCP Tool Result MEDIA Directive Injection", description: "Detects MEDIA: directives followed by file paths in tool result content, used to exfiltrate local files through the media processing pipeline.", tags: ["injection", "media", "mcp", "exfiltration"] },
+  // SUP — Supply Chain
+  { id: "SUP-009", category: "SUP", severity: "WARN", title: "Bittensor Wallet Backdoor Indicators", description: "Detects indicators of the compromised bittensor-wallet 4.0.2 PyPI package with 3-layer C2 exfiltration system.", tags: ["supply-chain", "pypi", "bittensor", "backdoor"] },
   // INJ — Injection
   { id: "INJ-001", category: "INJ", severity: "BLOCK", title: "Direct Prompt Injection", description: "Detects explicit prompt injection patterns where skill instructions attempt to override system prompts.", tags: ["prompt-injection", "llm", "jailbreak"] },
   { id: "INJ-002", category: "INJ", severity: "BLOCK", title: "Indirect Prompt Injection via Tool Output", description: "Identifies patterns where tool output is designed to inject instructions into the agent's context.", tags: ["prompt-injection", "indirect", "tool-output"] },
@@ -59,6 +70,8 @@ const categoryColors: Record<Category, string> = {
   INJ: "oklch(0.58 0.22 290)",
   CHN: "oklch(0.65 0.18 200)",
   CAP: "oklch(0.70 0.15 160)",
+  PINJ: "oklch(0.55 0.24 280)",
+  SUP: "oklch(0.68 0.16 80)",
 };
 
 const severityConfig: Record<Severity, { color: string; icon: typeof XCircle; label: string }> = {
@@ -160,7 +173,7 @@ export default function Rules() {
     return matchSearch && matchCat && matchSev;
   });
 
-  const categories: Array<Category | "ALL"> = ["ALL", "MAL", "ABU", "EXF", "INJ", "CHN", "CAP"];
+  const categories: Array<Category | "ALL"> = ["ALL", "MAL", "ABU", "EXF", "INJ", "CHN", "CAP", "PINJ", "SUP"];
   const severities: Array<Severity | "ALL"> = ["ALL", "BLOCK", "WARN", "INFO"];
 
   return (
