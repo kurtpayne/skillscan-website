@@ -183,6 +183,8 @@ Options:
   --rules PATH                    Custom rules YAML file
   --exclude PATTERN               Glob pattern to exclude files
   --ml-detect                     Enable ML prompt-injection classifier
+  --graph                         Enable skill graph analysis (remote loads,
+                                  unsafe tool grants, memory poisoning)
   --no-ai                         Disable AI-assisted analysis
   --verbose                       Verbose output
   --help                          Show this message`} />
@@ -217,11 +219,11 @@ on: [push, pull_request]
 
 jobs:
   skillscan:
-    uses: kurtpayne/skillscan-security/.github/workflows/skillscan-scan.yml@main
+    uses: kurtpayne/skillscan-security/.github/workflows/skillscan-reusable.yml@main
     with:
-      skill-path: './skills/'
+      paths: './skills/'
       fail-on: 'block'
-      upload-sarif: 'true'
+      extra-args: '--ml-detect --graph'
     permissions:
       security-events: write
       contents: read`} lang="yaml" />
