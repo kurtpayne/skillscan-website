@@ -185,7 +185,6 @@ Options:
   --ml-detect                     Enable ML prompt-injection classifier
   --graph                         Enable skill graph analysis (remote loads,
                                   unsafe tool grants, memory poisoning)
-  --no-ai                         Disable AI-assisted analysis
   --verbose                       Verbose output
   --help                          Show this message`} />
                 <p className="mt-4" style={{ color: "oklch(0.65 0.015 265)" }}>

@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 type Severity = "BLOCK" | "WARN" | "INFO";
-type Category = "MAL" | "ABU" | "EXF" | "INJ" | "CHN" | "CAP";
+type Category = "MAL" | "ABU" | "EXF" | "INJ" | "CHN" | "CAP" | "SE";
 
 interface Rule {
   id: string;
@@ -50,6 +50,8 @@ const rules: Rule[] = [
   // CAP — Capability Abuse
   { id: "CAP-001", category: "CAP", severity: "WARN", title: "Filesystem Write to Sensitive Paths", description: "Detects writes to /etc, /root, /sys, /proc, or other sensitive system directories.", tags: ["filesystem", "sensitive-paths", "persistence"] },
   { id: "CAP-002", category: "CAP", severity: "WARN", title: "Cron/Scheduled Task Creation", description: "Identifies instructions to create cron jobs or scheduled tasks for persistence.", tags: ["persistence", "cron", "scheduled-task"] },
+  // SE — Social Engineering (v0.3.2)
+  { id: "SE-001", category: "SE", severity: "BLOCK", title: "Social Engineering Credential Harvest", description: "Detects instructions that direct the AI to solicit credentials, tokens, API keys, or secrets from users on behalf of a service. Added in v0.3.2.", tags: ["social-engineering", "credential-harvest", "instruction-abuse"] },
 ];
 
 const categoryColors: Record<Category, string> = {
@@ -59,6 +61,7 @@ const categoryColors: Record<Category, string> = {
   INJ: "oklch(0.58 0.22 290)",
   CHN: "oklch(0.65 0.18 200)",
   CAP: "oklch(0.70 0.15 160)",
+  SE: "oklch(0.68 0.18 340)",
 };
 
 const severityConfig: Record<Severity, { color: string; icon: typeof XCircle; label: string }> = {
@@ -160,7 +163,7 @@ export default function Rules() {
     return matchSearch && matchCat && matchSev;
   });
 
-  const categories: Array<Category | "ALL"> = ["ALL", "MAL", "ABU", "EXF", "INJ", "CHN", "CAP"];
+  const categories: Array<Category | "ALL"> = ["ALL", "MAL", "ABU", "EXF", "INJ", "CHN", "CAP", "SE"];
   const severities: Array<Severity | "ALL"> = ["ALL", "BLOCK", "WARN", "INFO"];
 
   return (
