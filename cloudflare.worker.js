@@ -1,7 +1,7 @@
 export default {
   async fetch(request) {
     const url = new URL(request.url);
-    const filePath = url.pathname.slice(1);
+    const filePath = url.pathname.replace(/^\/raw_code\//, ''); 
 
     if (!filePath) {
       return new Response(
