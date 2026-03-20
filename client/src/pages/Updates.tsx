@@ -46,7 +46,7 @@ function parseUpdates(markdown: string): UpdateEntry[] {
     const version = versionMatch ? versionMatch[1] : date;
 
     // Extract rule IDs
-    const ruleMatches = section.match(/\b(MAL|ABU|EXF|INJ|CHN|CAP)-\d{3}\b/g) || [];
+    const ruleMatches = section.match(/\b(MAL|ABU|EXF|INJ|CHN|CAP|PINJ|SUP)-\d{3}\b/g) || [];
     const rules = Array.from(new Set(ruleMatches));
 
     // Extract categories
@@ -85,6 +85,8 @@ const CATEGORY_COLORS: Record<string, string> = {
   INJ: "oklch(0.65 0.18 200)",
   CHN: "oklch(0.58 0.22 290)",
   CAP: "oklch(0.70 0.15 160)",
+  PINJ: "oklch(0.55 0.24 280)",
+  SUP: "oklch(0.68 0.16 80)",
 };
 
 function RuleBadge({ rule }: { rule: string }) {

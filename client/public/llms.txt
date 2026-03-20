@@ -14,8 +14,8 @@ SkillScan is a Python-based command-line tool that scans AI agent skill files (M
 
 ## Detection Coverage
 
-- 77+ static and chain detection rules
-- Rule categories: MAL (malware), ABU (abuse), EXF (exfiltration), INJ (injection), CHN (chain), CAP (capability abuse)
+- 100+ static and chain detection rules
+- Rule categories: MAL (malware), ABU (abuse), EXF (exfiltration), INJ (injection), CHN (chain), CAP (capability abuse), PINJ (prompt/pipeline injection), SUP (supply chain)
 - Detects: MCP tool description poisoning, prompt injection, credential harvesting, Docker socket mounts, privileged container execution, cross-server MCP invocation, stealth instruction concealment
 - Output formats: SARIF, JUnit XML, compact text
 - Exit codes: 0 (clean), 1 (findings at threshold), 2 (scan error)
