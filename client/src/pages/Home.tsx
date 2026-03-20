@@ -75,7 +75,7 @@ const features = [
 ];
 
 const ruleCategories = [
-  { prefix: "MAL", label: "Malware Patterns", count: 29, color: "oklch(0.65 0.22 25)" },
+  { prefix: "MAL", label: "Malware Patterns", count: 31, color: "oklch(0.65 0.22 25)" },
   { prefix: "EXF", label: "Exfiltration", count: 12, color: "oklch(0.72 0.19 45)" },
   { prefix: "ABU", label: "Abuse Patterns", count: 7, color: "oklch(0.70 0.15 160)" },
   { prefix: "INJ", label: "Injection", count: 14, color: "oklch(0.58 0.22 290)" },
