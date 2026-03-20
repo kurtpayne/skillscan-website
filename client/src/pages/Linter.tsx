@@ -444,15 +444,19 @@ fail_on = "warning"  # error | warning | info`} />
               VS Code Extension
             </h2>
           </div>
-          <p className="mb-8 text-sm" style={{ color: "oklch(0.55 0.015 265)" }}>
-            The SkillScan VS Code extension runs <code style={{ fontFamily: "'JetBrains Mono', monospace", color: "oklch(0.78 0.18 290)" }}>skillscan-lint</code> as a diagnostic provider,
-            surfacing rule violations as inline squiggles without leaving your editor.
+          <p className="mb-2 text-sm" style={{ color: "oklch(0.55 0.015 265)" }}>
+            The SkillScan Security extension runs both <code style={{ fontFamily: "'JetBrains Mono', monospace", color: "oklch(0.78 0.18 290)" }}>skillscan</code> and <code style={{ fontFamily: "'JetBrains Mono', monospace", color: "oklch(0.78 0.18 290)" }}>skillscan-lint</code> on every save,
+            merging their SARIF output into a single diagnostic stream. Security findings and quality findings appear side-by-side in the Problems panel, each tagged with its source tool.
+          </p>
+          <p className="mb-8 text-sm" style={{ color: "oklch(0.45 0.015 265)" }}>
+            Quality lint is optional: if <code style={{ fontFamily: "'JetBrains Mono', monospace" }}>skillscan-lint</code> is not installed, a one-time notification is shown and security diagnostics continue normally.
+            Both tools produce SARIF 2.1.0 — the same format used by GitHub Code Scanning.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {[
-              { icon: CheckCircle2, title: "Inline diagnostics", desc: "Rule violations appear as squiggles directly in the editor with hover details showing the rule ID, severity, and description." },
-              { icon: Settings, title: "Respects .skillscan-lint.toml", desc: "The extension reads your project config automatically. Disabled rules and severity overrides are reflected in real time." },
-              { icon: Code2, title: "Vale squiggles", desc: "Pairs with the Vale VS Code extension for prose-level feedback on weasel words, passive voice, and buzzwords as you type." },
+              { icon: CheckCircle2, title: "Security + quality in one install", desc: "Both skillscan (security) and skillscan-lint (quality) run on save. Findings from each tool are labeled with their source so you can distinguish prompt injection warnings from weasel word notices." },
+              { icon: Settings, title: "Respects both config files", desc: "The extension reads .skillscan-lint.toml automatically. Disabled rules and severity overrides are reflected in real time. Security rules path is configurable separately." },
+              { icon: Code2, title: "SARIF 2.1.0 output", desc: "Both tools emit SARIF 2.1.0. The same output format used by GitHub Advanced Security — enabling direct upload to Code Scanning from CI." },
               { icon: FileText, title: "Quick fixes (coming soon)", desc: "One-click fixes for common issues: remove filler phrases, add missing YAML fields, expand undefined acronyms." },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="flex gap-4 p-5 rounded-xl" style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.58 0.22 290 / 0.15)" }}>
@@ -467,17 +471,22 @@ fail_on = "warning"  # error | warning | info`} />
               </div>
             ))}
           </div>
-          <div className="rounded-xl p-6" style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.58 0.22 290 / 0.20)" }}>
-            <h3 className="text-sm font-semibold mb-4" style={{ color: "oklch(0.82 0.01 265)", fontFamily: "'Space Grotesk', sans-serif" }}>
-              Install from source (marketplace listing coming soon)
+          <div className="rounded-xl p-6 mb-4" style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.58 0.22 290 / 0.20)" }}>
+            <h3 className="text-sm font-semibold mb-1" style={{ color: "oklch(0.82 0.01 265)", fontFamily: "'Space Grotesk', sans-serif" }}>
+              Install the combined extension
             </h3>
-            <CodeBlock lang="bash" code={`git clone https://github.com/kurtpayne/skillscan-vscode
-cd skillscan-vscode
+            <p className="text-xs mb-4" style={{ color: "oklch(0.45 0.015 265)" }}>The SkillScan Security extension includes lint integration. Install both Python tools, then install the extension from source.</p>
+            <CodeBlock lang="bash" code={`# Install both tools
+pip install skillscan-security skillscan-lint
+
+# Build and install the VS Code extension
+git clone https://github.com/kurtpayne/skillscan-security
+cd skillscan-security/editors/vscode
 npm install && npm run package
-code --install-extension skillscan-*.vsix`} />
+code --install-extension skillscan-security-*.vsix`} />
             <p className="mt-4 text-xs" style={{ color: "oklch(0.45 0.015 265)" }}>
-              Requires <code style={{ fontFamily: "'JetBrains Mono', monospace" }}>skillscan-lint</code> to be installed and on your PATH.
-              The extension will prompt you if it cannot find the binary.
+              Marketplace listing is in progress. In the meantime, install locally via <code style={{ fontFamily: "'JetBrains Mono', monospace" }}>vsce package</code>.
+              The standalone <code style={{ fontFamily: "'JetBrains Mono', monospace" }}>skillscan-vscode</code> extension (lint-only) is also available for teams that only need quality checks.
             </p>
           </div>
         </div>
@@ -493,25 +502,38 @@ code --install-extension skillscan-*.vsix`} />
             </h2>
           </div>
           <p className="mb-6 text-sm" style={{ color: "oklch(0.55 0.015 265)" }}>
-            Add quality linting to your GitHub Actions pipeline alongside the security scanner.
+            Both tools produce SARIF 2.1.0 output. Run them together in CI and upload findings to GitHub Code Scanning for inline PR annotations.
           </p>
-          <CodeBlock lang=".github/workflows/quality.yml" code={`name: Skill Quality
+          <CodeBlock lang=".github/workflows/skillscan.yml" code={`name: SkillScan
 on: [push, pull_request]
 
 jobs:
-  lint:
+  scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install skillscan-lint
-      - run: skillscan-lint scan ./skills/ --fail-on warning --format sarif -o lint.sarif
+      - run: pip install skillscan-security skillscan-lint
+
+      # Security scan — blocks on high/critical findings
+      - run: skillscan scan ./skills/ --format sarif -o security.sarif
+
+      # Quality lint — warns on style issues
+      - run: skillscan-lint scan ./skills/ --format sarif --fail-on never -o lint.sarif
+
+      # Upload both to GitHub Code Scanning
       - uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: lint.sarif`} />
+          sarif_file: security.sarif
+          category: skillscan-security
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: lint.sarif
+          category: skillscan-lint`} />
         </div>
       </section>
 
