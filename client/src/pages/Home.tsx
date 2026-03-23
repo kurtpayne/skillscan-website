@@ -75,12 +75,14 @@ const features = [
 ];
 
 const ruleCategories = [
-  { prefix: "MAL", label: "Malware Patterns", count: 33, color: "oklch(0.65 0.22 25)" },
-  { prefix: "EXF", label: "Exfiltration", count: 17, color: "oklch(0.72 0.19 45)" },
+  { prefix: "MAL", label: "Malware Patterns", count: 35, color: "oklch(0.65 0.22 25)" },
+  { prefix: "EXF", label: "Exfiltration", count: 13, color: "oklch(0.72 0.19 45)" },
   { prefix: "ABU", label: "Abuse Patterns", count: 7, color: "oklch(0.70 0.15 160)" },
   { prefix: "INJ", label: "Injection", count: 14, color: "oklch(0.58 0.22 290)" },
-  { prefix: "CHN", label: "Chain Rules", count: 15, color: "oklch(0.65 0.18 200)" },
-  { prefix: "SE", label: "Social Engineering", count: 1, color: "oklch(0.60 0.20 320)" },
+  { prefix: "CHN", label: "Chain Rules", count: 14, color: "oklch(0.65 0.18 200)" },
+  { prefix: "CAP", label: "Capability Abuse", count: 6, color: "oklch(0.70 0.15 160)" },
+  { prefix: "PINJ", label: "Prompt/Pipeline Injection", count: 5, color: "oklch(0.55 0.24 280)" },
+  { prefix: "SUP", label: "Supply Chain", count: 6, color: "oklch(0.68 0.16 80)" },
 ];
 // Note: ruleCategories counts are static display values; live total comes from GitHub API
 
