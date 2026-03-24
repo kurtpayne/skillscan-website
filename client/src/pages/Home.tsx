@@ -63,7 +63,7 @@ const features = [
   {
     icon: Terminal,
     title: "Pattern Updates",
-    description: "Automated twice-daily threat intel updates. New attack patterns land as PRs, reviewed before merge. Always current.",
+    description: "Threat intel updates ship as reviewed PRs. New attack patterns, IOCs, and vulnerability signatures land continuously as they're discovered and verified.",
     color: "oklch(0.60 0.20 320)",
   },
   {
@@ -75,14 +75,15 @@ const features = [
 ];
 
 const ruleCategories = [
-  { prefix: "MAL", label: "Malware Patterns", count: 35, color: "oklch(0.65 0.22 25)" },
-  { prefix: "EXF", label: "Exfiltration", count: 13, color: "oklch(0.72 0.19 45)" },
+  { prefix: "MAL", label: "Malware Patterns", count: 47, color: "oklch(0.65 0.22 25)" },
+  { prefix: "EXF", label: "Exfiltration", count: 17, color: "oklch(0.72 0.19 45)" },
   { prefix: "ABU", label: "Abuse Patterns", count: 7, color: "oklch(0.70 0.15 160)" },
   { prefix: "INJ", label: "Injection", count: 14, color: "oklch(0.58 0.22 290)" },
   { prefix: "CHN", label: "Chain Rules", count: 14, color: "oklch(0.65 0.18 200)" },
   { prefix: "CAP", label: "Capability Abuse", count: 6, color: "oklch(0.70 0.15 160)" },
-  { prefix: "PINJ", label: "Prompt/Pipeline Injection", count: 5, color: "oklch(0.55 0.24 280)" },
-  { prefix: "SUP", label: "Supply Chain", count: 6, color: "oklch(0.68 0.16 80)" },
+  { prefix: "PINJ", label: "Prompt/Pipeline Injection", count: 7, color: "oklch(0.55 0.24 280)" },
+  { prefix: "SUP", label: "Supply Chain", count: 15, color: "oklch(0.68 0.16 80)" },
+  { prefix: "SE", label: "Social Engineering", count: 1, color: "oklch(0.62 0.20 340)" },
 ];
 // Note: ruleCategories counts are static display values; live total comes from GitHub API
 
@@ -284,7 +285,7 @@ export default function Home() {
             {[
               { value: `${ruleCount}+`, label: "Detection Rules" },
               { value: "15", label: "Chain Rules" },
-              { value: "88", label: "Showcase Fixtures" },
+              { value: "117", label: "Showcase Fixtures" },
               { value: "0", label: "Network Calls" },
             ].map((stat, i) => (
               <div

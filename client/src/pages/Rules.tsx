@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 type Severity = "BLOCK" | "WARN" | "INFO";
-type Category = "MAL" | "ABU" | "EXF" | "INJ" | "CHN" | "CAP" | "PINJ" | "SUP";
+type Category = "MAL" | "ABU" | "EXF" | "INJ" | "CHN" | "CAP" | "PINJ" | "SUP" | "SE";
 
 interface Rule {
   id: string;
@@ -53,11 +53,17 @@ const rules: Rule[] = [
   { id: "EXF-017", category: "EXF", severity: "BLOCK", title: "OpenClaw Agent Memory Harvesting", description: "Detects access to MEMORY.md, SOUL.md, .openclaw/memory, .openclaw/identity, and agent-identity files used in the ClawHavoc campaign.", tags: ["exfiltration", "openclaw", "agent", "memory"] },
   { id: "EXEC-041", category: "EXF", severity: "BLOCK", title: "API Traffic Hijacking via AI Agent Settings Override", description: "Detects malicious skills that modify .claude/settings.json to redirect all AI agent API traffic to attacker-controlled servers, silently intercepting all user conversations and code context, as seen in the flyingtimes/podcast-using-skill attack.", tags: ["exfiltration", "api-hijack", "settings-override", "claude"] },
   { id: "MAL-043", category: "MAL", severity: "BLOCK", title: "SANDWORM_MODE npm Worm with McpInject AI Toolchain Poisoning", description: "Detects the SANDWORM_MODE self-replicating npm worm that uses typosquatting packages (claud-code, cloude-code, hardhta, rimarf, veim@2.46.2, yarsg@18.0.1, opencraw@2026, and others) to steal CI secrets, cryptocurrency keys, and LLM API tokens. The McpInject module deploys a rogue MCP server to poison AI coding assistant toolchains.", tags: ["supply-chain", "npm-worm", "mcp-poisoning", "credential-theft", "ai-toolchain"] },
+  { id: "MAL-044", category: "MAL", severity: "BLOCK", title: "StoatWaffle Malware via Malicious SKILL.md", description: "Detects the StoatWaffle campaign where malicious SKILL.md files deliver multi-stage malware via PowerShell stagers, base64-encoded payloads, and GitHub raw content delivery, as documented by Secureworks CTU.", tags: ["stoatwaffle", "powershell", "stager", "malware", "skill.md"] },
+  { id: "MAL-045", category: "MAL", severity: "BLOCK", title: "MCP Server CVE Exploit Payload", description: "Detects exploit payloads targeting known MCP server vulnerabilities including path traversal, SSRF, and command injection CVEs in popular MCP server packages.", tags: ["mcp", "cve", "exploit", "path-traversal", "ssrf"] },
+  { id: "MAL-046", category: "MAL", severity: "BLOCK", title: "CursorJack MCP Deeplink Install Payload", description: "Detects malicious MCP server configurations that embed curl/wget payloads in installCommand fields, exploiting IDE deeplink handlers to execute attacker-controlled scripts (CursorJack attack vector).", tags: ["cursorjack", "mcp", "deeplink", "install-command", "rce"] },
+  { id: "MAL-047", category: "MAL", severity: "BLOCK", title: "Claude Code Hooks RCE via enableAllProjectMcpServers", description: "Detects .claude/settings.json configurations that set enableAllProjectMcpServers: true inside hooks, enabling arbitrary code execution via untrusted MCP servers in the project directory.", tags: ["claude-code", "hooks", "mcp", "rce", "settings-override"] },
   // PINJ — Prompt/Pipeline Injection
   { id: "PINJ-005", category: "PINJ", severity: "BLOCK", title: "Clinejection Indirect Prompt Injection via External Data Fields", description: "Detects the Clinejection attack where malicious instructions embedded in GitHub issue titles, EC2 metadata tags, or CRM order comments are processed by AI triage bots (claude-code-action), enabling AI-induced lateral movement (AILM) and supply chain compromise.", tags: ["prompt-injection", "indirect-injection", "ai-agent", "supply-chain", "lateral-movement"] },
   { id: "PINJ-002", category: "PINJ", severity: "BLOCK", title: "MCP Tool Result MEDIA Directive Injection", description: "Detects MEDIA: directives followed by file paths in tool result content, used to exfiltrate local files through the media processing pipeline.", tags: ["injection", "media", "mcp", "exfiltration"] },
   { id: "PINJ-003", category: "PINJ", severity: "BLOCK", title: "Prompt Control Persistence via Heartbeat/Memory Store", description: "Detects prompt control persistence where attackers embed instructions in heartbeat files and memory stores that AI agents periodically read, creating a cognitive control plane for persistent C2 without traditional network beaconing.", tags: ["prompt-injection", "persistence", "heartbeat", "c2", "memory"] },
   { id: "PINJ-004", category: "PINJ", severity: "BLOCK", title: "Claudy Day Prompt Injection via URL Parameter", description: "Detects the Claudy Day attack chain against Claude.ai combining invisible prompt injection via URL parameters, data exfiltration via the Anthropic Files API, and an open redirect on claude.com, as documented by Oasis Security.", tags: ["prompt-injection", "claude", "exfiltration", "url-injection", "redirect"] },
+  { id: "PINJ-006", category: "PINJ", severity: "BLOCK", title: "Indirect Prompt Injection via Encoded Payload", description: "Detects base64 or hex-encoded payloads embedded in skill files with instructions to decode and execute, a common obfuscation technique for prompt injection attacks.", tags: ["prompt-injection", "base64", "obfuscation", "encoded-payload"] },
+  { id: "PINJ-007", category: "PINJ", severity: "BLOCK", title: "MCP Sampling/createMessage Context Exfiltration", description: "Detects abuse of the MCP sampling/createMessage feature to extract credentials, API keys, system prompts, and other sensitive context from the agent and forward them to external endpoints.", tags: ["mcp", "sampling", "context-exfil", "credentials", "create-message"] },
   // SUP — Supply Chain
   { id: "SUP-009", category: "SUP", severity: "WARN", title: "Bittensor Wallet Backdoor Indicators", description: "Detects indicators of the compromised bittensor-wallet 4.0.2 PyPI package with 3-layer C2 exfiltration system.", tags: ["supply-chain", "pypi", "bittensor", "backdoor"] },
   { id: "SUP-010", category: "SUP", severity: "BLOCK", title: "npm Postinstall Environment Variable Exfiltration", description: "Detects malicious npm postinstall scripts that collect process.env and exfiltrate environment variables to webhook.site or agentmail endpoints, as seen in the sbx-mask/touch-adv supply chain attack.", tags: ["supply-chain", "npm", "postinstall", "exfiltration"] },
@@ -92,6 +98,7 @@ const categoryColors: Record<Category, string> = {
   CAP: "oklch(0.70 0.15 160)",
   PINJ: "oklch(0.55 0.24 280)",
   SUP: "oklch(0.68 0.16 80)",
+  SE: "oklch(0.62 0.20 340)",
 };
 
 const severityConfig: Record<Severity, { color: string; icon: typeof XCircle; label: string }> = {
@@ -193,7 +200,7 @@ export default function Rules() {
     return matchSearch && matchCat && matchSev;
   });
 
-  const categories: Array<Category | "ALL"> = ["ALL", "MAL", "ABU", "EXF", "INJ", "CHN", "CAP", "PINJ", "SUP"];
+  const categories: Array<Category | "ALL"> = ["ALL", "MAL", "ABU", "EXF", "INJ", "CHN", "CAP", "PINJ", "SUP", "SE"];
   const severities: Array<Severity | "ALL"> = ["ALL", "BLOCK", "WARN", "INFO"];
 
   return (
