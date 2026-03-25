@@ -14,7 +14,7 @@ interface ScanLine {
 
 const SCAN_SEQUENCE: ScanLine[] = [
   { type: "cmd",     text: "$ skillscan scan ./skills/ --format compact --fail-on block", delay: 0 },
-  { type: "info",    text: "SkillScan v0.3  •  rulepack 2026.03.24.1  •  99 rules loaded", delay: 600 },
+  { type: "info",    text: "SkillScan v0.3  •  rulepack 2026.03.25.1  •  119 rules loaded", delay: 600 },
   { type: "info",    text: "Scanning 6 skill files in ./skills/ ...", delay: 400 },
   { type: "blank",   text: "", delay: 300 },
   { type: "pass",    text: "PASS  INJ-001   search_tool.yaml          No prompt injection detected", delay: 350 },
