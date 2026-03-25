@@ -81,8 +81,8 @@ const ruleCategories = [
   { prefix: "INJ", label: "Injection", count: 14, color: "oklch(0.58 0.22 290)" },
   { prefix: "CHN", label: "Chain Rules", count: 14, color: "oklch(0.65 0.18 200)" },
   { prefix: "CAP", label: "Capability Abuse", count: 6, color: "oklch(0.70 0.15 160)" },
-  { prefix: "PINJ", label: "Prompt/Pipeline Injection", count: 6, color: "oklch(0.55 0.24 280)" },
-  { prefix: "SUP", label: "Supply Chain", count: 18, color: "oklch(0.68 0.16 80)" },
+  { prefix: "PINJ", label: "Prompt/Pipeline Injection", count: 7, color: "oklch(0.55 0.24 280)" },
+  { prefix: "SUP", label: "Supply Chain", count: 19, color: "oklch(0.68 0.16 80)" },
 ];
 // Note: ruleCategories counts are static display values; live total comes from GitHub API
 
