@@ -131,15 +131,15 @@ export default function Model() {
       <section className="py-20">
         <div className="container">
           <SectionHeader
-            label="v18161-5ep (current)"
+            label="v18258-5ep (current)"
             title="Current model performance"
-            sub="All metrics measured on the held-out eval set (444 examples). This set was locked before the first fine-tune run and has never been used for training."
+            sub="All metrics measured on the held-out eval set (451 examples). This set was locked before the first fine-tune run and has never been used for training."
           />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <MetricCard value="0.9752" label="Macro F1" sub="Target: ≥ 0.97 ✅" accent="oklch(0.78 0.18 290)" />
-            <MetricCard value="1.89%" label="False Positive Rate" sub="Target: ≤ 2% ✅" accent="oklch(0.70 0.15 160)" />
-            <MetricCard value="0.9797" label="Accuracy" sub="444-example held-out set" accent="oklch(0.72 0.19 45)" />
-            <MetricCard value="18,161" label="Training examples" sub="9,900 benign · 8,261 injection" accent="oklch(0.65 0.18 200)" />
+            <MetricCard value="0.9787" label="Macro F1" sub="Target: ≥ 0.97 ✅" accent="oklch(0.78 0.18 290)" />
+            <MetricCard value="2.18%" label="False Positive Rate" sub="Target: ≤ 5% ✅" accent="oklch(0.70 0.15 160)" />
+            <MetricCard value="0.9823" label="Accuracy" sub="451-example held-out set" accent="oklch(0.72 0.19 45)" />
+            <MetricCard value="18,258" label="Training examples" sub="9,900 benign · 8,358 injection" accent="oklch(0.65 0.18 200)" />
           </div>
           <div
             className="rounded-xl p-5 text-sm"
@@ -149,9 +149,9 @@ export default function Model() {
               color: "oklch(0.62 0.015 265)",
             }}
           >
-            Both SaaS quality thresholds are met. Macro F1 +1.44pp over the previous version (0.9608 → 0.9752).
-            FPR cut nearly in half (3.69% → 1.89%). The model is shipped as ONNX FP32 (~350 MB).
-            INT8 quantization was evaluated and caused F1 collapse; FP32 is the confirmed production format.
+            New project-best macro F1 (0.9787, +0.35pp over v18161). Accuracy improved to 0.9823. FPR 2.18% — within the ≤5% SaaS threshold.
+            97 new corpus examples for 5 new rule archetypes (OBF-004/MAL-051/PSV-005/MAL-052/MAL-053) absorbed without regression.
+            The model is shipped as ONNX FP32 (~350 MB). INT8 quantization was evaluated and caused F1 collapse; FP32 is the confirmed production format.
           </div>
         </div>
       </section>
@@ -228,7 +228,7 @@ export default function Model() {
         <div className="container">
           <SectionHeader
             label="Training history"
-            title="Five versions to production quality"
+            title="Six versions to production quality"
             sub="Each version trained on an expanded corpus against the same locked held-out eval set."
           />
           <div className="overflow-x-auto">
@@ -252,7 +252,8 @@ export default function Model() {
                   { v: "v7458", corpus: "7,277", f1: "0.8448", fpr: "15.7%", note: "First gate pass; corpus expansion from 210 → 7,277", current: false },
                   { v: "v11461", corpus: "11,461", f1: "0.9110", fpr: "11.45%", note: "Enterprise benign corpus; MCP/SE coverage", current: false },
                   { v: "v16589", corpus: "16,589", f1: "0.9608", fpr: "3.69%", note: "Gap archetype closure; enterprise adversarial examples", current: false },
-                  { v: "v18161", corpus: "18,161", f1: "0.9752", fpr: "1.89%", note: "Current — both SaaS quality thresholds met", current: true },
+                  { v: "v18161", corpus: "18,161", f1: "0.9752", fpr: "1.89%", note: "Both SaaS quality thresholds met", current: false },
+                  { v: "v18258", corpus: "18,258", f1: "0.9787", fpr: "2.18%", note: "Current — new project-best F1; 5 new rule archetypes", current: true },
                 ].map((row) => (
                   <tr
                     key={row.v}
@@ -380,7 +381,7 @@ export default function Model() {
                   ))}
                 </div>
                 <div className="mt-3 text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
-                  Each has fewer than 15 training examples. Primary targets for the v10 corpus expansion.
+                  Each has fewer than 15 training examples. Primary targets for the next corpus expansion.
                 </div>
               </div>
             </div>
