@@ -930,7 +930,9 @@ EXF-003  skills/analytics.md    Intentional telemetry, reviewed 2026-03-01`} />
                       desc: "Submit a skill sample (benign or malicious) to help improve the ML model. Accepted samples are added to the training corpus, not the static rule layer.",
                       url: "https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.yml",
                     },
-                  ].map((item) => (
+                  ].map((item) => {
+                    const isCorpus = item.title === "Corpus submission";
+                    return (
                     <a
                       key={item.title}
                       href={item.url}
@@ -938,20 +940,21 @@ EXF-003  skills/analytics.md    Intentional telemetry, reviewed 2026-03-01`} />
                       rel="noopener noreferrer"
                       className="block rounded-xl p-5 transition-all duration-200"
                       style={{
-                        background: "oklch(0.14 0.022 265)",
-                        border: "1px solid oklch(0.58 0.22 290 / 0.18)",
+                        background: isCorpus ? "oklch(0.55 0.20 160 / 0.06)" : "oklch(0.14 0.022 265)",
+                        border: isCorpus ? "1px solid oklch(0.55 0.20 160 / 0.30)" : "1px solid oklch(0.58 0.22 290 / 0.18)",
                         textDecoration: "none",
                       }}
-                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "oklch(0.58 0.22 290 / 0.40)")}
-                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "oklch(0.58 0.22 290 / 0.18)")}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = isCorpus ? "oklch(0.55 0.20 160 / 0.55)" : "oklch(0.58 0.22 290 / 0.40)")}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = isCorpus ? "oklch(0.55 0.20 160 / 0.30)" : "oklch(0.58 0.22 290 / 0.18)")}
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-semibold" style={{ color: "oklch(0.88 0.005 265)" }}>{item.title}</span>
-                        <ExternalLink className="w-3.5 h-3.5" style={{ color: "oklch(0.50 0.015 265)" }} />
+                        <span className="text-sm font-semibold" style={{ color: isCorpus ? "oklch(0.78 0.16 160)" : "oklch(0.88 0.005 265)" }}>{item.title}</span>
+                        <ExternalLink className="w-3.5 h-3.5" style={{ color: isCorpus ? "oklch(0.60 0.16 160)" : "oklch(0.50 0.015 265)" }} />
                       </div>
                       <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>{item.desc}</p>
                     </a>
-                  ))}
+                    );
+                  })}
                 </div>
               </section>
             </main>

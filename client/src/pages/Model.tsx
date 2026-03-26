@@ -4,7 +4,7 @@
    Sections: Hero, Architecture, Performance, Version History,
              What it detects, Limitations, How to use
    ============================================================ */
-import { ExternalLink, ChevronRight, CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
+import { ExternalLink, ChevronRight, CheckCircle2, XCircle, AlertTriangle, FlaskConical, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -472,6 +472,70 @@ skillscan scan path/to/skills/   # static rules + ML detection`,
             >
               Detection model architecture doc
               <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CORPUS CTA ── */}
+      <section className="py-20 section-divider" style={{ background: "oklch(0.11 0.022 265 / 0.5)" }}>
+        <div className="container">
+          <div
+            className="rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-start md:items-center gap-8"
+            style={{
+              background: "oklch(0.13 0.022 265 / 0.8)",
+              border: "1px solid oklch(0.55 0.20 160 / 0.30)",
+              boxShadow: "0 0 40px oklch(0.55 0.20 160 / 0.06)",
+            }}
+          >
+            <div
+              className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{
+                background: "oklch(0.55 0.20 160 / 0.15)",
+                border: "1px solid oklch(0.55 0.20 160 / 0.30)",
+              }}
+            >
+              <FlaskConical className="w-7 h-7" style={{ color: "oklch(0.70 0.18 160)" }} />
+            </div>
+            <div className="flex-1">
+              <h2
+                className="text-2xl font-bold mb-2"
+                style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.92 0.005 265)" }}
+              >
+                Help improve the model
+              </h2>
+              <p className="text-sm leading-relaxed mb-1" style={{ color: "oklch(0.62 0.015 265)" }}>
+                The model improves with every corpus expansion. Each new version is trained on a larger, more diverse set of skill samples
+                and evaluated against the same locked holdout set — so improvements are always verifiable.
+              </p>
+              <p className="text-sm" style={{ color: "oklch(0.50 0.015 265)" }}>
+                Submit a benign or malicious skill sample via GitHub Issues. Accepted samples go into the training corpus.
+                They do <em>not</em> affect the static rule layer.
+              </p>
+            </div>
+            <a
+              href="https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.yml"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm flex-shrink-0 transition-all duration-200"
+              style={{
+                background: "oklch(0.55 0.20 160 / 0.15)",
+                border: "1px solid oklch(0.55 0.20 160 / 0.40)",
+                color: "oklch(0.75 0.18 160)",
+                fontFamily: "'Space Grotesk', sans-serif",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "oklch(0.55 0.20 160 / 0.25)";
+                (e.currentTarget as HTMLElement).style.borderColor = "oklch(0.55 0.20 160 / 0.60)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "oklch(0.55 0.20 160 / 0.15)";
+                (e.currentTarget as HTMLElement).style.borderColor = "oklch(0.55 0.20 160 / 0.40)";
+              }}
+            >
+              Submit a sample
+              <ArrowRight className="w-4 h-4" />
             </a>
           </div>
         </div>
