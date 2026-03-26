@@ -76,7 +76,7 @@ const features = [
 
 const ruleCategories = [
 // AUTO_SYNC_BEGIN: ruleCategories
-  { prefix: "MAL", label: "Malware Patterns", count: 52, color: "oklch(0.65 0.22 25)" },
+  { prefix: "MAL", label: "Malware Patterns", count: 53, color: "oklch(0.65 0.22 25)" },
   { prefix: "EXF", label: "Exfiltration", count: 19, color: "oklch(0.72 0.19 45)" },
   { prefix: "ABU", label: "Abuse Patterns", count: 7, color: "oklch(0.70 0.15 160)" },
   { prefix: "CHN", label: "Chain Rules", count: 14, color: "oklch(0.65 0.18 200)" },
