@@ -547,10 +547,15 @@ export default function Home() {
                 ].map((row) => (
                   <tr
                     key={row.n}
+                    onClick={row.highlight ? () => window.location.href = '/model' : undefined}
                     style={{
                       borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)",
                       background: row.highlight ? "oklch(0.58 0.22 290 / 0.06)" : "transparent",
+                      cursor: row.highlight ? "pointer" : "default",
+                      transition: "background 0.15s ease",
                     }}
+                    onMouseEnter={row.highlight ? (e) => { (e.currentTarget as HTMLElement).style.background = "oklch(0.58 0.22 290 / 0.12)"; } : undefined}
+                    onMouseLeave={row.highlight ? (e) => { (e.currentTarget as HTMLElement).style.background = "oklch(0.58 0.22 290 / 0.06)"; } : undefined}
                   >
                     <td className="py-4 pr-6">
                       <span
@@ -568,16 +573,24 @@ export default function Home() {
                       <div className="font-semibold mb-0.5" style={{ color: row.highlight ? "oklch(0.88 0.18 290)" : "oklch(0.88 0.005 265)" }}>
                         {row.mech}
                         {row.highlight && (
-                          <span
-                            className="ml-2 px-1.5 py-0.5 rounded text-xs"
-                            style={{
-                              background: "oklch(0.58 0.22 290 / 0.20)",
-                              color: "oklch(0.78 0.18 290)",
-                              fontFamily: "'JetBrains Mono', monospace",
-                            }}
-                          >
-                            ML
-                          </span>
+                          <>
+                            <span
+                              className="ml-2 px-1.5 py-0.5 rounded text-xs"
+                              style={{
+                                background: "oklch(0.58 0.22 290 / 0.20)",
+                                color: "oklch(0.78 0.18 290)",
+                                fontFamily: "'JetBrains Mono', monospace",
+                              }}
+                            >
+                              ML
+                            </span>
+                            <span
+                              className="ml-2 text-xs"
+                              style={{ color: "oklch(0.58 0.22 290 / 0.70)", fontFamily: "'Inter', sans-serif" }}
+                            >
+                              → view model
+                            </span>
+                          </>
                         )}
                       </div>
                       <div className="text-xs" style={{ color: "oklch(0.50 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
