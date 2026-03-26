@@ -430,6 +430,18 @@ fail_on = "warning"  # error | warning | info`} />
                   Prints the resolved config as JSON — useful for debugging discovery and verifying overrides are applied.
                 </p>
               </div>
+              <div className="pt-1">
+                <a
+                  href="/docs#customization"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold transition-colors duration-200"
+                  style={{ color: "oklch(0.65 0.15 290)" }}
+                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)")}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.65 0.15 290)")}
+                >
+                  See the Customization guide for security-layer config (custom rules, policy profiles, suppression)
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
