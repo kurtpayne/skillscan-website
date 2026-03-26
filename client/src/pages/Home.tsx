@@ -82,6 +82,11 @@ const ruleCategories = [
   { prefix: "PINJ", label: "Prompt/Pipeline Injection", count: 15, color: "oklch(0.55 0.24 280)" },
   { prefix: "SUP", label: "Supply Chain", count: 19, color: "oklch(0.68 0.16 80)" },
   { prefix: "SE", label: "Social Engineering", count: 3, color: "oklch(0.62 0.20 340)" },
+  { prefix: "DEF", label: "Defense Evasion", count: 1, color: "oklch(0.60 0.18 240)" },
+  { prefix: "EXEC", label: "Execution Hijack", count: 1, color: "oklch(0.63 0.20 15)" },
+  { prefix: "GR", label: "Graph Rules", count: 1, color: "oklch(0.65 0.15 180)" },
+  { prefix: "OBF", label: "Obfuscation", count: 3, color: "oklch(0.58 0.18 270)" },
+  { prefix: "PSV", label: "Passive Surveillance", count: 4, color: "oklch(0.67 0.16 60)" },
 // AUTO_SYNC_END: ruleCategories
 ];
 // Note: ruleCategories counts are static display values; live total comes from GitHub API
