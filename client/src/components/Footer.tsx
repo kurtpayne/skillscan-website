@@ -62,6 +62,18 @@ export default function Footer() {
                 <ExternalLink className="w-3.5 h-3.5" />
                 PyPI
               </a>
+              <a
+                href="https://hub.docker.com/r/kurtpayne/skillscan"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-sm transition-colors duration-200"
+                style={{ color: "oklch(0.55 0.015 265)" }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)")}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.55 0.015 265)")}
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                Docker Hub
+              </a>
             </div>
           </div>
 
@@ -77,6 +89,7 @@ export default function Footer() {
               {[
                 { label: "Rules Catalog", href: "/rules" },
                 { label: "Documentation", href: "/docs" },
+                { label: "ML Model", href: "/model" },
                 { label: "GitHub Actions", href: "/docs#github-actions" },
                 { label: "Changelog", href: "https://github.com/kurtpayne/skillscan-security/blob/main/PATTERN_UPDATES.md", external: true },
               ].map((item) => (
@@ -120,6 +133,7 @@ export default function Footer() {
                 { label: "Contributing", href: "https://github.com/kurtpayne/skillscan-security/blob/main/CONTRIBUTING.md" },
                 { label: "Threat Model", href: "https://github.com/kurtpayne/skillscan-security/blob/main/docs/THREAT_MODEL.md" },
                 { label: "Architecture", href: "https://github.com/kurtpayne/skillscan-security/blob/main/docs/ARCHITECTURE.md" },
+                { label: "Report an Issue", href: "https://github.com/kurtpayne/skillscan-security/issues/new/choose" },
                 { label: "Open Issues", href: "https://github.com/kurtpayne/skillscan-security/issues" },
               ].map((item) => (
                 <li key={item.label}>

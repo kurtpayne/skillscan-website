@@ -13,21 +13,22 @@ interface ScanLine {
 }
 
 const SCAN_SEQUENCE: ScanLine[] = [
-  { type: "cmd",     text: "$ skillscan scan ./skills/ --format compact --fail-on block", delay: 0 },
-  { type: "info",    text: "SkillScan v0.3  •  rulepack 2026.03.17.2  •  77 rules loaded", delay: 600 },
-  { type: "info",    text: "Scanning 6 skill files in ./skills/ ...", delay: 400 },
+  { type: "cmd",     text: "$ skillscan scan ./skills/ --format compact", delay: 0 },
+  { type: "info",    text: "SkillScan v2026.03.25.2  •  rulepack 2026.03.25.2  •  158 rules loaded", delay: 600 },
+  { type: "info",    text: "Scanning 5 skill files in ./skills/ ...", delay: 400 },
   { type: "blank",   text: "", delay: 300 },
-  { type: "pass",    text: "PASS  INJ-001   search_tool.yaml          No prompt injection detected", delay: 350 },
-  { type: "pass",    text: "PASS  EXF-003   search_tool.yaml          No exfiltration channels", delay: 280 },
-  { type: "pass",    text: "PASS  MAL-001   user_manager.yaml         No RCE patterns", delay: 260 },
-  { type: "warn",    text: "WARN  ABU-006   analytics.yaml:8          Stealth instruction concealment", delay: 320 },
-  { type: "pass",    text: "PASS  CHN-011   analytics.yaml            No compound chains", delay: 260 },
-  { type: "block",   text: "BLOCK MAL-025   data_processor.yaml:15    MCP Tool Description Poisoning", delay: 380 },
-  { type: "block",   text: "BLOCK CHN-011   data_processor.yaml       MCP Poison + Credential Exfil chain", delay: 280 },
-  { type: "pass",    text: "PASS  MAL-026   infra_setup.yaml          No Docker socket mounts", delay: 260 },
-  { type: "pass",    text: "PASS  MAL-027   infra_setup.yaml          No privileged containers", delay: 260 },
+  { type: "pass",    text: "skillscan verdict=allow score=0 findings=0", delay: 350 },
+  { type: "info",    text: "  search_tool.md", delay: 180 },
+  { type: "pass",    text: "skillscan verdict=allow score=0 findings=0", delay: 280 },
+  { type: "info",    text: "  user_manager.md", delay: 180 },
+  { type: "warn",    text: "skillscan verdict=warn score=35 findings=1", delay: 320 },
+  { type: "info",    text: "  - SE-SEM-001 [high/critical] Credential-harvest pattern  analytics.md", delay: 180 },
+  { type: "block",   text: "skillscan verdict=block score=180 findings=1", delay: 380 },
+  { type: "info",    text: "  - CHN-001 [critical/critical] Download+execute chain  data_processor.md", delay: 180 },
+  { type: "block",   text: "skillscan verdict=block score=70 findings=1", delay: 280 },
+  { type: "info",    text: "  - PINJ-001 [high/high] Prompt override / jailbreak  injector.md:1", delay: 180 },
   { type: "blank",   text: "", delay: 300 },
-  { type: "summary", text: "Scan complete  •  2 BLOCK  •  1 WARN  •  10 PASS  •  exit 1", delay: 400 },
+  { type: "summary", text: "verdict=block  score=285  findings=3  exit=1", delay: 400 },
 ];
 
 const lineColors = {
