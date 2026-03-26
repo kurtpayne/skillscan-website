@@ -520,8 +520,7 @@ export default function Home() {
               Eight detection layers. One verdict.
             </h2>
             <p className="text-base max-w-2xl mx-auto" style={{ color: "oklch(0.60 0.015 265)" }}>
-              Static rules catch known patterns. The ML layer catches novel phrasing and semantic attacks
-              that rules can't express. Every layer runs offline.
+              Eight independent detection layers, all running offline. Rules catch known patterns. The stemmed scorer catches distributed intent. The ML layer catches novel phrasing no rule can express.
             </p>
           </div>
 
@@ -536,14 +535,14 @@ export default function Home() {
               </thead>
               <tbody>
                 {[
-                  { n: "1", mech: "Static rules", detail: "YARA-style pattern matching (137 rules)", catches: "Known attack patterns, IOC matches, structural violations", accent: "oklch(0.65 0.22 25)" },
-                  { n: "2", mech: "Chain rules", detail: "Multi-pattern proximity matching (15 rules)", catches: "Attack sequences requiring co-occurrence within a window", accent: "oklch(0.72 0.19 45)" },
-                  { n: "3", mech: "Multilang rules", detail: "Language-specific patterns (17 rules)", catches: "JS/TS/Ruby/Go/Rust attack patterns", accent: "oklch(0.70 0.15 160)" },
-                  { n: "4", mech: "AST data-flow", detail: "Source-to-sink flow analysis", catches: "Secret → decode → exec/network flows", accent: "oklch(0.65 0.18 200)" },
-                  { n: "5", mech: "Skill graph", detail: "Graph-based PSV rules", catches: "Tool drift, circular dependencies, permission scope violations", accent: "oklch(0.68 0.16 80)" },
-                  { n: "6", mech: "ML classifier", detail: "DeBERTa-v3 + LoRA  ·  F1 0.9752  ·  FPR 1.89%", catches: "Novel phrasing, semantic attacks, jailbreaks not covered by rules", accent: "oklch(0.78 0.18 290)", highlight: true },
-                  { n: "7", mech: "IOC / Vuln DB", detail: "Indicator matching (5,507 IOCs, 63 packages)", catches: "Known malicious domains, IPs, vulnerable dependencies", accent: "oklch(0.60 0.20 320)" },
-                  { n: "8", mech: "Semantic classifier", detail: "Offline stem-and-score", catches: "Keyword-level semantic patterns without network dependency", accent: "oklch(0.62 0.20 340)" },
+                  { n: "1", mech: "IOC matching", detail: "Intel DB scan (5,500 entries: domains, IPs, CIDRs)", catches: "Known malicious domains and IPs embedded in skill content", accent: "oklch(0.65 0.22 25)" },
+                  { n: "2", mech: "Static rules", detail: "Regex pattern matching (158 rules across 9 categories)", catches: "Known attack patterns, structural violations, dangerous constructs", accent: "oklch(0.72 0.19 45)" },
+                  { n: "3", mech: "Python AST data-flow", detail: "Source-to-sink taint analysis (.py files only)", catches: "Secret → decode → exec/network flows in embedded Python scripts", accent: "oklch(0.70 0.15 160)" },
+                  { n: "4", mech: "Stemmed feature scorer", detail: "Porter-stemmed axis scoring (prompt injection + social engineering)", catches: "Multi-sentence intent distributed across text — jailbreaks, credential harvest instructions not caught by single-line rules", accent: "oklch(0.65 0.18 200)" },
+                  { n: "5", mech: "Skill graph analysis", detail: "Graph-based PSV rules", catches: "Tool drift, circular dependencies, permission scope violations", accent: "oklch(0.68 0.16 80)" },
+                  { n: "6", mech: "ML classifier", detail: "DeBERTa-v3 + LoRA  ·  F1 0.9752  ·  FPR 1.89%", catches: "Novel phrasing, obfuscated attacks, and semantic patterns no rule or scorer can express", accent: "oklch(0.78 0.18 290)", highlight: true },
+                  { n: "7", mech: "Vuln DB matching", detail: "Dependency scan (23 Python pkgs, 4 npm pkgs, 111 versions)", catches: "Known-vulnerable package versions in requirements.txt / package.json", accent: "oklch(0.60 0.20 320)" },
+                  { n: "8", mech: "ClamAV", detail: "Signature-based AV scan (optional, via --clamav)", catches: "Known malware signatures in embedded script files (.py, .sh, .js…)", accent: "oklch(0.62 0.20 340)" },
                 ].map((row) => (
                   <tr
                     key={row.n}
