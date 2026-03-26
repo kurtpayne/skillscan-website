@@ -357,7 +357,7 @@ Options:
   --format [compact|text|sarif|junit|json]
                           Output format (default: compact)
   -o, --output PATH       Write output to file instead of stdout
-  --policy PROFILE        Policy profile: strict|ci|balanced|permissive|enterprise|observe
+  --policy PROFILE        Policy profile: strict|ci|balanced|permissive|enterprise|paranoid|observe
                           (default: strict)
   --rules PATH            Additional custom rules YAML file
   --ml-detect             Enable ML classifier (requires model install)
@@ -688,6 +688,7 @@ verdict=block  score=180  findings=1  exit=1`} />
                         { profile: "balanced", block: "high+", warn: "low+", use: "General-purpose. More verbose than strict." },
                         { profile: "permissive", block: "critical only", warn: "high+", use: "Low-noise. For mature pipelines with established baselines." },
                         { profile: "enterprise", block: "high+", warn: "medium+", use: "Like strict, but with additional enterprise-specific rules enabled." },
+                        { profile: "paranoid", block: "medium+", warn: "low+", use: "Maximum sensitivity. For marketplace ingestion and third-party skill audits. Expect elevated FP rate." },
                         { profile: "observe", block: "never", warn: "all", use: "Audit mode. Never fails the build. Useful for initial rollout." },
                       ].map((row) => (
                         <tr key={row.profile} style={{ borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)" }}>
