@@ -6,7 +6,7 @@
              Suppression, Custom Rules, Feedback
    ============================================================ */
 import { useState } from "react";
-import { ExternalLink, Copy, Check } from "lucide-react";
+import { ExternalLink, Copy, Check, Lock } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -134,6 +134,7 @@ const sections = [
   { id: "policy-profiles", label: "Policy Profiles" },
   { id: "suppression-format", label: "Suppression Files" },
   { id: "custom-rules", label: "Custom Rules" },
+  { id: "customization", label: "Customization" },
   { id: "feedback", label: "Feedback" },
 ];
 
@@ -781,6 +782,119 @@ skillscan rule test --rules my-rules.yaml --fixture test.md
                   </a>{" "}
                   for the full schema including chain rules, multilang rules, and AST flow rules.
                 </Note>
+              </section>
+
+              {/* ── CUSTOMIZATION ── */}
+              <section id="customization">
+                <SectionTitle>Customization</SectionTitle>
+                <Prose>
+                  Every detection layer except the ML classifier is configurable. The table below summarizes
+                  what you can change and how. The ML model (Layer 6) is intentionally fixed — see the
+                  callout at the bottom of this section.
+                </Prose>
+
+                <div className="overflow-x-auto rounded-xl mb-6" style={{ border: "1px solid oklch(0.58 0.22 290 / 0.15)" }}>
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr style={{ background: "oklch(0.14 0.022 265)", borderBottom: "1px solid oklch(0.58 0.22 290 / 0.15)" }}>
+                        <th className="text-left px-4 py-3 font-semibold" style={{ color: "oklch(0.72 0.19 290)", fontFamily: "'Space Grotesk', sans-serif" }}>Layer</th>
+                        <th className="text-left px-4 py-3 font-semibold" style={{ color: "oklch(0.72 0.19 290)", fontFamily: "'Space Grotesk', sans-serif" }}>What you can change</th>
+                        <th className="text-left px-4 py-3 font-semibold" style={{ color: "oklch(0.72 0.19 290)", fontFamily: "'Space Grotesk', sans-serif" }}>How</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { layer: "Static rules", what: "Add, override, or disable any pattern", how: "--rules my-rules.yaml  |  # skillscan-suppress: RULE-ID" },
+                        { layer: "Policy profiles", what: "Fail threshold, severity mapping", how: "--policy strict|ci|paranoid|audit|minimal" },
+                        { layer: "Chain rules", what: "Multi-signal correlation logic", how: "chain_rules block in custom YAML" },
+                        { layer: "Vuln / IOC DB", what: "CVE and IOC entries", how: "skillscan intel update" },
+                        { layer: "Lint rules", what: "Style and quality checks", how: ".skillscan-lint.toml in project root" },
+                        { layer: "Output format", what: "SARIF, JUnit, compact text, JSON", how: "--format sarif|junit|text|json" },
+                        { layer: "Fail threshold", what: "When to exit non-zero", how: "--fail-on block|warn|info" },
+                      ].map((row, i) => (
+                        <tr key={i} style={{ borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)", background: i % 2 === 0 ? "oklch(0.11 0.018 265)" : "oklch(0.13 0.020 265)" }}>
+                          <td className="px-4 py-3" style={{ color: "oklch(0.78 0.12 290)", fontFamily: "'JetBrains Mono', monospace" }}>{row.layer}</td>
+                          <td className="px-4 py-3" style={{ color: "oklch(0.75 0.010 265)" }}>{row.what}</td>
+                          <td className="px-4 py-3" style={{ color: "oklch(0.62 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>{row.how}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <SubTitle>Policy profiles</SubTitle>
+                <Prose>Five built-in profiles cover the most common deployment contexts:</Prose>
+                <CodeBlock code={`skillscan scan ./skills/ --policy strict    # fail on warn+
+skillscan scan ./skills/ --policy ci        # fail on block only (default for CI)
+skillscan scan ./skills/ --policy paranoid  # fail on info+, stricter ML threshold
+skillscan scan ./skills/ --policy audit     # never fail, always emit full report
+skillscan scan ./skills/ --policy minimal   # static rules only, no ML`} />
+
+                <SubTitle>Inline suppression</SubTitle>
+                <Prose>
+                  Suppress a specific rule on a specific line by adding a comment immediately above it.
+                  Suppressed findings are recorded in the provenance block of JSON output so they remain auditable.
+                </Prose>
+                <CodeBlock code={`# skillscan-suppress: MAL-001
+export ADMIN_TOKEN="placeholder-replaced-at-runtime"`} lang="yaml" />
+
+                <SubTitle>Project-level suppression file</SubTitle>
+                <Prose>
+                  Suppress rules across an entire project using a <InlineCode>.skillscan-suppress</InlineCode> file at the repo root:
+                </Prose>
+                <CodeBlock code={`# .skillscan-suppress
+# Format: RULE-ID  path/to/file.md  optional reason
+MAL-001  skills/legacy-tool.md  Known false positive - token is a placeholder
+EXF-003  skills/analytics.md    Intentional telemetry, reviewed 2026-03-01`} />
+
+                <SubTitle>Community rule contributions</SubTitle>
+                <Prose>
+                  New detection patterns submitted via GitHub issues are reviewed and, if accepted, added to
+                  the static rule layer. They do not affect the ML model. Use the corpus-submission issue
+                  template to provide a rule ID, pattern, severity, and at least one fixture file.
+                </Prose>
+                <div className="mb-4">
+                  <a
+                    href="https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.yml"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-lg transition-all duration-200"
+                    style={{
+                      background: "oklch(0.58 0.22 290 / 0.12)",
+                      border: "1px solid oklch(0.58 0.22 290 / 0.25)",
+                      color: "oklch(0.78 0.18 290)",
+                    }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "oklch(0.58 0.22 290 / 0.50)")}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "oklch(0.58 0.22 290 / 0.25)")}
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    Submit a pattern via GitHub Issues
+                  </a>
+                </div>
+
+                <div
+                  className="rounded-xl p-5 flex gap-4 items-start"
+                  style={{ background: "oklch(0.12 0.025 265 / 0.6)", border: "1px solid oklch(0.65 0.22 25 / 0.30)" }}
+                >
+                  <Lock className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: "oklch(0.72 0.22 25)" }} />
+                  <div>
+                    <p className="text-sm font-semibold mb-1" style={{ color: "oklch(0.88 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>Layer 6 — ML Classifier is intentionally fixed</p>
+                    <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
+                      The DeBERTa-v3 + LoRA model is a frozen ONNX artifact. Its weights cannot be overridden
+                      by rules or policy files. This is by design: the model provides a detection signal that
+                      is independent of your local configuration, making it resistant to evasion by a skill
+                      author who knows your rule set. The model is retrained periodically as the corpus grows;
+                      updates are distributed via <InlineCode>skillscan model update</InlineCode>.
+                    </p>
+                    <a
+                      href="/model"
+                      className="inline-flex items-center gap-1 text-xs mt-2 font-semibold"
+                      style={{ color: "oklch(0.72 0.22 25)" }}
+                    >
+                      View model card <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
               </section>
 
               {/* ── FEEDBACK ── */}

@@ -4,7 +4,7 @@
              Rule Categories, GitHub Actions CTA, Final CTA
    ============================================================ */
 import { useState, useEffect } from "react";
-import { Shield, Zap, Lock, GitBranch, Terminal, ChevronRight, Copy, Check, ExternalLink, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
+import { Shield, Zap, Lock, GitBranch, Terminal, ChevronRight, Copy, Check, ExternalLink, AlertTriangle, CheckCircle2, XCircle, Sliders, FileCode2, Link2, Database, GitMerge, FlaskConical } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TerminalScan from "@/components/TerminalScan";
@@ -624,6 +624,119 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── EXTENSIBILITY ── */}
+      <section className="py-20 section-divider" style={{ background: "oklch(0.09 0.018 265)" }}>
+        <div className="container">
+          <div className="max-w-3xl mb-12">
+            <div className="flex items-center gap-2 mb-4">
+              <Sliders className="w-5 h-5" style={{ color: "oklch(0.72 0.19 290)" }} />
+              <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "oklch(0.72 0.19 290)", fontFamily: "'JetBrains Mono', monospace" }}>Extensibility</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}>
+              Fully customizable.<br />
+              <span style={{ color: "oklch(0.72 0.19 290)" }}>Except the part that matters.</span>
+            </h2>
+            <p className="text-base leading-relaxed" style={{ color: "oklch(0.62 0.015 265)" }}>
+              Every detection layer is a dial you control — your rules, your thresholds, your policy profiles.
+              The one exception is the ML classifier: a frozen ONNX artifact that acts as a tamper-resistant
+              trust anchor. A malicious skill author can craft patterns to evade your custom rules.
+              They cannot retrain the model.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+            {[
+              {
+                icon: <FileCode2 className="w-4 h-4" />,
+                title: "Custom Rules",
+                desc: "Write YAML rule files and load them with --rules. Override or extend any built-in pattern.",
+                code: "skillscan scan ./skills/ --rules ./my-rules.yaml",
+              },
+              {
+                icon: <Sliders className="w-4 h-4" />,
+                title: "Policy Profiles",
+                desc: "Choose strict, ci, paranoid, audit, or minimal — or define your own threshold and severity mapping.",
+                code: "skillscan scan ./skills/ --policy paranoid",
+              },
+              {
+                icon: <Link2 className="w-4 h-4" />,
+                title: "Chain Rules",
+                desc: "Correlate signals across layers. Flag a file only when EXF and PINJ both fire.",
+                code: "# chain_rules: [EXF-*, PINJ-*] → block",
+              },
+              {
+                icon: <Database className="w-4 h-4" />,
+                title: "Vuln / IOC Database",
+                desc: "Update threat intel on demand. Bring your own CVE or IOC entries.",
+                code: "skillscan intel update",
+              },
+              {
+                icon: <GitMerge className="w-4 h-4" />,
+                title: "Inline Suppression",
+                desc: "Suppress a specific finding at the source with a comment. Tracked in provenance output.",
+                code: "# skillscan-suppress: MAL-001",
+              },
+              {
+                icon: <FlaskConical className="w-4 h-4" />,
+                title: "Community Rules",
+                desc: "Submit new patterns via GitHub issues. Accepted rules flow into the static layer, not the model.",
+                href: "https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.yml",
+                cta: "Submit a pattern →",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="rounded-xl p-5"
+                style={{
+                  background: "oklch(0.13 0.022 265 / 0.7)",
+                  border: "1px solid oklch(0.58 0.22 290 / 0.15)",
+                }}
+              >
+                <div className="flex items-center gap-2 mb-2" style={{ color: "oklch(0.72 0.19 290)" }}>
+                  {item.icon}
+                  <span className="text-sm font-semibold" style={{ color: "oklch(0.90 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>{item.title}</span>
+                </div>
+                <p className="text-xs mb-3 leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>{item.desc}</p>
+                {item.code && (
+                  <code className="block text-xs px-3 py-2 rounded-md" style={{ background: "oklch(0.08 0.015 265)", color: "oklch(0.75 0.12 290)", fontFamily: "'JetBrains Mono', monospace" }}>
+                    {item.code}
+                  </code>
+                )}
+                {item.href && (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold" style={{ color: "oklch(0.72 0.19 290)" }}>
+                    {item.cta}
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Fixed ML anchor callout */}
+          <div
+            className="rounded-xl p-5 flex gap-4 items-start"
+            style={{
+              background: "oklch(0.12 0.025 265 / 0.6)",
+              border: "1px solid oklch(0.65 0.22 25 / 0.30)",
+            }}
+          >
+            <div className="mt-0.5 flex-shrink-0">
+              <Lock className="w-5 h-5" style={{ color: "oklch(0.72 0.22 25)" }} />
+            </div>
+            <div>
+              <p className="text-sm font-semibold mb-1" style={{ color: "oklch(0.88 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>Layer 6 — ML Classifier is intentionally fixed</p>
+              <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
+                The DeBERTa-v3 + LoRA model is a frozen ONNX artifact. Its weights are not configurable and
+                cannot be overridden by rules or policy files. This is by design: the model provides a
+                detection signal that is independent of your local configuration, making it resistant to
+                evasion by a skill author who knows your rule set.
+              </p>
+              <a href="/model" className="inline-flex items-center gap-1 text-xs mt-2 font-semibold" style={{ color: "oklch(0.72 0.22 25)" }}>
+                View model card <ChevronRight className="w-3 h-3" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* ── GITHUB ACTIONS CTA ── */}
       <section
         className="py-20 section-divider"
