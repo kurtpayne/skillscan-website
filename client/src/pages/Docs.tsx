@@ -901,7 +901,7 @@ EXF-003  skills/analytics.md    Intentional telemetry, reviewed 2026-03-01`} />
               <section id="feedback">
                 <SectionTitle>Feedback & Bug Reports</SectionTitle>
                 <Prose>
-                  Found a false positive or false negative? Have a feature request? All feedback goes through GitHub Issues.
+                  Found a false positive or false negative? Have a feature request? Want to contribute a skill sample to improve the model? All feedback goes through GitHub Issues.
                 </Prose>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {[
@@ -924,6 +924,11 @@ EXF-003  skills/analytics.md    Intentional telemetry, reviewed 2026-03-01`} />
                       title: "Feature request",
                       desc: "Suggest a new detection rule, command, or integration.",
                       url: "https://github.com/kurtpayne/skillscan-security/issues/new?template=feature-request.md",
+                    },
+                    {
+                      title: "Corpus submission",
+                      desc: "Submit a skill sample (benign or malicious) to help improve the ML model. Accepted samples are added to the training corpus, not the static rule layer.",
+                      url: "https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.yml",
                     },
                   ].map((item) => (
                     <a
