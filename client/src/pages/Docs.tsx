@@ -855,7 +855,7 @@ EXF-003  skills/analytics.md    Intentional telemetry, reviewed 2026-03-01`} />
                 </Prose>
                 <div className="mb-4">
                   <a
-                    href="https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.yml"
+                    href="https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.md"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-lg transition-all duration-200"
@@ -928,7 +928,7 @@ EXF-003  skills/analytics.md    Intentional telemetry, reviewed 2026-03-01`} />
                     {
                       title: "Corpus submission",
                       desc: "Submit a skill sample (benign or malicious) to help improve the ML model. Accepted samples are added to the training corpus, not the static rule layer.",
-                      url: "https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.yml",
+                      url: "https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.md",
                     },
                   ].map((item) => {
                     const isCorpus = item.title === "Corpus submission";

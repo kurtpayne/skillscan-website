@@ -514,7 +514,7 @@ skillscan scan path/to/skills/   # static rules + ML detection`,
               </p>
             </div>
             <a
-              href="https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.yml"
+              href="https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.md"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm flex-shrink-0 transition-all duration-200"

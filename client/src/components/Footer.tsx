@@ -134,7 +134,7 @@ export default function Footer() {
                 { label: "Threat Model", href: "https://github.com/kurtpayne/skillscan-security/blob/main/docs/THREAT_MODEL.md" },
                 { label: "Architecture", href: "https://github.com/kurtpayne/skillscan-security/blob/main/docs/ARCHITECTURE.md" },
                 { label: "Report an Issue", href: "https://github.com/kurtpayne/skillscan-security/issues/new/choose" },
-                { label: "Submit Corpus Sample", href: "https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.yml" },
+                { label: "Submit Corpus Sample", href: "https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.md" },
                 { label: "Open Issues", href: "https://github.com/kurtpayne/skillscan-security/issues" },
               ].map((item) => (
                 <li key={item.label}>

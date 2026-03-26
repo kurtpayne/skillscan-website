@@ -681,7 +681,7 @@ export default function Home() {
                 icon: <FlaskConical className="w-4 h-4" />,
                 title: "Community Rules",
                 desc: "Submit new patterns via GitHub issues. Accepted rules flow into the static layer, not the model.",
-                href: "https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.yml",
+                href: "https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.md",
                 cta: "Submit a pattern →",
               },
             ].map((item, i) => (
