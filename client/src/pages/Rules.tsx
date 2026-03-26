@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 type Severity = "BLOCK" | "WARN" | "INFO";
-type Category = "MAL" | "ABU" | "EXF" | "INJ" | "CHN" | "CAP" | "PINJ" | "SUP" | "SE" | "DEF" | "EXEC" | "GR" | "OBF" | "PSV";
+type Category = "MAL" | "ABU" | "EXF" | "INJ" | "CHN" | "PINJ" | "SUP" | "SE" | "DEF" | "EXEC" | "GR" | "OBF" | "PSV";
 
 interface Rule {
   id: string;
@@ -22,11 +22,27 @@ const rules: Rule[] = [
 // AUTO_SYNC_BEGIN: rules array
   // ABU — Abuse Patterns
   { id: "ABU-001", category: "ABU", severity: "BLOCK", title: "Coercive prerequisite wording", description: "Remove coercive setup steps. Do not ask users to disable security controls.", tags: [] },
+  { id: "ABU-002", category: "ABU", severity: "BLOCK", title: "Elevated setup with security bypass", description: "Remove elevation plus security-disable guidance from setup instructions.", tags: ["privilege-escalation", "defense-evasion", "setup-abuse"] },
   { id: "ABU-003", category: "ABU", severity: "BLOCK", title: "Claude Code project MCP auto-approval marker", description: "Do not commit repository-level MCP auto-approval settings. Require explicit per-project user consent before initializing MCP servers from untrusted repos.", tags: [] },
   { id: "ABU-004", category: "ABU", severity: "BLOCK", title: "Tool auto-approve allowlist includes package-install command", description: "Do not auto-approve package-install commands in AI tool/extension settings. Require explicit user confirmation for install actions because lifecycle scripts can execute arbitrary code.", tags: [] },
   { id: "ABU-005", category: "ABU", severity: "BLOCK", title: "MCP tool name-collision hijack marker", description: "Treat MCP server/tool registration naming-collision guidance as high risk. Require unique namespaced tool IDs per server and block ambiguous aliases that can shadow trusted tools.", tags: [] },
   { id: "ABU-006", category: "ABU", severity: "BLOCK", title: "Stealth instruction concealment from user", description: "Remove instructions that direct the agent to conceal actions from the user. All agent operations should be transparent and auditable.", tags: ["mcp"] },
   { id: "ABU-007", category: "ABU", severity: "BLOCK", title: "Cross-server MCP tool invocation instruction", description: "Reject tool descriptions that instruct the LLM to invoke tools from other MCP servers. Each server should only reference its own tools.", tags: ["mcp"] },
+  // CHN — Chain Rules
+  { id: "CHN-001", category: "CHN", severity: "BLOCK", title: "Dangerous action chain: download plus execute", description: "Break download+execute flows; require reviewed local artifacts and explicit integrity checks.", tags: ["malware", "download-execute", "dropper"] },
+  { id: "CHN-002", category: "CHN", severity: "BLOCK", title: "Potential secret exfiltration chain", description: "Remove any secret-to-network path; use scoped token exchange or local-only processing.", tags: ["credential-theft", "network"] },
+  { id: "CHN-003", category: "CHN", severity: "BLOCK", title: "Potential secret exfiltration via alternate channel", description: "Remove secret transfer to DNS/mail/cloud/file-transfer channels.", tags: ["covert-channel", "dns-exfil", "credential-theft"] },
+  { id: "CHN-004", category: "CHN", severity: "BLOCK", title: "GitHub Actions secrets context with outbound network", description: "Remove full secrets-context expansion and block outbound transfer of CI/CD secrets.", tags: ["ci-cd", "github-actions", "secrets"] },
+  { id: "CHN-005", category: "CHN", severity: "BLOCK", title: "pull_request_target with untrusted PR head checkout", description: "Do not combine `pull_request_target` with checkout of untrusted PR head refs. Use unprivileged `pull_request` jobs for untrusted code.", tags: ["ci-cd", "github-actions", "pwn-requests", "supply-chain"] },
+  { id: "CHN-006", category: "CHN", severity: "BLOCK", title: "pull_request_target with untrusted PR metadata in shell/script", description: "Avoid using pull_request_target with direct shell/script interpolation of PR metadata. Use non-shell actions, strict quoting, and unprivileged workflows for untrusted input.", tags: ["ci-cd", "github-actions", "injection", "pwn-requests"] },
+  { id: "CHN-007", category: "CHN", severity: "BLOCK", title: "pull_request_target with untrusted PR-derived Actions cache key", description: "Avoid cache key derivation from untrusted PR metadata in privileged workflows. Separate caches for untrusted jobs and trusted release/publish jobs.", tags: ["ci-cd", "github-actions", "cache-poisoning", "supply-chain"] },
+  { id: "CHN-008", category: "CHN", severity: "BLOCK", title: "pull_request_target with unpinned third-party GitHub Action", description: "In pull_request_target workflows, pin third-party actions to full 40-char commit SHAs and review upstream provenance before updates.", tags: ["ci-cd", "github-actions", "supply-chain", "unpinned-dependency"] },
+  { id: "CHN-009", category: "CHN", severity: "BLOCK", title: "Repository hook configuration with shell-command payload", description: "Treat repository hook configuration as untrusted and block shell-capable `command` payloads unless explicitly reviewed and approved.", tags: ["hook-abuse", "persistence", "shell-execution", "claude-code"] },
+  { id: "CHN-010", category: "CHN", severity: "BLOCK", title: "pull_request_target with branch/ref metadata interpolation in shell/script", description: "Do not combine `pull_request_target` with direct shell/script interpolation of PR branch/ref values. Quote safely, avoid shell evaluation, and run untrusted PR data in unprivileged workflows.", tags: ["ci-cd", "github-actions", "injection", "pwn-requests"] },
+  { id: "CHN-011", category: "CHN", severity: "BLOCK", title: "MCP tool poisoning with credential exfiltration chain", description: "Reject MCP tool descriptions that contain hidden instruction blocks combined with credential access patterns. This is a documented tool-poisoning exfiltration attack.", tags: ["mcp", "tool-poisoning", "credential-theft"] },
+  { id: "CHN-012", category: "CHN", severity: "BLOCK", title: "Stealth concealment with network exfiltration chain", description: "Remove instructions that conceal agent actions from the user while performing network operations. This pattern indicates covert data exfiltration.", tags: ["stealth", "covert-channel", "deception"] },
+  { id: "CHN-013", category: "CHN", severity: "BLOCK", title: "Container escape with host path mount chain", description: "Do not combine privileged container execution with sensitive host path mounts. This enables full host compromise from within a container.", tags: ["container-escape", "privilege-escalation", "host-compromise"] },
+  { id: "CHN-014", category: "CHN", severity: "BLOCK", title: "Container escape with secret access chain", description: "Do not combine privileged container access with credential harvesting. This enables host credential theft via container breakout.", tags: ["container-escape", "credential-theft", "privilege-escalation"] },
   // DEF — Defense Evasion
   { id: "DEF-001", category: "DEF", severity: "BLOCK", title: "Windows Defender exclusion manipulation", description: "Remove all commands that disable or weaken Windows Defender protections. Security controls should never be programmatically disabled.", tags: [] },
   // EXEC — Execution Hijack
@@ -161,7 +177,6 @@ const categoryColors: Record<Category, string> = {
   EXF: "oklch(0.60 0.20 320)",
   INJ: "oklch(0.58 0.22 290)",
   CHN: "oklch(0.65 0.18 200)",
-  CAP: "oklch(0.70 0.15 160)",
   PINJ: "oklch(0.55 0.24 280)",
   SUP: "oklch(0.68 0.16 80)",
   SE: "oklch(0.62 0.20 340)",
@@ -271,7 +286,7 @@ export default function Rules() {
     return matchSearch && matchCat && matchSev;
   });
 
-  const categories: Array<Category | "ALL"> = ["ALL", "MAL", "ABU", "EXF", "INJ", "CHN", "CAP", "PINJ", "SUP", "SE"];
+  const categories: Array<Category | "ALL"> = ["ALL", "MAL", "ABU", "EXF", "INJ", "CHN", "PINJ", "SUP", "SE"];
   const severities: Array<Severity | "ALL"> = ["ALL", "BLOCK", "WARN", "INFO"];
 
   return (
@@ -393,7 +408,7 @@ export default function Rules() {
               color: "oklch(0.55 0.015 265)",
             }}
           >
-            This catalog shows a representative selection of rules. The full rulepack ships with the package and is updated automatically.{" "}
+            This catalog shows all {rules.length} named rules (static + chain). The full rulepack ships with the package and is updated automatically.{" "}
             <a
               href="https://github.com/kurtpayne/skillscan-security/blob/main/src/skillscan/data/rules/default.yaml"
               target="_blank"
@@ -406,6 +421,68 @@ export default function Rules() {
               View the full YAML rulepack on GitHub
               <ExternalLink className="w-3 h-3" />
             </a>
+          </div>
+
+          {/* Detection Signals */}
+          <div className="mt-8">
+            <h2 className="text-lg font-semibold mb-1" style={{ color: "oklch(0.88 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
+              Detection Signals
+            </h2>
+            <p className="text-sm mb-5" style={{ color: "oklch(0.50 0.015 265)" }}>
+              Beyond the named rules above, the scanner uses <strong style={{ color: "oklch(0.70 0.015 265)" }}>23 named detection signals</strong> — regex fragments referenced by chain rules to detect multi-step attack sequences. A chain rule fires when two or more signals co-occur within a sliding line window. These signals account for the difference between the {rules.length} rules shown here and the total detection signal count.
+            </p>
+            <div className="mb-5">
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "oklch(0.65 0.18 200)", fontFamily: "'JetBrains Mono', monospace" }}>Action Patterns (20)</h3>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "download", "execute", "secret_access", "network", "exfil_channel",
+                  "privilege", "security_disable", "gh_actions_secrets", "gh_pr_target",
+                  "gh_pr_head_checkout", "gh_pr_untrusted_meta", "gh_pr_ref_meta",
+                  "gh_cache_untrusted_key", "gh_unpinned_action_ref", "claude_hooks_marker",
+                  "hook_shell_command_field", "mcp_tool_poison", "stealth_conceal",
+                  "container_escape", "host_path_mount",
+                ].map((sig) => (
+                  <span
+                    key={sig}
+                    className="px-2.5 py-1 rounded text-xs"
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      background: "oklch(0.65 0.18 200 / 0.10)",
+                      color: "oklch(0.72 0.12 200)",
+                      border: "1px solid oklch(0.65 0.18 200 / 0.20)",
+                    }}
+                  >
+                    {sig}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="mb-4">
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "oklch(0.65 0.18 200)", fontFamily: "'JetBrains Mono', monospace" }}>Capability Patterns (3)</h3>
+              <div className="flex flex-wrap gap-2">
+                {["shell_execution", "network_access", "filesystem_write"].map((sig) => (
+                  <span
+                    key={sig}
+                    className="px-2.5 py-1 rounded text-xs"
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      background: "oklch(0.65 0.18 200 / 0.10)",
+                      color: "oklch(0.72 0.12 200)",
+                      border: "1px solid oklch(0.65 0.18 200 / 0.20)",
+                    }}
+                  >
+                    {sig}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <p className="text-xs" style={{ color: "oklch(0.42 0.015 265)" }}>
+              Signals are defined in <code style={{ color: "oklch(0.60 0.015 265)" }}>action_patterns</code> and <code style={{ color: "oklch(0.60 0.015 265)" }}>capability_patterns</code> in <code style={{ color: "oklch(0.60 0.015 265)" }}>default.yaml</code>. You can reference them in custom chain rules or define your own —{" "}
+              <a href="/docs#customization" className="transition-colors duration-200" style={{ color: "oklch(0.65 0.18 290)" }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)")}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.65 0.18 290)")}
+              >see the Customization guide</a>.
+            </p>
           </div>
         </div>
       </div>
