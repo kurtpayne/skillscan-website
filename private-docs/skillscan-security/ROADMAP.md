@@ -1345,3 +1345,68 @@ User submits scan (skill zip + BYOK API key, encrypted in transit)
 **Dependencies:** M14 (public scan feed — validates the worker pipeline at low volume before opening to users), M15 (skillscan-core extraction — the worker imports `skillscan-core`, not the full security package).
 
 ---
+
+---
+
+## Related Tools & Ecosystem
+
+SkillScan is one layer in a broader AI security stack. The tools below complement it at different stages of the skill lifecycle — from static analysis and reputation lookup to full dynamic sandboxing. Where SkillScan produces a borderline verdict or a low-confidence flag, these are the recommended next steps.
+
+### Complementary Scanners & Analysis Tools
+
+| Tool | What it adds | When to use it |
+|---|---|---|
+| [VirusTotal](https://www.virustotal.com) | Multi-engine reputation scan for URLs, domains, and file hashes. 70+ AV engines + community votes. | When a skill references an external URL or domain that SkillScan flags as suspicious. Paste the domain or the raw skill file hash. |
+| [Cisco Talos Intelligence](https://talosintelligence.com) | IP/domain reputation, email sender reputation, threat categorization. Backed by Cisco's global sensor network. | When a skill's canary calls resolve to an IP or domain — Talos gives the threat category and historical reputation. |
+| [URLScan.io](https://urlscan.io) | Sandboxed browser scan of a URL. Screenshots, DOM analysis, outbound requests, resource fingerprints. | When a skill's `visit_webpage` or `fetch_url` tool calls a URL that looks suspicious. Submit the URL for a passive scan. |
+| [Any.run](https://any.run) | Interactive malware sandbox. Behavioral analysis of executables and scripts. | If a skill ships a companion script or binary that SkillScan cannot parse statically. |
+| [Hybrid Analysis](https://www.hybrid-analysis.com) | Free automated malware analysis (Falcon Sandbox). Supports scripts, PE files, documents. | Alternative to Any.run for batch analysis of skill companion scripts. |
+| [Shodan](https://www.shodan.io) | Internet-wide device and service scan. Identifies what is running on an IP. | When a skill's canary calls resolve to an unusual IP — Shodan shows what services are exposed and whether it looks like C2 infrastructure. |
+| [MXToolbox](https://mxtoolbox.com/blacklists.aspx) | Blacklist check across 100+ DNS-based blocklists. | Quick check when a skill's domain appears in SkillScan's IOC list but you want a second opinion. |
+| [WHOIS / DomainTools](https://whois.domaintools.com) | Domain registration history, registrant details, DNS history. | When a skill's domain was registered recently (< 30 days) — a common indicator of throwaway infrastructure. |
+| [Semgrep](https://semgrep.dev) | Static analysis for code patterns. Language-aware, rule-based. | If a skill ships Python/JS helper code alongside the SKILL.md. Run Semgrep on the companion code for injection and supply-chain patterns. |
+| [Bandit](https://bandit.readthedocs.io) | Python-specific static security analysis. | Same use case as Semgrep but Python-only and zero-config. |
+
+### Threat Intelligence Feeds & References
+
+The following sources inform SkillScan's IOC database and pattern library. The `update-intel.yml` GitHub Actions workflow pulls from public feeds; the sources below are the authoritative upstream references.
+
+| Source | What we use it for |
+|---|---|
+| [MITRE ATT&CK](https://attack.mitre.org) | Tactic and technique taxonomy. SkillScan's policy profiles map to ATT&CK technique IDs where applicable. |
+| [MITRE ATLAS](https://atlas.mitre.org) | ML-specific adversarial threat matrix. The primary reference for prompt injection, model evasion, and supply-chain attack patterns in the skill context. |
+| [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) | The canonical list of LLM-specific risks. LLM01 (Prompt Injection) and LLM08 (Excessive Agency) are directly relevant to skill scanning. |
+| [CISA Known Exploited Vulnerabilities](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) | KEV catalog. Used to cross-reference CVEs that appear in skill dependency manifests. |
+| [Abuse.ch URLhaus](https://urlhaus.abuse.ch) | Community-sourced malicious URL database. One of the primary feeds for the IOC updater. |
+| [Abuse.ch MalwareBazaar](https://bazaar.abuse.ch) | Malware sample hashes. Used for file hash IOC checks. |
+| [PhishTank](https://phishtank.org) | Community-verified phishing URLs. Secondary feed for the IOC updater. |
+| [Emerging Threats (Proofpoint)](https://rules.emergingthreats.net) | Open ruleset for network-based threat detection. Informs domain and IP reputation patterns. |
+| [AlienVault OTX](https://otx.alienvault.com) | Open Threat Exchange. Community pulses for new IOC campaigns. |
+| [NVD / NIST](https://nvd.nist.gov) | National Vulnerability Database. Primary source for CVE details in the vulnerability scanner. |
+
+### Open Source Projects SkillScan Builds On
+
+| Project | License | What we use |
+|---|---|---|
+| [Anthropic MCP SDK](https://github.com/modelcontextprotocol/python-sdk) | MIT | The MCP protocol implementation that the canary server and harness are built on. SkillScan would not exist without MCP. |
+| [OpenAI Python SDK](https://github.com/openai/openai-python) | Apache 2.0 | LLM client used by `skillscan-trace` for all provider calls (OpenAI, OpenRouter, Ollama via compatible API). |
+| [Hugging Face Transformers](https://github.com/huggingface/transformers) | Apache 2.0 | Model training and inference infrastructure for the SkillScan classifier. |
+| [Hugging Face Hub](https://github.com/huggingface/huggingface_hub) | Apache 2.0 | Model hosting and versioned artifact storage. |
+| [Modal Labs](https://modal.com) | Proprietary (free tier) | Serverless GPU compute for corpus fine-tuning runs. |
+| [bashlex](https://github.com/idank/bashlex) | BSD | Bash AST parser used (in Trace-A5) to replace regex-based bash analysis with proper parse-tree traversal. |
+| [python-frontmatter](https://github.com/eyeseast/python-frontmatter) | MIT | YAML front-matter parsing for SKILL.md files. |
+| [Rich](https://github.com/Textualize/rich) | MIT | Terminal output formatting for the CLI. |
+| [Click](https://github.com/pallets/click) | BSD | CLI framework for `skillscan` and `skillscan-trace`. |
+| [FastAPI](https://fastapi.tiangolo.com) | MIT | Web framework for the `skillscan-trace serve` mode and future hosted API. |
+
+### Acknowledgements
+
+SkillScan's corpus and detection patterns were informed by public security research and community disclosure. Specific thanks to:
+
+- The [Anthropic safety team](https://www.anthropic.com/safety) for publishing prompt injection research and the MCP specification, which provided the threat model that SkillScan's canary design is based on.
+- The [OWASP LLM Top 10 working group](https://owasp.org/www-project-top-10-for-large-language-model-applications/) for establishing a shared vocabulary for LLM-specific risks.
+- The [MITRE ATLAS team](https://atlas.mitre.org) for extending ATT&CK to cover ML-specific adversarial techniques.
+- The security researchers who publicly disclosed MCP tool poisoning, prompt injection via skill metadata, and exfiltration-via-tool-call patterns — your disclosures directly shaped the 14 canary tool categories.
+- The open-source skill authors whose public repositories formed the benign half of the training corpus. Your work is what makes the classifier useful.
+
+---
