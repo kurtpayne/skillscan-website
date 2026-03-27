@@ -174,16 +174,29 @@ export default function Trace() {
                 <GitBranch className="w-4 h-4" />
                 View on GitHub
                 <ExternalLink className="w-3.5 h-3.5 opacity-70" />
-              </a>
+               </a>
               <a
                 href="#quickstart"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200"
                 style={{ background: "oklch(0.18 0.022 265)", border: "1px solid oklch(0.28 0.025 265)", color: "oklch(0.88 0.012 265)" }}
                 onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "oklch(0.58 0.22 290 / 0.5)")}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "oklch(0.28 0.025 265)")}
-              >
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "oklch(0.28 0.025 265)")}>
                 Quick Start
                 <ChevronRight className="w-4 h-4" />
+              </a>
+            </div>
+            {/* CI badge */}
+            <div className="flex justify-center mt-5">
+              <a
+                href="https://github.com/kurtpayne/skillscan-trace/actions/workflows/ci.yml"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://github.com/kurtpayne/skillscan-trace/actions/workflows/ci.yml/badge.svg"
+                  alt="CI status"
+                  style={{ height: "20px" }}
+                />
               </a>
             </div>
           </div>

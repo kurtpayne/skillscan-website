@@ -129,6 +129,7 @@ const sections = [
   { id: "suppress", label: "suppress" },
   { id: "benchmark", label: "benchmark" },
   { id: "lint", label: "lint" },
+  { id: "trace", label: "trace" },
   { id: "docker", label: "Docker" },
   { id: "github-actions", label: "GitHub Actions" },
   { id: "output-formats", label: "Output Formats" },
@@ -374,6 +375,36 @@ skillscan feedback feature       # feature request
 
                 <SubTitle>11. Integrate with CI/CD</SubTitle>
                 <Prose>See the <a href="#github-actions" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>GitHub Actions</a> section for a complete workflow example.</Prose>
+
+                <SubTitle>12. Add behavioral tracing for deep inspection</SubTitle>
+                <Prose>
+                  Static scanning catches known patterns. <strong style={{ color: "oklch(0.88 0.012 265)" }}>Behavioral tracing</strong> goes further — it
+                  runs the skill against a live LLM with a canary tool server and observes what the skill
+                  actually does when it thinks it has real tools. Use it for skills that pass static scanning
+                  but feel suspicious, or as a final gate before publishing.
+                </Prose>
+                <CodeBlock code={`pip install skillscan-trace
+
+# Add your key to .env (never put keys in YAML)
+echo 'OPENAI_API_KEY=sk-...' >> .env
+
+# Trace with OpenAI (default)
+skillscan-trace run ./skills/my-skill.md
+
+# Trace with OpenRouter (200+ models)
+echo 'OPENROUTER_API_KEY=sk-or-...' >> .env
+skillscan-trace run ./skills/my-skill.md --provider openrouter --model anthropic/claude-3.5-sonnet
+
+# Trace with Ollama (local, no key required)
+skillscan-trace run ./skills/my-skill.md --provider ollama --model qwen2.5:7b`} />
+                <Prose>
+                  Trace results are <InlineCode>SAFE</InlineCode> / <InlineCode>SUSPICIOUS</InlineCode> / <InlineCode>MALICIOUS</InlineCode>.
+                  A <InlineCode>MALICIOUS</InlineCode> verdict means the skill called a canary tool (credential access,
+                  exfiltration, persistence) during the trace run. Keys are read from <InlineCode>.env</InlineCode> or
+                  environment variables — never from the YAML config file. See the{" "}
+                  <a href="/trace" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Trace page</a>{" "}
+                  for full documentation, config file reference, Docker/self-hosting, and privacy details.
+                </Prose>
               </section>
 
               {/* ── SCAN ── */}
