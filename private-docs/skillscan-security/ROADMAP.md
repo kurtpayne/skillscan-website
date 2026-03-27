@@ -964,19 +964,31 @@ M5, M6, M7, M7.5, M8, M10, M10.5, M10.7, M10.8, M10.9, M10.10, M11, M11.1, M12, 
 
 | Priority | Milestone | Rationale |
 |---|---|---|
-| ✅ | **M10.7 — CLI UX Audit** ✅ | Completed 2026-03-25. 8 commands removed, 12 added/changed, 5 policy profiles, 6 docs. 351 tests passing. |
-| 1 | **M14.5 — Website Update (v1.0 docs + ML model + positioning)** | Now unblocked by M10.7; primary trust signal for enterprise evaluators; prerequisite for SaaS |
-| ✅ | **M10.10 — HuggingFace Model Card** ✅ | Completed 2026-03-25. MODEL_CARD.md live on HF Hub. commit dba729f. |
-| ✅ | **M14.0 — Unified Skill Index** ✅ | Completed 2026-03-27. `skillscan-corpus/index/skill-index.yaml` — 19 demo_feed entries (14 BLOCK + 5 ALLOW), 13 organic holdout entries. `finetune_modal.py` reads injection/benign dirs from index. |
-| ✅ | **M14 — Public Scan Feed** ✅ | Completed 2026-03-27. `demo-feed.yml` weekly cron + `build_demo_feed.py` in skillscan-security. Website Feed page live. First run dispatched manually. |
-| 2 | **M10.12 — Feedback Mechanism** | FP/FN reports are highest-value corpus signal; GitHub issue templates |
+| ✅ | **M10.7 — CLI UX Audit** ✅ | Completed 2026-03-25. |
+| ✅ | **M10.10 — HuggingFace Model Card** ✅ | Completed 2026-03-25. |
+| ✅ | **M14.0 — Unified Skill Index** ✅ | Completed 2026-03-27. |
+| ✅ | **M14 — Public Scan Feed** ✅ | Completed 2026-03-27. |
 | ✅ | **M10 — Documentation Accuracy** ✅ | Completed 2026-03-26. |
-| ✅ | **M11 — Hardening & PyPI** ✅ | Completed 2026-03-26. v0.8.0, per-file timeout, schema sync, Apache-2.0 license. |
-| ❌ | ~~**M17 — Similarity Hashing**~~ | Dropped — requires running a registry; not aligned with offline-only positioning. |
-| 3 | **M10.6 — Organic Eval Pipeline** | Closes feedback loop between pattern-updater and model |
-| 4 | **M9 — Editor Extensions** | Distribution; lower priority than product quality |
-| 5 | **M15 — skillscan-core** | Architectural; not blocking any user feature |
-| — | **SaaS** | Post-v1.0; FPR now 1.89% ✅ and F1 0.9752 ✅ — both quality thresholds met; remaining prerequisite is product completeness (M14.5, model card) |
+| ✅ | **M11 — Hardening & PyPI** ✅ | Completed 2026-03-26. v0.8.0, Apache-2.0. |
+| ❌ | ~~**M17 — Similarity Hashing**~~ | Dropped — requires running a registry. |
+| **1** | **Trace-A1 — Provider UX** | `--provider openrouter/ollama/openai` shortcuts; `OPENROUTER_API_KEY` env var; OpenRouter unlocks 200+ models. Small effort, high UX impact. |
+| **2** | **Trace-A6 — Stale docs correction** | ROADMAP/README/IMPL_PLAN still say "spec only, no implementation" — wrong. 144 tests pass. Fix before public. |
+| **3** | **Trace-A3 — PRIVACY.md + README transparency** | Keys never stored/transmitted by SkillScan. Core differentiator. Must be prominent before public release. |
+| **4** | **M14.5 — Website Update (v1.0 docs + ML model + positioning)** | Primary trust signal for enterprise evaluators. Homepage stats, /model page, /docs page, /trace page. |
+| **5** | **Trace-A2 — Config system** | Three-tier YAML (CLI flags > trace-config.yml > defaults). Enables CI/CD `skillscan-trace run .` with no flags. |
+| **6** | **Trace-A5 — Bash AST upgrade** | Replace regex bash parsing with `bashlex`. Catches obfuscation patterns. Detection quality improvement. |
+| **7** | **Trace-A4 — Docker image** | Prerequisite for Fly.io hosted service. Stronger isolation story. |
+| **8** | **Trace-B1 — Make `skillscan-trace` public** | Launch event. Prerequisites: A1–A3 complete, PRIVACY.md written, README accurate. |
+| **9** | **Trace-B2 — Website /trace page** | Data flow diagram, provider guides, sample report, 3-command quick-start. |
+| **10** | **Trace-B3 — GitHub Action** | `skillscan/trace-action` — PR comment with report URL. Stickiest distribution mechanism. |
+| **11** | **Trace-B4 — Multi-model trace** | Run against 2+ models via OpenRouter, report agreement/disagreement. |
+| **12** | **M10.12 — Feedback Mechanism** | FP/FN GitHub issue templates. Link from website + CLI output. |
+| **13** | **M10.6 — Organic Eval Pipeline** | Closes feedback loop between pattern-updater and model. |
+| **14** | **M9 — Editor Extensions** | Distribution; lower priority than product quality. |
+| **15** | **M15 — skillscan-core** | Architectural; not blocking any user feature. |
+| **— (Phase C)** | **Trace-C1/C2 — Hosted Reporting (Fly.io + R2 + Workers)** | Deferred. Stack decided: Fly Machines (compute, ~$0.000132/trace) + Cloudflare R2 (storage, free tier) + CF Workers (API + SHA cache). Free for public OSS repos. Flat fee $3–5 for private/commercial. No Lambda (4× more expensive for I/O-wait workloads). |
+| **— (Phase C)** | **Trace-C3 — Managed inference / paid tier** | After C2 has demand data. |
+| — | **SaaS (skillscan static hosted)** | Post-v1.0; FPR 1.89% ✅ and F1 0.9752 ✅ — quality thresholds met; prerequisite is product completeness (M14.5 + trace public). |
 
 ---
 
