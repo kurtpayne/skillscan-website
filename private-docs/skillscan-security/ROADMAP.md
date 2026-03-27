@@ -977,17 +977,20 @@ M5, M6, M7, M7.5, M8, M10, M10.5, M10.7, M10.8, M10.9, M10.10, M11, M11.1, M12, 
 | **4** | **M14.5 — Website Update (v1.0 docs + ML model + positioning)** | Primary trust signal for enterprise evaluators. Homepage stats, /model page, /docs page, /trace page. |
 | **5** | **Trace-A2 — Config system** | Three-tier YAML (CLI flags > trace-config.yml > defaults). Enables CI/CD `skillscan-trace run .` with no flags. |
 | **6** | **Trace-A5 — Bash AST upgrade** | Replace regex bash parsing with `bashlex`. Catches obfuscation patterns. Detection quality improvement. |
-| **7** | **Trace-A4 — Docker image** | Prerequisite for Fly.io hosted service. Stronger isolation story. |
+| **7** | **Trace-A4 — Docker image (`run` + `serve` modes)** | Single image, two modes. `run` = containerized single trace. `serve` = FastAPI wrapper (POST /v1/submit, GET /v1/report/{id}, GET /v1/health), SQLite-backed, ~150 lines. Same image for Fly.io hosted service AND enterprise self-hosting. Prerequisite for Phase C. |
 | **8** | **Trace-B1 — Make `skillscan-trace` public** | Launch event. Prerequisites: A1–A3 complete, PRIVACY.md written, README accurate. |
-| **9** | **Trace-B2 — Website /trace page** | Data flow diagram, provider guides, sample report, 3-command quick-start. |
-| **10** | **Trace-B3 — GitHub Action** | `skillscan/trace-action` — PR comment with report URL. Stickiest distribution mechanism. |
+| **9** | **Trace-B2 — Website /trace page** | Data flow diagram showing key goes only to provider, provider setup guides, sample report render, 3-command quick-start. |
+| **10** | **Trace-B3 — GitHub Action** | `skillscan/trace-action` — OIDC-based for public repos, posts report URL as PR comment. Stickiest distribution mechanism. |
 | **11** | **Trace-B4 — Multi-model trace** | Run against 2+ models via OpenRouter, report agreement/disagreement. |
-| **12** | **M10.12 — Feedback Mechanism** | FP/FN GitHub issue templates. Link from website + CLI output. |
-| **13** | **M10.6 — Organic Eval Pipeline** | Closes feedback loop between pattern-updater and model. |
-| **14** | **M9 — Editor Extensions** | Distribution; lower priority than product quality. |
-| **15** | **M15 — skillscan-core** | Architectural; not blocking any user feature. |
-| **— (Phase C)** | **Trace-C1/C2 — Hosted Reporting (Fly.io + R2 + Workers)** | Deferred. Stack decided: Fly Machines (compute, ~$0.000132/trace) + Cloudflare R2 (storage, free tier) + CF Workers (API + SHA cache). Free for public OSS repos. Flat fee $3–5 for private/commercial. No Lambda (4× more expensive for I/O-wait workloads). |
-| **— (Phase C)** | **Trace-C3 — Managed inference / paid tier** | After C2 has demand data. |
+| **12** | **Trace-B5 — `--remote` flag + `--remote-host` override** | CLI submits to hosted or self-hosted server. `source_url` URL-reachability check is the only auth for free OSS tier. |
+| **13** | **M10.12 — Feedback Mechanism** | FP/FN GitHub issue templates. Link from website + CLI output. |
+| **14** | **M10.6 — Organic Eval Pipeline** | Closes feedback loop between pattern-updater and model. |
+| **15** | **M9 — Editor Extensions** | Distribution; lower priority than product quality. |
+| **16** | **M15 — skillscan-core** | Architectural; not blocking any user feature. |
+| **❌ DROPPED** | ~~**Private repo scanning**~~ | Requires GitHub App or PAT (security liability). Enterprise path is self-hosted Docker image (`--remote-host`). Do not build until explicitly needed. |
+| **— (Phase C)** | **Trace-C1/C2 — Hosted Reporting (Fly.io + R2 + Workers)** | Deferred. Fly Machines (~$0.000132/trace) + CF R2 (free tier ≤ 10GB) + CF Workers (submission API + SHA cache keyed on skill_sha256 + model_id). Free for public OSS repos (URL-reachability check, no account). |
+| **— (Phase C)** | **Trace-C3 — GitHub OIDC for Action** | Verify public-repo claims from GitHub JWKS. No pre-registration. |
+| **— (Phase C)** | **Trace-C4/C5 — Paid tier + managed inference** | GitHub OAuth → opaque token (32-byte hex, no expiry, rate-limited). After C2 has demand data. |
 | — | **SaaS (skillscan static hosted)** | Post-v1.0; FPR 1.89% ✅ and F1 0.9752 ✅ — quality thresholds met; prerequisite is product completeness (M14.5 + trace public). |
 
 ---
