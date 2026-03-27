@@ -128,6 +128,7 @@ const sections = [
   { id: "policy", label: "policy" },
   { id: "suppress", label: "suppress" },
   { id: "benchmark", label: "benchmark" },
+  { id: "lint", label: "lint" },
   { id: "docker", label: "Docker" },
   { id: "github-actions", label: "GitHub Actions" },
   { id: "output-formats", label: "Output Formats" },
@@ -282,7 +283,7 @@ skillscan scan ./skills/
 
                 <SubTitle>2. Install the ML model</SubTitle>
                 <Prose>
-                  The ML classifier (DeBERTa-v3 + LoRA, F1 0.9752) catches semantic attacks and novel jailbreaks
+                  The ML classifier (DeBERTa-v3 + LoRA, F1 0.9787) catches semantic attacks and novel jailbreaks
                   that static rules cannot express. It runs entirely offline via ONNX Runtime.
                 </Prose>
                 <CodeBlock code={`skillscan model install          # downloads from HuggingFace Hub (~350 MB)
@@ -340,7 +341,38 @@ skillscan scan ./skills/ --format json -o baseline.json
 skillscan scan ./skills/ --baseline baseline.json
 # Shows only new findings since the baseline was taken`} />
 
-                <SubTitle>9. Integrate with CI/CD</SubTitle>
+                <SubTitle>9. Run quality checks with lint</SubTitle>
+                <Prose>
+                  <InlineCode>skillscan lint</InlineCode> checks skill files for quality issues — ambiguous pronouns,
+                  passive voice, weasel words, missing required fields, and graph-level scope violations.
+                  It delegates to <InlineCode>skillscan-lint</InlineCode> and is configured via a project-level
+                  <InlineCode>.skillscan-lint.toml</InlineCode> file.
+                </Prose>
+                <CodeBlock code={`pip install skillscan-lint          # one-time install
+skillscan lint scan ./skills/        # quality scan via unified CLI
+skillscan-lint scan ./skills/        # or call directly
+
+# Example output
+⚠  QL-003  analytics.md:12   Long sentence (42 words, max 30)
+⚠  QL-007  analytics.md:1    Missing 'description' frontmatter field
+✗  QL-017  injector.md:5     Nominalisation: use 'decide' not 'make a decision'
+
+2 warnings, 1 error — exit 1`} />
+
+                <SubTitle>10. Report a false positive or false negative</SubTitle>
+                <Prose>
+                  If a scan returns an incorrect verdict, use the built-in feedback command to open a pre-filled
+                  GitHub Issue. Reports feed directly into the corpus and are reviewed within 5 business days.
+                </Prose>
+                <CodeBlock code={`skillscan feedback fp            # false positive — skill was blocked but should be allowed
+skillscan feedback fn            # false negative — skill was allowed but should be blocked
+skillscan feedback bug           # scanner bug or crash
+skillscan feedback feature       # feature request
+
+# Each command opens the correct GitHub Issue template in your browser.
+# If no browser is available, the URL is printed to stdout.`} />
+
+                <SubTitle>11. Integrate with CI/CD</SubTitle>
                 <Prose>See the <a href="#github-actions" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>GitHub Actions</a> section for a complete workflow example.</Prose>
               </section>
 
@@ -366,6 +398,8 @@ Options:
   --baseline PATH         Compare against a previous JSON scan report
   --no-suppress           Ignore suppression files for this run
   --no-provenance         Omit provenance meta block from JSON output
+  --max-file-size BYTES   Skip files larger than this (default: 1048576 = 1 MB)
+  --timeout SECONDS       Per-file scan timeout in seconds (default: 30)
   --exclude PATTERN       Glob pattern to exclude files (repeatable)
   --verbose               Verbose output
   --help                  Show this message`} />
@@ -394,7 +428,7 @@ verdict=block  score=285  findings=3  exit=1`} />
   "meta": {
     "scanner_version": "2026.03.25.2",
     "rules_sha": "a3f9c2...",
-    "model_version": "v18161-5ep",
+    "model_version": "v18258-5ep",
     "policy_profile": "strict",
     "scanned_at": "2026-03-25T22:15:00Z"
   },
@@ -495,6 +529,135 @@ skillscan benchmark --verbose    # show per-fixture pass/fail results`} />
                   The benchmark runs the scanner against a set of known-malicious and known-benign fixtures
                   and reports precision, recall, and F1. Useful for validating custom rules and policy changes.
                 </Prose>
+              </section>
+
+              {/* ── LINT ── */}
+              <section id="lint">
+                <SectionTitle>skillscan lint</SectionTitle>
+                <Prose>
+                  <InlineCode>skillscan lint</InlineCode> is a unified entry point that delegates to{" "}
+                  <InlineCode>skillscan-lint</InlineCode>, a separate quality scanner for AI skill files.
+                  It checks for structural, stylistic, and graph-level issues that do not constitute security
+                  findings but indicate poor skill authoring quality.
+                </Prose>
+                <CodeBlock code={`skillscan lint scan PATH         # quality scan (delegates to skillscan-lint)
+skillscan lint scan PATH --format compact
+skillscan lint scan PATH --skip QL-003 --skip QL-005
+skillscan lint scan PATH --fail-on warning
+skillscan lint scan PATH --config ./my-lint.toml`} />
+
+                <SubTitle>Install</SubTitle>
+                <CodeBlock code={`pip install skillscan-lint
+
+# Verify
+skillscan lint scan --help`} />
+
+                <SubTitle>What it checks</SubTitle>
+                <div className="overflow-x-auto rounded-xl mb-6" style={{ border: "1px solid oklch(0.58 0.22 290 / 0.15)" }}>
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr style={{ background: "oklch(0.14 0.022 265)", borderBottom: "1px solid oklch(0.58 0.22 290 / 0.15)" }}>
+                        <th className="text-left px-4 py-3 font-semibold" style={{ color: "oklch(0.72 0.19 290)", fontFamily: "'Space Grotesk', sans-serif" }}>Rule ID</th>
+                        <th className="text-left px-4 py-3 font-semibold" style={{ color: "oklch(0.72 0.19 290)", fontFamily: "'Space Grotesk', sans-serif" }}>Category</th>
+                        <th className="text-left px-4 py-3 font-semibold" style={{ color: "oklch(0.72 0.19 290)", fontFamily: "'Space Grotesk', sans-serif" }}>What it flags</th>
+                        <th className="text-left px-4 py-3 font-semibold" style={{ color: "oklch(0.72 0.19 290)", fontFamily: "'Space Grotesk', sans-serif" }}>Default severity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { id: "QL-001", cat: "structure", what: "Missing required frontmatter field (name, description, version)", sev: "error" },
+                        { id: "QL-003", cat: "quality", what: "Sentence exceeds max word count (default: 30 words)", sev: "warning" },
+                        { id: "QL-004", cat: "quality", what: "Weasel intensifiers (\"very\", \"extremely\", \"really\")", sev: "info" },
+                        { id: "QL-005", cat: "quality", what: "Weasel hedge words (\"might\", \"could\", \"perhaps\")", sev: "info" },
+                        { id: "QL-006", cat: "quality", what: "Weasel filler phrases (\"in order to\", \"due to the fact\")", sev: "info" },
+                        { id: "QL-007", cat: "structure", what: "Missing or empty description field", sev: "error" },
+                        { id: "QL-009", cat: "quality", what: "Passive voice construction", sev: "warning" },
+                        { id: "QL-017", cat: "quality", what: "Nominalisation (\"make a decision\" → \"decide\")", sev: "warning" },
+                        { id: "PSV-*", cat: "graph", what: "Skill graph scope violations (requires --graph flag)", sev: "error" },
+                      ].map((row, i) => (
+                        <tr key={i} style={{ borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)", background: i % 2 === 0 ? "oklch(0.11 0.018 265)" : "oklch(0.13 0.020 265)" }}>
+                          <td className="px-4 py-3" style={{ color: "oklch(0.78 0.12 290)", fontFamily: "'JetBrains Mono', monospace" }}>{row.id}</td>
+                          <td className="px-4 py-3" style={{ color: "oklch(0.65 0.015 265)" }}>{row.cat}</td>
+                          <td className="px-4 py-3" style={{ color: "oklch(0.75 0.010 265)" }}>{row.what}</td>
+                          <td className="px-4 py-3" style={{ color: row.sev === "error" ? "oklch(0.70 0.22 25)" : row.sev === "warning" ? "oklch(0.78 0.18 80)" : "oklch(0.65 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>{row.sev}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <SubTitle>Configuration file (.skillscan-lint.toml)</SubTitle>
+                <Prose>
+                  Place a <InlineCode>.skillscan-lint.toml</InlineCode> in your project root to configure rules,
+                  thresholds, and output format. The file is auto-discovered on every run.
+                </Prose>
+                <CodeBlock code={`# .skillscan-lint.toml
+
+[rules]
+# Disable rules you don't need
+disable = ["QL-004", "QL-005"]
+
+# Override severity for specific rules
+[rules.overrides]
+"QL-017" = "error"     # promote nominalisation to error
+"QL-003" = "info"      # demote long-sentence to info
+
+[thresholds]
+max_description_words = 100    # default: 80
+min_description_words = 5      # default: 10
+max_sentence_length = 35       # default: 30
+
+[output]
+format = "compact"             # rich | compact | json | sarif
+fail_on = "error"              # error | warning | never`} lang="toml" />
+
+                <SubTitle>Custom lint rules (Python)</SubTitle>
+                <Prose>
+                  Extend <InlineCode>skillscan-lint</InlineCode> with organization-specific quality rules by
+                  subclassing <InlineCode>Rule</InlineCode> from <InlineCode>skillscan_lint.rules.base</InlineCode>.
+                  Custom rules are loaded via entry points — no fork required.
+                </Prose>
+                <CodeBlock code={`# my_org_rules/rules.py
+from pathlib import Path
+from typing import Any
+from skillscan_lint.rules.base import Rule
+from skillscan_lint.models import LintFinding, Severity
+
+class InternalDomainRule(Rule):
+    id = "ORG-001"
+    description = "Flags references to internal infrastructure domains"
+    severity = Severity.ERROR
+
+    def check(
+        self, path: Path, content: str, parsed: dict[str, Any]
+    ) -> list[LintFinding]:
+        findings = []
+        for i, line in enumerate(content.splitlines(), 1):
+            if ".internal.example.com" in line:
+                findings.append(
+                    LintFinding(
+                        rule_id=self.id,
+                        path=path,
+                        line=i,
+                        message="Internal domain reference detected",
+                        severity=self.severity,
+                    )
+                )
+        return findings
+
+# pyproject.toml — register via entry point
+# [project.entry-points."skillscan_lint.rules"]
+# org_rules = "my_org_rules.rules"`} lang="python" />
+
+                <SubTitle>Use in CI (GitHub Actions)</SubTitle>
+                <CodeBlock code={`      - name: Install SkillScan + Lint
+        run: pip install skillscan-security skillscan-lint
+
+      - name: Run security scan
+        run: skillscan scan ./skills/ --policy ci --format sarif -o security.sarif
+
+      - name: Run quality lint
+        run: skillscan lint scan ./skills/ --fail-on error --format compact`} lang="yaml" />
               </section>
 
               {/* ── DOCKER ── */}
