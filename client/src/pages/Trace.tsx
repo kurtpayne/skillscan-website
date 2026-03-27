@@ -80,16 +80,23 @@ ollama pull qwen2.5:7b`,
   },
 };
 
-const CONFIG_EXAMPLE = `# skillscan-trace.yaml — project-level config
+const CONFIG_EXAMPLE = `# .env  (add to .gitignore — never commit this file)
+OPENROUTER_API_KEY=sk-or-...
+# OPENAI_API_KEY=sk-...
+# ANTHROPIC_API_KEY=sk-ant-...   # only needed for --judge
+
+# skillscan-trace.yaml — project-level config
 # Place in your repo root or any parent directory.
-# CLI flags always override these values.
+# CLI flags always override. API keys go in .env, not here.
+# Priority: CLI flag > shell env var > .env file > this file
 
 provider: openrouter
 model: anthropic/claude-3.5-sonnet
 variants: 3
-turns: 10
+max_turns: 10
 output_dir: .skillscan-reports
-verbose: false`;
+format: json
+fail_on_malicious: false`;
 
 const DOCKER_SINGLE = `# Single trace — BYOK, runs locally
 docker run --rm \\
@@ -97,15 +104,16 @@ docker run --rm \\
   -v $(pwd):/workspace \\
   skillscan/trace run /workspace/SKILL.md --provider openrouter`;
 
-const DOCKER_SERVE = `# Self-hosted server mode
-docker run -d -p 8080:8080 --name skillscan-trace skillscan/trace serve
+const DOCKER_SERVE = `# Self-hosted server mode — pass key as env var, not in request body
+docker run -d -p 8080:8080 \\
+  -e OPENROUTER_API_KEY="sk-or-..." \\
+  --name skillscan-trace skillscan/trace serve
 
 # Submit a trace
 curl -X POST http://localhost:8080/v1/submit \\
   -H 'Content-Type: application/json' \\
   -d '{
     "skill_content": "...",
-    "api_key": "sk-or-...",
     "provider": "openrouter"
   }'
 
@@ -288,7 +296,7 @@ export default function Trace() {
             {/* Install */}
             <div className="mb-6">
               <div className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "oklch(0.55 0.015 265)" }}>1. Install</div>
-              <CodeBlock code={`pip install skillscan-trace\n\n# With serve mode (FastAPI server)\npip install "skillscan-trace[serve]"`} />
+              <CodeBlock code={`# Recommended — install via skillscan (centralized)\npip install 'skillscan-security[trace]'\n\n# Standalone\npip install skillscan-trace\n\n# With serve mode (FastAPI server)\npip install "skillscan-trace[serve]"`} />
             </div>
 
             {/* Provider tabs */}
@@ -404,10 +412,11 @@ export default function Trace() {
               className="text-2xl font-bold mb-2"
               style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}
             >
-              Project config file
+              Config &amp; key management
             </h2>
             <p className="text-sm mb-6" style={{ color: "oklch(0.60 0.012 265)" }}>
-              Drop a <code style={{ color: "oklch(0.78 0.18 290)" }}>skillscan-trace.yaml</code> in your repo root to set defaults for your project. CLI flags always override. The file is auto-discovered by walking up from the current directory — nearest file wins.
+              Store API keys in a <code style={{ color: "oklch(0.78 0.18 290)" }}>.env</code> file (auto-discovered, never committed). Set run defaults in{" "}
+              <code style={{ color: "oklch(0.78 0.18 290)" }}>skillscan-trace.yaml</code> — auto-discovered by walking up from cwd, nearest file wins. CLI flags always win over both.
             </p>
             <CodeBlock code={CONFIG_EXAMPLE} lang="yaml" />
           </div>
