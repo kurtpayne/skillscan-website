@@ -11,6 +11,8 @@ import Linter from "./pages/Linter";
 import Updates from "./pages/Updates";
 import Feed from "./pages/Feed";
 import Model from "./pages/Model";
+import Trace from "./pages/Trace";
+import LintPage from "./pages/LintPage";
 
 function Router() {
   return (
@@ -22,6 +24,8 @@ function Router() {
       <Route path="/updates" component={Updates} />
       <Route path="/feed" component={Feed} />
       <Route path="/model" component={Model} />
+      <Route path="/trace" component={Trace} />
+      <Route path="/lint" component={LintPage} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

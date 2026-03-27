@@ -12,6 +12,8 @@ const navLinks = [
   { href: "/docs", label: "Docs" },
   { href: "/model", label: "Model" },
   { href: "/linter", label: "Linter" },
+  { href: "/lint", label: "Lint" },
+  { href: "/trace", label: "Trace" },
   { href: "/updates", label: "Updates" },
   { href: "/feed", label: "Feed" },
   { href: "https://github.com/kurtpayne/skillscan-security", label: "GitHub", external: true },

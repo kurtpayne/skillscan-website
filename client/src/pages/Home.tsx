@@ -848,6 +848,11 @@ export default function Home() {
                   Explore the linter
                   <ChevronRight className="w-4 h-4" />
                 </a>
+                <a href="/lint"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200"
+                  style={{ background: "oklch(0.18 0.025 265)", border: "1px solid oklch(0.58 0.22 290 / 0.25)", color: "oklch(0.85 0.01 265)" }}>
+                  Browse all rules <ChevronRight className="w-4 h-4" />
+                </a>
                 <a href="https://github.com/kurtpayne/skillscan-lint" target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200"
                   style={{ background: "oklch(0.18 0.025 265)", border: "1px solid oklch(0.58 0.22 290 / 0.25)", color: "oklch(0.85 0.01 265)" }}>
@@ -868,6 +873,58 @@ export default function Home() {
                     <span className="text-xs font-bold flex-shrink-0 mt-0.5" style={{ color: item.color, fontFamily: "'JetBrains Mono', monospace" }}>{item.sev}</span>
                     <div>
                       <span className="text-xs font-semibold" style={{ color: "oklch(0.78 0.18 290)", fontFamily: "'JetBrains Mono', monospace" }}>{item.id}</span>
+                      <p className="text-xs mt-0.5" style={{ color: "oklch(0.55 0.015 265)" }}>{item.msg}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* ── TRACE CALLOUT ── */}
+      <section className="py-20" style={{ borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)" }}>
+        <div className="container">
+          <div
+            className="rounded-2xl p-8 md:p-12 flex flex-col md:flex-row gap-8 items-start"
+            style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.58 0.22 290 / 0.20)" }}
+          >
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-4"
+                style={{ background: "oklch(0.58 0.22 290 / 0.12)", border: "1px solid oklch(0.58 0.22 290 / 0.25)", color: "oklch(0.78 0.18 290)", fontFamily: "'JetBrains Mono', monospace" }}>
+                BEHAVIORAL ANALYSIS
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}>
+                Does your skill behave the way it claims?
+              </h2>
+              <p className="text-base leading-relaxed mb-6" style={{ color: "oklch(0.60 0.015 265)" }}>
+                <strong style={{ color: "oklch(0.88 0.012 265)" }}>skillscan-trace</strong> runs your skill against a live LLM inside a canary environment — a sandboxed MCP server with 14 instrumented tools. It watches what the skill actually does when prompted, not just what it claims to do. Bring your own key. Runs entirely on your machine.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a href="/trace" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold btn-primary-glow">
+                  Learn about tracing
+                  <ChevronRight className="w-4 h-4" />
+                </a>
+                <a href="https://github.com/kurtpayne/skillscan-trace" target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200"
+                  style={{ background: "oklch(0.18 0.025 265)", border: "1px solid oklch(0.58 0.22 290 / 0.25)", color: "oklch(0.85 0.01 265)" }}>
+                  GitHub <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+            <div className="w-full md:w-72 flex-shrink-0">
+              <div className="rounded-xl overflow-hidden" style={{ border: "1px solid oklch(0.58 0.22 290 / 0.15)" }}>
+                {[
+                  { sev: "CRITICAL", rule: "CANARY-001", msg: "Exfiltration via http_request tool", color: "oklch(0.55 0.22 25)" },
+                  { sev: "HIGH", rule: "CANARY-003", msg: "Credential access: ~/.aws/credentials", color: "oklch(0.65 0.22 45)" },
+                  { sev: "MEDIUM", rule: "CANARY-007", msg: "Bash injection via shell tool", color: "oklch(0.72 0.19 80)" },
+                  { sev: "INFO", rule: "CANARY-011", msg: "Network enumeration attempt", color: "oklch(0.65 0.18 200)" },
+                  { sev: "PASS", rule: "VERDICT", msg: "3 variants × 10 turns — SUSPICIOUS", color: "oklch(0.72 0.19 45)" },
+                ].map((item) => (
+                  <div key={item.rule} className="flex items-start gap-3 px-4 py-3" style={{ borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)" }}>
+                    <span className="text-xs font-bold flex-shrink-0 mt-0.5" style={{ color: item.color, fontFamily: "'JetBrains Mono', monospace" }}>{item.sev}</span>
+                    <div>
+                      <span className="text-xs font-semibold" style={{ color: "oklch(0.78 0.18 290)", fontFamily: "'JetBrains Mono', monospace" }}>{item.rule}</span>
                       <p className="text-xs mt-0.5" style={{ color: "oklch(0.55 0.015 265)" }}>{item.msg}</p>
                     </div>
                   </div>
