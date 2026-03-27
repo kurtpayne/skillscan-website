@@ -960,7 +960,7 @@ A malicious skill that is 95% identical to a popular trusted skill but with one 
 
 ### Milestone Priority Order (updated 2026-03-27)
 
-M5, M6, M7, M7.5, M8, M10.5, M10.8, M10.9, M10.7, M10.10, M14.0, M14 are complete. Priority order for remaining work:
+M5, M6, M7, M7.5, M8, M10, M10.5, M10.7, M10.8, M10.9, M10.10, M11, M11.1, M12, M13, M14.0, M14 are complete. Priority order for remaining work:
 
 | Priority | Milestone | Rationale |
 |---|---|---|
@@ -969,13 +969,13 @@ M5, M6, M7, M7.5, M8, M10.5, M10.8, M10.9, M10.7, M10.10, M14.0, M14 are complet
 | ✅ | **M10.10 — HuggingFace Model Card** ✅ | Completed 2026-03-25. MODEL_CARD.md live on HF Hub. commit dba729f. |
 | ✅ | **M14.0 — Unified Skill Index** ✅ | Completed 2026-03-27. `skillscan-corpus/index/skill-index.yaml` — 19 demo_feed entries (14 BLOCK + 5 ALLOW), 13 organic holdout entries. `finetune_modal.py` reads injection/benign dirs from index. |
 | ✅ | **M14 — Public Scan Feed** ✅ | Completed 2026-03-27. `demo-feed.yml` weekly cron + `build_demo_feed.py` in skillscan-security. Website Feed page live. First run dispatched manually. |
-| 2 | **M17 — Similarity Hashing** | M14 prerequisite now met; can begin immediately after M14.5 |
-| 3 | **M10.12 — Feedback Mechanism** | FP/FN reports are highest-value corpus signal; GitHub issue templates |
-| 4 | **M10 — Documentation Accuracy** | Required for enterprise evaluators |
-| 5 | **M11 — Hardening & PyPI** | Required for enterprise CI/CD |
-| 6 | **M10.6 — Organic Eval Pipeline** | Closes feedback loop between pattern-updater and model |
-| 7 | **M9 — Editor Extensions** | Distribution; lower priority than product quality |
-| 8 | **M15 — skillscan-core** | Architectural; not blocking any user feature |
+| 2 | **M10.12 — Feedback Mechanism** | FP/FN reports are highest-value corpus signal; GitHub issue templates |
+| ✅ | **M10 — Documentation Accuracy** ✅ | Completed 2026-03-26. |
+| ✅ | **M11 — Hardening & PyPI** ✅ | Completed 2026-03-26. v0.8.0, per-file timeout, schema sync, Apache-2.0 license. |
+| ❌ | ~~**M17 — Similarity Hashing**~~ | Dropped — requires running a registry; not aligned with offline-only positioning. |
+| 3 | **M10.6 — Organic Eval Pipeline** | Closes feedback loop between pattern-updater and model |
+| 4 | **M9 — Editor Extensions** | Distribution; lower priority than product quality |
+| 5 | **M15 — skillscan-core** | Architectural; not blocking any user feature |
 | — | **SaaS** | Post-v1.0; FPR now 1.89% ✅ and F1 0.9752 ✅ — both quality thresholds met; remaining prerequisite is product completeness (M14.5, model card) |
 
 ---
