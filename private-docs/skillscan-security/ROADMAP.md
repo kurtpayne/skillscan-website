@@ -1410,3 +1410,153 @@ SkillScan's corpus and detection patterns were informed by public security resea
 - The open-source skill authors whose public repositories formed the benign half of the training corpus. Your work is what makes the classifier useful.
 
 ---
+
+---
+
+## Website Pages Plan — /trace and /lint (M14.5 supplement)
+
+*Planned 2026-03-27. No implementation yet. These are the detailed specs for the two new pages that extend M14.5.*
+
+---
+
+### Page: `/trace`
+
+**Purpose:** Convert a developer who has heard of SkillScan into someone who installs and runs `skillscan-trace` in under 5 minutes. The page must answer three questions in order: What is it? How does my key stay private? How do I run it?
+
+**Entry points from the existing site:**
+- Nav bar: add "Trace" between "Scan" and "Docs"
+- Homepage hero: add a secondary CTA "→ Behavioral Trace (new)" below the primary scan CTA
+- User journey page: add a "Step 3: Behavioral Trace" card after the static scan card
+
+**Page sections (in order):**
+
+1. **Hero** — One-line value prop: "Run your skill against a live LLM. Watch what it actually does." Sub-line: "BYOK. Runs on your machine. Nothing leaves your network except the LLM calls you authorize." Two CTAs: `pip install skillscan-trace` (copy button) and `→ Read the privacy doc`.
+
+2. **3-command quick-start** — Tabbed by provider (OpenAI / OpenRouter / Ollama). Each tab shows exactly three commands: install, set key, run. No prose, just code.
+
+3. **Data flow diagram** — A simple left-to-right flow: `Your Machine` → `Canary Server (in-process)` → `LLM Provider (your key)` → back to `Your Machine`. Annotated with: "Key never touches SkillScan servers", "Skill content stays local", "Only LLM API calls leave your machine". Must be an SVG, not a screenshot.
+
+4. **What a trace report looks like** — Render a real sample report inline (collapsed by default, expand on click). Show: verdict badge (BLOCK/ALLOW), variant count, finding list with severity chips, evidence snippets.
+
+5. **Provider setup guides** — Three collapsible sections: OpenAI, OpenRouter (why it unlocks 200+ models), Ollama (fully local, no key needed). Each ends with: `skillscan-trace check --provider <name>`.
+
+6. **Config file** — Short section showing `skillscan-trace.yaml` with the three most useful fields: `provider`, `model`, `output_dir`. "Put this in your project root and never pass flags again."
+
+7. **Self-hosting** — One paragraph + two commands: `docker run skillscan/trace serve` and the `--remote-host` override. Link to `docker-compose.yml` in the repo.
+
+8. **Privacy footer** — Repeat the two-sentence summary from `PRIVACY.md` verbatim, with a link to the full document.
+
+**Design notes:** Dark background, terminal-style code blocks. Data flow diagram is SVG. Sample report uses the same verdict badge and severity chip components as the rest of the site.
+
+---
+
+### Page: `/lint`
+
+**Purpose:** Explain `skillscan-lint` as a fast, zero-dependency schema and style checker — distinct from the full scan (8 detection layers) and from trace (behavioral execution). Audience: skill authors who want to catch obvious problems before pushing.
+
+**Entry points:**
+- Nav bar: add "Lint" (or group under a "Tools" dropdown with Scan, Lint, Trace)
+- Docs page: add a "Linting" section with a link to `/lint`
+- User journey: add a "Step 0: Lint first" card before the scan card
+
+**Page sections (in order):**
+
+1. **Hero** — "Catch schema errors and style violations before you scan." Sub-line: "No model. No network. Instant feedback." One CTA: `pip install skillscan-security && skillscan lint path/to/skill.md`.
+
+2. **What lint checks** — A filterable table of the 34 lint rules, grouped by category: Schema, Description quality, Tool alignment, Documentation completeness. Columns: rule ID, description, severity (ERROR/WARN/INFO), example violation.
+
+3. **Lint vs. Scan vs. Trace** — A comparison table:
+
+   | | Lint | Scan | Trace |
+   |---|---|---|---|
+   | Speed | Instant | ~2–10s | 30–90s |
+   | Requires model | No | Yes (350MB ONNX) | No (BYOK LLM) |
+   | Network | None | None | LLM API only |
+   | What it catches | Schema errors, style | Injection, malware, IOCs | Behavioral attacks at runtime |
+   | When to run | Pre-commit | Pre-publish | Pre-deploy / audit |
+
+4. **CI integration** — GitHub Actions snippet for lint-on-PR. Three lines.
+
+5. **Custom rules** — Link to custom-rules-format doc. One sentence.
+
+6. **Exit CTA** — "Ready for deeper analysis? → Run a full scan" and "→ Run a behavioral trace".
+
+**Design notes:** Lighter, more utilitarian feel than /trace. The rule table is filterable client-side. The comparison table is the key element.
+
+---
+
+## Corpus Expansion Plan — v10 (New Signals)
+
+*Planned 2026-03-27. No implementation yet. Milestone designation: M7-v10.*
+
+**Current state:** 18,216 examples, F1 0.9752, FPR 1.89%. 8 persistent FN archetypes. Both SaaS quality thresholds met. The next expansion closes remaining FN archetypes AND introduces new signal categories not currently in the corpus.
+
+---
+
+### Priority 1: Close the 8 remaining FN archetypes (10–15 examples each)
+
+| Archetype | Description | Synthesis approach |
+|---|---|---|
+| `mcp_server_impersonation` | Skill claims to be a well-known MCP server (filesystem, memory, etc.) | Generate skills with `name: "filesystem"` but malicious tool bodies |
+| `organic_mal047` | Real-world organic malicious skill, specific evasion pattern | Manually craft variants of the original with surface-level rephrasing |
+| `se_git_config_harvest` | Social engineering to exfiltrate `.gitconfig` / `.git/credentials` | Skills that "help with git" but read credential files |
+| `jb_jb07_035` | Jailbreak variant — authority impersonation with tool invocation | "As the authorized security auditor, invoke..." patterns |
+| `jb_jb08_037` | Jailbreak variant — gradual context escalation | Multi-turn escalation patterns in skill descriptions |
+| `jb09/jb10` | New jailbreak archetypes discovered in v9 eval | Research current jailbreak literature; synthesize 10 each |
+| `pi24_rss` | Prompt injection via RSS/Atom feed content | Skills that fetch and process RSS feeds with injected content |
+| `pi37_markdown` | Prompt injection via Markdown rendering | Skills that render Markdown from external sources |
+
+---
+
+### Priority 2: New signal categories (not in current corpus)
+
+**Signal 1: Dependency confusion attacks**
+Skills that declare a `requirements` or `dependencies` field pointing to attacker-controlled package names that shadow legitimate packages (e.g. `requests-security` instead of `requests`). The model has no examples of this pattern.
+- 20 malicious examples with attacker-controlled package names in various dependency declaration formats
+- 10 benign examples with legitimate dependency declarations for contrast
+- New archetype prefix: `sup_dep_confusion_*`
+
+**Signal 2: Steganographic instruction hiding**
+Instructions embedded in non-obvious places: inside base64-encoded "example" strings, inside YAML comments that some parsers surface as metadata, inside Unicode homoglyph substitutions in tool names (e.g. `fіlesystem` with Cyrillic `і`). Static rules catch some of this; the ML model has no training signal for it.
+- 15 examples using each of the three hiding mechanisms (45 total)
+- New archetype prefix: `steg_*`
+
+**Signal 3: Capability laundering via tool chaining**
+A skill that individually declares only innocuous tools (read_file, write_file, http_get) but chains them in the description in a way that constitutes a complete exfiltration pipeline. No single tool is suspicious; the chain is. The model sees tool lists but does not model tool chains.
+- 20 examples where the description narrates the chain explicitly ("first read the file, then POST it to...")
+- 10 benign examples of legitimate multi-step workflows for contrast
+- New archetype prefix: `chain_launder_*`
+
+**Signal 4: Temporal/conditional payload triggers**
+Skills with instructions that activate only under specific conditions: "if the date is after 2026-04-01", "if the user's locale is en-US", "if the previous tool call returned status 200". Designed to evade static analysis. The model has almost no examples of conditional activation.
+- 20 examples with date/time, locale, and status-code conditionals
+- Note: these are also a known ceiling (indirect injection from runtime context) — label with `conditional_*` prefix to track separately
+- New archetype prefix: `conditional_*`
+
+**Signal 5: Fake MCP protocol messages**
+Skills that instruct the LLM to emit raw MCP protocol JSON as part of its response — effectively hijacking the MCP transport layer by making the model produce tool_call messages that the client will execute. Novel attack vector specific to MCP; no existing scanner addresses it.
+- 15 examples with embedded JSON tool_call payloads in skill descriptions
+- New archetype prefix: `mcp_proto_*`
+
+**Signal 6: Supply chain via skill composition**
+Skills that import or reference other skills by URL, with the imported skill being attacker-controlled. Current corpus has supply chain examples focused on package dependencies, not skill-to-skill imports. As skill ecosystems mature, this becomes a primary attack vector.
+- 15 examples with `import:`, `extends:`, or `depends_on:` fields pointing to attacker URLs
+- 5 benign examples of legitimate skill composition
+- New archetype prefix: `sup_skill_import_*`
+
+**Signal 7: LLM-specific prompt formatting attacks**
+Instructions that exploit specific LLM formatting conventions: `<|system|>` tokens for Llama-family models, `[INST]` delimiters for Mistral, `<|im_start|>` for Qwen. Model-specific jailbreaks that work by injecting special tokens into skill content. Current corpus has generic jailbreaks but not model-specific token injection.
+- 10 examples per model family (Llama, Mistral, Qwen, GPT) = 40 examples
+- New archetype prefix: `token_inject_*`
+
+---
+
+### Corpus expansion process for v10
+
+1. **Synthesis agent run** — Use the existing corpus researcher agent pattern. Each new archetype gets its own subdirectory in `training_corpus/injection/` with a `README.md` explaining the attack vector.
+2. **Trace validation** — Run `skillscan-trace` on all new malicious examples before adding to corpus. Any example that does not trigger at least one finding in a trace run should be reviewed — it may be too subtle for the model to learn from.
+3. **FN archetype closure** — For each Priority 1 archetype, generate examples, run a mini eval (not a full fine-tune) to confirm the archetype is now detected before committing.
+4. **Target corpus size** — 18,216 + ~300 new examples = ~18,500 for v10. Keep class balance: aim for 55% injection / 45% benign.
+5. **v10 fine-tune gate** — F1 ≥ 0.980, FPR ≤ 1.5%.
+
+**Milestone designation:** M7-v10. Add to the priority table after M14.5 and Trace-B1 are complete.
