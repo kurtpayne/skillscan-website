@@ -601,6 +601,129 @@ export default function Trace() {
         </div>
       </section>
 
+      {/* ── Multi-Model Trace ── */}
+      <section className="py-16">
+        <div className="container">
+          <div className="max-w-3xl mx-auto">
+            <div className="flex items-center gap-3 mb-2">
+              <h2
+                className="text-2xl font-bold"
+                style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}
+              >
+                Multi-model consensus
+              </h2>
+              <span
+                className="text-xs font-bold px-2 py-0.5 rounded"
+                style={{ background: "oklch(0.78 0.18 290 / 0.12)", color: "oklch(0.78 0.18 290)", border: "1px solid oklch(0.78 0.18 290 / 0.25)" }}
+              >
+                NEW in v0.2
+              </span>
+            </div>
+            <p className="text-sm mb-6" style={{ color: "oklch(0.60 0.012 265)" }}>
+              Run the same skill against multiple LLMs simultaneously. When models disagree, you get a richer signal — a skill that only one model flags is worth investigating; one that all models flag is a near-certain threat.
+            </p>
+            <CodeBlock
+              code={`# Run against two models — compare verdicts side by side
+skillscan-trace run ./SKILL.md \\
+  --provider openrouter \\
+  --models anthropic/claude-3.5-sonnet,openai/gpt-4o-mini
+
+# Three-model consensus (agreement required for SAFE verdict)
+skillscan-trace run ./SKILL.md \\
+  --provider openrouter \\
+  --models anthropic/claude-3.5-sonnet,openai/gpt-4o-mini,meta-llama/llama-3.1-8b-instruct`}
+            />
+            <div className="mt-6 rounded-xl overflow-hidden" style={{ border: "1px solid oklch(0.22 0.025 265)" }}>
+              <div className="px-4 py-2.5 flex items-center gap-2" style={{ background: "oklch(0.13 0.020 265)", borderBottom: "1px solid oklch(0.18 0.022 265)" }}>
+                <Activity className="w-3.5 h-3.5" style={{ color: "oklch(0.55 0.015 265)" }} />
+                <span className="text-xs font-mono" style={{ color: "oklch(0.50 0.015 265)" }}>multi-model report — date-formatter-skill.md</span>
+              </div>
+              <div className="divide-y" style={{ borderColor: "oklch(0.18 0.022 265)", background: "oklch(0.11 0.020 265)" }}>
+                {[
+                  { model: "anthropic/claude-3.5-sonnet", verdict: "MALICIOUS", findings: 3, tokens: 241, color: "oklch(0.65 0.22 25)" },
+                  { model: "openai/gpt-4o-mini", verdict: "MALICIOUS", findings: 2, tokens: 198, color: "oklch(0.65 0.22 25)" },
+                  { model: "meta-llama/llama-3.1-8b-instruct", verdict: "SUSPICIOUS", findings: 1, tokens: 176, color: "oklch(0.72 0.19 80)" },
+                ].map((r, i) => (
+                  <div key={i} className="px-4 py-3 flex items-center justify-between gap-4 flex-wrap">
+                    <div className="flex items-center gap-3">
+                      <Cpu className="w-4 h-4 flex-shrink-0" style={{ color: "oklch(0.55 0.015 265)" }} />
+                      <span className="text-sm font-mono" style={{ color: "oklch(0.78 0.012 265)" }}>{r.model}</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                      <span style={{ color: "oklch(0.50 0.012 265)" }}>{r.findings} finding{r.findings !== 1 ? "s" : ""} · {r.tokens} tok</span>
+                      <span className="font-bold px-2 py-0.5 rounded" style={{ background: `${r.color.replace(")", " / 0.12)")}`, color: r.color, border: `1px solid ${r.color.replace(")", " / 0.28)")}` }}>
+                        {r.verdict}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                <div className="px-4 py-3" style={{ background: "oklch(0.55 0.22 25 / 0.06)", borderTop: "1px solid oklch(0.55 0.22 25 / 0.2)" }}>
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-3.5 h-3.5" style={{ color: "oklch(0.65 0.22 25)" }} />
+                    <span className="text-xs font-semibold" style={{ color: "oklch(0.65 0.22 25)" }}>Agreement: FULL — all 3 models flagged malicious behavior</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── GitHub Action ── */}
+      <section className="py-16">
+        <div className="container">
+          <div className="max-w-3xl mx-auto">
+            <div className="flex items-center gap-3 mb-2">
+              <h2
+                className="text-2xl font-bold"
+                style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}
+              >
+                GitHub Action
+              </h2>
+              <span
+                className="text-xs font-bold px-2 py-0.5 rounded"
+                style={{ background: "oklch(0.65 0.18 200 / 0.12)", color: "oklch(0.65 0.18 200)", border: "1px solid oklch(0.65 0.18 200 / 0.25)" }}
+              >
+                Coming in v0.3
+              </span>
+            </div>
+            <p className="text-sm mb-6" style={{ color: "oklch(0.60 0.012 265)" }}>
+              Add behavioral tracing to your CI pipeline. The Action runs on every PR, posts a verdict comment, and can optionally block merges on MALICIOUS verdicts. Uses GitHub OIDC — no stored secrets required for public repos.
+            </p>
+            <CodeBlock
+              code={`# .github/workflows/skillscan.yml
+name: SkillScan Trace
+on: [pull_request]
+
+jobs:
+  trace:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # GitHub OIDC — no stored API key needed
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: skillscan/trace-action@v1
+        with:
+          skill-path: SKILL.md
+          provider: openrouter
+          models: anthropic/claude-3.5-sonnet,openai/gpt-4o-mini
+          fail-on: malicious   # block PR on MALICIOUS verdict`}
+              lang="yaml"
+            />
+            <div
+              className="mt-4 p-4 rounded-lg flex items-start gap-3"
+              style={{ background: "oklch(0.65 0.18 200 / 0.07)", border: "1px solid oklch(0.65 0.18 200 / 0.18)" }}
+            >
+              <GitBranch className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: "oklch(0.65 0.18 200)" }} />
+              <p className="text-sm" style={{ color: "oklch(0.68 0.012 265)" }}>
+                <strong style={{ color: "oklch(0.88 0.012 265)" }}>Public repos:</strong> The Action uses GitHub OIDC to verify the repo is public — no API key stored in secrets. Private repo support requires self-hosting the trace server in your own infrastructure.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Config File ── */}
       <section className="py-16">
         <div className="container">
