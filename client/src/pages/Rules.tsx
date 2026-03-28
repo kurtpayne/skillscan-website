@@ -285,7 +285,7 @@ export default function Rules() {
     return matchSearch && matchCat && matchSev;
   });
 
-  const categories: Array<Category | "ALL"> = ["ALL", "MAL", "ABU", "EXF", "INJ", "CHN", "PINJ", "SUP", "SE"];
+  const categories: Array<Category | "ALL"> = ["ALL", "MAL", "ABU", "EXF", "CAP", "CHN", "PINJ", "SUP", "SE", "OBF", "DEF", "INJ", "GR", "EXEC", "PSV"];
   const severities: Array<Severity | "ALL"> = ["ALL", "BLOCK", "WARN", "INFO"];
 
   return (

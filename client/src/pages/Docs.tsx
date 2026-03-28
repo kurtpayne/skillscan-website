@@ -383,20 +383,24 @@ skillscan feedback feature       # feature request
                   actually does when it thinks it has real tools. Use it for skills that pass static scanning
                   but feel suspicious, or as a final gate before publishing.
                 </Prose>
-                <CodeBlock code={`pip install skillscan-trace
+                <CodeBlock code={`# skillscan-trace is bundled — no separate install needed
+pip install skillscan-security
 
 # Add your key to .env (never put keys in YAML)
 echo 'OPENAI_API_KEY=sk-...' >> .env
 
-# Trace with OpenAI (default)
+# Trace via the unified CLI (recommended)
+skillscan trace run ./skills/my-skill.md
+
+# Or call skillscan-trace directly
 skillscan-trace run ./skills/my-skill.md
 
 # Trace with OpenRouter (200+ models)
 echo 'OPENROUTER_API_KEY=sk-or-...' >> .env
-skillscan-trace run ./skills/my-skill.md --provider openrouter --model anthropic/claude-3.5-sonnet
+skillscan trace run ./skills/my-skill.md --provider openrouter --model anthropic/claude-3.5-sonnet
 
 # Trace with Ollama (local, no key required)
-skillscan-trace run ./skills/my-skill.md --provider ollama --model qwen2.5:7b`} />
+skillscan trace run ./skills/my-skill.md --provider ollama --model qwen2.5:7b`} />
                 <Prose>
                   Trace results are <InlineCode>SAFE</InlineCode> / <InlineCode>SUSPICIOUS</InlineCode> / <InlineCode>MALICIOUS</InlineCode>.
                   A <InlineCode>MALICIOUS</InlineCode> verdict means the skill called a canary tool (credential access,
