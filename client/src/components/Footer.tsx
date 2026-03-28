@@ -11,7 +11,7 @@ export default function Footer() {
       style={{ background: "oklch(0.10 0.022 265 / 0.8)" }}
     >
       <div className="container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-10">
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
@@ -75,6 +75,36 @@ export default function Footer() {
                 Docker Hub
               </a>
             </div>
+          </div>
+
+          {/* Tools */}
+          <div>
+            <h4
+              className="text-sm font-semibold mb-4 uppercase tracking-wider"
+              style={{ color: "oklch(0.65 0.015 265)", fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Tools
+            </h4>
+            <ul className="space-y-2.5">
+              {[
+                { label: "🔍 Scan", href: "/", desc: "Static analysis" },
+                { label: "📐 Lint", href: "/lint", desc: "Quality linting" },
+                { label: "🔬 Trace", href: "/trace", desc: "Behavioural tracing" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className="text-sm transition-colors duration-200 flex items-center gap-1.5"
+                    style={{ color: "oklch(0.55 0.015 265)", fontFamily: "'Inter', sans-serif" }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)")}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.55 0.015 265)")}
+                  >
+                    {item.label}
+                    <span className="text-xs" style={{ color: "oklch(0.40 0.010 265)" }}>— {item.desc}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Product */}

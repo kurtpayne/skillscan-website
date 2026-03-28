@@ -192,17 +192,35 @@ export default function LintPage() {
   return (
     <div className="min-h-screen" style={{ background: "oklch(0.12 0.025 265)", color: "oklch(0.95 0.005 265)" }}>
       <Navbar />
-
       {/* ── Hero ── */}
       <section className="pt-32 pb-20 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[350px] rounded-full opacity-10"
+            className="absolute
+ top-0 left-1/2 -translate-x-1/2 w-[600px] h-[350px] rounded-full opacity-10"
             style={{ background: "radial-gradient(ellipse, oklch(0.65 0.18 200) 0%, transparent 70%)" }}
           />
         </div>
         <div className="container relative">
           <div className="max-w-3xl mx-auto text-center">
+            {/* Suite breadcrumb */}
+            <div className="inline-flex items-center gap-1 mb-8 p-1 rounded-xl" style={{ background: "oklch(0.14 0.025 265)", border: "1px solid oklch(0.22 0.025 265)" }}>
+              <a href="/" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150" style={{ color: "oklch(0.55 0.015 265)" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "oklch(0.55 0.015 265)"; }}>
+                🔍 Scan
+              </a>
+              <span className="text-xs" style={{ color: "oklch(0.30 0.015 265)" }}>›</span>
+              <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "oklch(0.70 0.15 160 / 0.15)", color: "oklch(0.75 0.18 200)" }}>
+                📐 Lint
+              </span>
+              <span className="text-xs" style={{ color: "oklch(0.30 0.015 265)" }}>›</span>
+              <a href="/trace" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150" style={{ color: "oklch(0.55 0.015 265)" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "oklch(0.72 0.19 45)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "oklch(0.55 0.015 265)"; }}>
+                🔬 Trace
+              </a>
+            </div>
             <div
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-6"
               style={{ background: "oklch(0.65 0.18 200 / 0.12)", border: "1px solid oklch(0.65 0.18 200 / 0.25)", color: "oklch(0.75 0.18 200)" }}

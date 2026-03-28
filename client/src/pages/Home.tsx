@@ -13,6 +13,8 @@ const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663340703543/GpzBjr
 
 const INSTALL_CMD = "pip install skillscan-security";
 const SCAN_CMD = "skillscan scan ./skills/ --format sarif -o results.sarif";
+const LINT_INSTALL_CMD = "pip install skillscan-lint";
+const TRACE_INSTALL_CMD = "pip install skillscan-trace";
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
@@ -182,19 +184,17 @@ export default function Home() {
                 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 animate-fade-up-delay-1"
                 style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.97 0.005 265)" }}
               >
-                Offline Security
+                Security Tooling
                 <br />
-                Analysis for{" "}
-                <span className="gradient-text">AI Skills</span>
+                for{" "}
+                <span className="gradient-text">AI Agent Skills</span>
               </h1>
 
               <p
                 className="text-lg leading-relaxed mb-8 animate-fade-up-delay-2"
                 style={{ color: "oklch(0.70 0.015 265)", maxWidth: "480px" }}
               >
-                Eight-layer static analysis for MCP tools, Claude skills, and agent configurations.
-                Runs entirely offline — no network calls at scan time. Built for enterprise security teams
-                who need a verifiable gate before deploying AI agent configurations.
+                Three open-source tools that cover the full lifecycle of AI skill security: static analysis to catch malicious patterns before deployment, quality linting to enforce best practices, and live behavioural tracing to verify what a skill actually does at runtime.
               </p>
 
               {/* Install snippet */}
@@ -208,7 +208,7 @@ export default function Home() {
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs" style={{ color: "oklch(0.50 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
-                    Quick install
+                    skillscan-security
                   </span>
                   <CopyButton text={INSTALL_CMD} />
                 </div>
@@ -276,6 +276,77 @@ export default function Home() {
           {/* Mobile compact terminal — shown below CTAs on small screens */}
           <div className="lg:hidden mt-8 animate-fade-up-delay-2">
             <TerminalScan compact />
+          </div>
+        </div>
+      </section>
+
+      {/* ── SUITE CARDS ── */}
+      <section className="py-16" style={{ background: "oklch(0.11 0.022 265)" }}>
+        <div className="container">
+          <p className="text-center text-xs font-semibold uppercase tracking-widest mb-10" style={{ color: "oklch(0.50 0.015 265)", fontFamily: "'Space Grotesk', sans-serif" }}>
+            Three tools. One security lifecycle.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Scan */}
+            <a href="/" className="group rounded-xl p-6 transition-all duration-200 no-underline" style={{ background: "oklch(0.14 0.025 265)", border: "1px solid oklch(0.58 0.22 290 / 0.20)" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "oklch(0.58 0.22 290 / 0.45)"; (e.currentTarget as HTMLElement).style.background = "oklch(0.16 0.028 265)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "oklch(0.58 0.22 290 / 0.20)"; (e.currentTarget as HTMLElement).style.background = "oklch(0.14 0.025 265)"; }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: "oklch(0.58 0.22 290 / 0.15)", border: "1px solid oklch(0.58 0.22 290 / 0.30)" }}>
+                  <span className="text-lg">🔍</span>
+                </div>
+                <div>
+                  <div className="text-sm font-bold" style={{ color: "oklch(0.90 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>skillscan-security</div>
+                  <div className="text-xs" style={{ color: "oklch(0.58 0.22 290)" }}>Static Analysis</div>
+                </div>
+              </div>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: "oklch(0.60 0.015 265)" }}>140+ rules covering MCP tool poisoning, prompt injection, credential exfiltration, supply chain attacks, and chain detection. SARIF output, CI/CD native.</p>
+              <div className="flex flex-wrap gap-2">
+                {["pip install skillscan-security", "SARIF", "GitHub Actions"].map((tag) => (
+                  <span key={tag} className="text-xs px-2 py-0.5 rounded" style={{ background: "oklch(0.58 0.22 290 / 0.12)", color: "oklch(0.72 0.18 290)", fontFamily: "'JetBrains Mono', monospace" }}>{tag}</span>
+                ))}
+              </div>
+            </a>
+            {/* Lint */}
+            <a href="/lint" className="group rounded-xl p-6 transition-all duration-200 no-underline" style={{ background: "oklch(0.14 0.025 265)", border: "1px solid oklch(0.70 0.15 160 / 0.20)" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "oklch(0.70 0.15 160 / 0.45)"; (e.currentTarget as HTMLElement).style.background = "oklch(0.16 0.028 265)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "oklch(0.70 0.15 160 / 0.20)"; (e.currentTarget as HTMLElement).style.background = "oklch(0.14 0.025 265)"; }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: "oklch(0.70 0.15 160 / 0.15)", border: "1px solid oklch(0.70 0.15 160 / 0.30)" }}>
+                  <span className="text-lg">📐</span>
+                </div>
+                <div>
+                  <div className="text-sm font-bold" style={{ color: "oklch(0.90 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>skillscan-lint</div>
+                  <div className="text-xs" style={{ color: "oklch(0.70 0.15 160)" }}>Quality Linting</div>
+                </div>
+              </div>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: "oklch(0.60 0.015 265)" }}>Enforces skill quality standards: schema validation, description completeness, permission hygiene, and structural best practices. Runs in seconds.</p>
+              <div className="flex flex-wrap gap-2">
+                {["pip install skillscan-lint", "pre-commit", "JSON Schema"].map((tag) => (
+                  <span key={tag} className="text-xs px-2 py-0.5 rounded" style={{ background: "oklch(0.70 0.15 160 / 0.12)", color: "oklch(0.70 0.15 160)", fontFamily: "'JetBrains Mono', monospace" }}>{tag}</span>
+                ))}
+              </div>
+            </a>
+            {/* Trace */}
+            <a href="/trace" className="group rounded-xl p-6 transition-all duration-200 no-underline" style={{ background: "oklch(0.14 0.025 265)", border: "1px solid oklch(0.72 0.19 45 / 0.20)" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "oklch(0.72 0.19 45 / 0.45)"; (e.currentTarget as HTMLElement).style.background = "oklch(0.16 0.028 265)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "oklch(0.72 0.19 45 / 0.20)"; (e.currentTarget as HTMLElement).style.background = "oklch(0.14 0.025 265)"; }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: "oklch(0.72 0.19 45 / 0.15)", border: "1px solid oklch(0.72 0.19 45 / 0.30)" }}>
+                  <span className="text-lg">🔬</span>
+                </div>
+                <div>
+                  <div className="text-sm font-bold" style={{ color: "oklch(0.90 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>skillscan-trace</div>
+                  <div className="text-xs" style={{ color: "oklch(0.72 0.19 45)" }}>Behavioural Tracing</div>
+                </div>
+              </div>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: "oklch(0.60 0.015 265)" }}>Runs your skill against a live LLM in a canary MCP environment with 14 instrumented tools. Watches what the skill actually does, not just what it claims.</p>
+              <div className="flex flex-wrap gap-2">
+                {["pip install skillscan-trace", "BYOK", "Ollama"].map((tag) => (
+                  <span key={tag} className="text-xs px-2 py-0.5 rounded" style={{ background: "oklch(0.72 0.19 45 / 0.12)", color: "oklch(0.72 0.19 45)", fontFamily: "'JetBrains Mono', monospace" }}>{tag}</span>
+                ))}
+              </div>
+            </a>
           </div>
         </div>
       </section>
