@@ -684,7 +684,7 @@ skillscan-trace run ./SKILL.md \\
                 className="text-xs font-bold px-2 py-0.5 rounded"
                 style={{ background: "oklch(0.65 0.18 200 / 0.12)", color: "oklch(0.65 0.18 200)", border: "1px solid oklch(0.65 0.18 200 / 0.25)" }}
               >
-                Coming in v0.3
+                Available — v1
               </span>
             </div>
             <p className="text-sm mb-6" style={{ color: "oklch(0.60 0.012 265)" }}>
