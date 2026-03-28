@@ -84,7 +84,6 @@ const ruleCategories = [
   { prefix: "SUP", label: "Supply Chain", count: 22, color: "oklch(0.68 0.16 80)" },
   { prefix: "SE", label: "Social Engineering", count: 3, color: "oklch(0.62 0.20 340)" },
   { prefix: "DEF", label: "Defense Evasion", count: 1, color: "oklch(0.60 0.18 240)" },
-  { prefix: "EVASION", label: "Evasion Techniques", count: 1, color: "oklch(0.60 0.18 160)" },
   { prefix: "EXEC", label: "Execution Hijack", count: 1, color: "oklch(0.63 0.20 15)" },
   { prefix: "GR", label: "Graph Rules", count: 1, color: "oklch(0.65 0.15 180)" },
   { prefix: "OBF", label: "Obfuscation", count: 5, color: "oklch(0.58 0.18 270)" },
