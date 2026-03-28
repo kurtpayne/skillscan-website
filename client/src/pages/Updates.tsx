@@ -46,7 +46,7 @@ function parseUpdates(markdown: string): UpdateEntry[] {
     const version = versionMatch ? versionMatch[1] : date;
 
     // Extract rule IDs
-    const ruleMatches = section.match(/\b(MAL|ABU|EXF|INJ|CHN|CAP|PINJ|SUP|EXEC|SE)-\d{3}\b/g) || [];
+    const ruleMatches = section.match(/\b(MAL|ABU|EXF|INJ|CHN|CAP|PINJ|SUP|EXEC|SE|DEF|OBF|PSV|GR|EVASION)-\d{3}\b/g) || [];
     const rules = Array.from(new Set(ruleMatches));
 
     // Extract categories
@@ -89,6 +89,11 @@ const CATEGORY_COLORS: Record<string, string> = {
   SUP: "oklch(0.68 0.16 80)",
   EXEC: "oklch(0.60 0.20 320)",
   SE: "oklch(0.62 0.20 340)",
+  DEF: "oklch(0.60 0.18 240)",
+  OBF: "oklch(0.58 0.18 270)",
+  PSV: "oklch(0.67 0.16 60)",
+  GR: "oklch(0.65 0.15 180)",
+  EVASION: "oklch(0.60 0.18 160)",
 };
 
 function RuleBadge({ rule }: { rule: string }) {
