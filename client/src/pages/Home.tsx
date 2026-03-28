@@ -289,8 +289,8 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { value: `${ruleCount}+`, label: "Detection Rules" },
-              { value: "0.9752", label: "ML Model F1" },
-              { value: "1.89%", label: "False Positive Rate" },
+              { value: "0.9787", label: "ML Model F1" },
+              { value: "2.18%", label: "False Positive Rate" },
               { value: "0", label: "Network Calls" },
             ].map((stat, i) => (
               <div
@@ -545,7 +545,7 @@ export default function Home() {
                   { n: "3", mech: "Python AST data-flow", detail: "Source-to-sink taint analysis (.py files only)", catches: "Secret → decode → exec/network flows in embedded Python scripts", accent: "oklch(0.70 0.15 160)" },
                   { n: "4", mech: "Stemmed feature scorer", detail: "Porter-stemmed axis scoring (prompt injection + social engineering)", catches: "Multi-sentence intent distributed across text — jailbreaks, credential harvest instructions not caught by single-line rules", accent: "oklch(0.65 0.18 200)" },
                   { n: "5", mech: "Skill graph analysis", detail: "Graph-based PSV rules", catches: "Tool drift, circular dependencies, permission scope violations", accent: "oklch(0.68 0.16 80)" },
-                  { n: "6", mech: "ML classifier", detail: "DeBERTa-v3 + LoRA  ·  F1 0.9752  ·  FPR 1.89%", catches: "Novel phrasing, obfuscated attacks, and semantic patterns no rule or scorer can express", accent: "oklch(0.78 0.18 290)", highlight: true },
+                  { n: "6", mech: "ML classifier", detail: "DeBERTa-v3 + LoRA  ·  F1 0.9787  ·  FPR 2.18%", catches: "Novel phrasing, obfuscated attacks, and semantic patterns no rule or scorer can express", accent: "oklch(0.78 0.18 290)", highlight: true },
                   { n: "7", mech: "Vuln DB matching", detail: "Dependency scan (23 Python pkgs, 4 npm pkgs, 111 versions)", catches: "Known-vulnerable package versions in requirements.txt / package.json", accent: "oklch(0.60 0.20 320)" },
                   { n: "8", mech: "ClamAV", detail: "Signature-based AV scan (optional, via --clamav)", catches: "Known malware signatures in embedded script files (.py, .sh, .js…)", accent: "oklch(0.62 0.20 340)" },
                 ].map((row) => (

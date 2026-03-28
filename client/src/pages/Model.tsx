@@ -368,12 +368,12 @@ export default function Model() {
                 </div>
                 <div className="space-y-1">
                   {[
-                    "mcp_server_impersonation",
-                    "organic_mal047 (Claude hooks RCE)",
-                    "se_git_config_harvest",
-                    "jb_jb07_035, jb_jb08_037",
-                    "pi24_rss_indirect_injection",
-                    "pi37_markdown_injection",
+                    "jb09 (metadata field injection) — v10 training added",
+                    "jb10 (obfuscated encoding) — v10 training added",
+                    "pi42 (markdown link injection) — v10 training added",
+                    "pi50/pi24 (RSS/indirect injection) — v10 training added",
+                    "mcp_server_impersonation — 15 examples (was 10)",
+                    "malware_pattern C2/persistence — 13 examples (was 8)",
                   ].map((a) => (
                     <div key={a} className="text-xs" style={{ color: "oklch(0.60 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
                       · {a}
@@ -381,7 +381,7 @@ export default function Model() {
                   ))}
                 </div>
                 <div className="mt-3 text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
-                  Each has fewer than 15 training examples. Primary targets for the next corpus expansion.
+                  v10 corpus expansion added 30 targeted examples across these archetypes. Next training run will evaluate recall improvement.
                 </div>
               </div>
             </div>
