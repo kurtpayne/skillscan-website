@@ -410,3 +410,63 @@ Corpus-sync workflow inputs: `force_retrain` (string "true"/"false") — note: N
 | `~/skills/skillscan-intel-update/SKILL.md` | Intel DB update skill |
 | `~/skillscan-security/src/skillscan/data/rules/default.yaml` | All 137 static rules |
 | `~/.skillscan/rules/default.yaml` | User rules dir (must be kept in sync with bundled) |
+
+---
+## CRITICAL: How the Installed Package Resolves (Editable Install)
+
+**The installed `skillscan` package always resolves to `/home/ubuntu/skillscan-security/src/`, NOT `/tmp/sec-fix/src/` or any other working copy.**
+
+The editable install (`pip install -e .`) was run from `~/skillscan-security`. This means:
+- `import skillscan.rules` → `/home/ubuntu/skillscan-security/src/skillscan/rules.py`
+- `importlib.resources.files('skillscan.data.rules')` → `/home/ubuntu/skillscan-security/src/skillscan/data/rules/`
+- Running `pytest tests/` without `PYTHONPATH=src` uses the **home repo source**, not the working copy
+
+**Workflow when fixing bugs in a working copy (e.g. /tmp/sec-fix):**
+1. Make changes in the working copy `src/`
+2. Sync changed files to the home repo: `git diff --name-only origin/main | grep "^src/" | while read f; do cp "$f" "/home/ubuntu/skillscan-security/$f"; done`
+3. Sync user-local rules: `cp ~/skillscan-security/src/skillscan/data/rules/default.yaml ~/.skillscan/rules/default.yaml`
+4. Run tests WITHOUT `PYTHONPATH=src` to match CI: `cd /tmp/sec-fix && python3 -m pytest tests/ -q`
+5. Commit from the working copy and push
+
+**The `~/.skillscan/rules/default.yaml` user-local file overrides bundled rules** (last-writer-wins in `_merge_rulepacks`). Always keep it in sync with the bundled rules after any `default.yaml` change.
+
+---
+## CRITICAL: Multi-line Pattern Matching in the Scanner
+
+**The scanner tests rules line-by-line by default.** In `analysis.py`:
+```python
+for line_no, line in enumerate(analysis_text.splitlines(), 1):
+    if rule.pattern.search(line):
+```
+
+Patterns using `[\s\S]` or `(?s)`/`(?is)` flags require multi-line text — they will NEVER fire in line-by-line mode even if the file content is correct.
+
+**The fix:** `StaticRule` and `CompiledStaticRule` have a `multiline: bool = False` field. Set `multiline: true` in `default.yaml` for any rule whose pattern contains `[\s\S]` or inline `(?s)`. The scanner uses full-text matching for those rules.
+
+**Rules currently requiring `multiline: true`:** MAL-008, SUP-009, EXF-013, MAL-015, MAL-017, ABU-004, MAL-023, MAL-024
+
+When adding new rules: if the pattern contains `[\s\S]` or `(?s)`, you MUST add `multiline: true` or it will silently never fire in CI.
+
+---
+## CRITICAL: Test Isolation — lru_cache Poisoning
+
+`load_compiled_builtin_rulepack` uses `@lru_cache(maxsize=3)`. Stale cache from earlier tests causes later tests to get wrong rules. The `tests/conftest.py` autouse fixture clears it before and after each test. Do not remove this fixture.
+
+---
+## CRITICAL: Pattern Update Skill CI Gate
+
+Before opening any PR from the pattern-update skill:
+1. Sync source files to home repo (see above)
+2. Run `pytest tests/ -q` — must be green
+3. For every new showcase: run `skillscan scan <showcase_dir> --policy-profile strict` and confirm expected rule IDs appear
+4. Only then open the PR
+
+Failure to do this caused the 8-hour CI debugging session on 2026-03-27.
+
+---
+## CRITICAL: Cisco Recall CI Job — bash -e Exit Code
+
+`skillscan scan` exits 1 when verdict is BLOCK. Under `bash -e` this aborts the script. All scan calls in CI use `|| true`:
+```bash
+OUTPUT=$(skillscan scan "$FIXTURE" --policy-profile strict 2>&1) || true
+```

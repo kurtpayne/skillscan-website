@@ -968,6 +968,21 @@ skillscan rule test --rules my-rules.yaml --fixture test.md
                 <SubTitle>Run with custom rules</SubTitle>
                 <CodeBlock code="skillscan scan ./skills/ --rules my-rules.yaml" />
 
+                <SubTitle>Make rules permanent (user-local)</SubTitle>
+                <Prose>
+                  Place rule YAML files in <InlineCode>~/.skillscan/rules/</InlineCode> to apply them on every scan
+                  without passing <InlineCode>--rules</InlineCode> each time. Use a filename that does not conflict
+                  with bundled files (<InlineCode>default.yaml</InlineCode>, <InlineCode>ast_flows.yaml</InlineCode>,{" "}
+                  <InlineCode>multilang.yaml</InlineCode>).
+                </Prose>
+                <CodeBlock code={`cp my-rules.yaml ~/.skillscan/rules/corp-rules.yaml\n# Rules are now loaded automatically on every scan`} />
+                <Note>
+                  <strong>Version gating:</strong> If a user-local file shares a filename with a bundled file
+                  (e.g. <InlineCode>default.yaml</InlineCode>) but has an older version string, SkillScan will
+                  skip it and emit a warning. Run <InlineCode>skillscan rules sync</InlineCode> to update, or
+                  rename the file to avoid the conflict.
+                </Note>
+
                 <Note>
                   Custom rules use the same YAML schema as built-in rules. See{" "}
                   <a
