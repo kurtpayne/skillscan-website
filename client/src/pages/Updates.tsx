@@ -8,8 +8,10 @@ import { ExternalLink, RefreshCw, AlertTriangle, Shield, Zap, GitCommit, Calenda
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const GITHUB_RAW_URL =
+const PATTERN_UPDATES_URL =
   "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/PATTERN_UPDATES.md";
+const CHANGELOG_URL =
+  "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/CHANGELOG.md";
 
 interface UpdateEntry {
   date: string;
@@ -19,6 +21,7 @@ interface UpdateEntry {
   summary: string;
   rawBlock: string;
   severity: "high" | "medium" | "low";
+  source: "pattern" | "release";
 }
 
 function parseSeverity(block: string): "high" | "medium" | "low" {
@@ -28,48 +31,62 @@ function parseSeverity(block: string): "high" | "medium" | "low" {
   return "low";
 }
 
-function parseUpdates(markdown: string): UpdateEntry[] {
-  // Split on date headers like "## 2026-03-17" or "## 2026-03-17.2"
+function extractRules(text: string): string[] {
+  const m = text.match(/\b(MAL|ABU|EXF|INJ|CHN|CAP|PINJ|SUP|EXEC|SE|DEF|OBF|PSV|GR|EVASION)-\d{3}\b/g) || [];
+  return Array.from(new Set(m));
+}
+
+function parsePatternUpdates(markdown: string): UpdateEntry[] {
   const sections = markdown.split(/\n(?=## \d{4}-\d{2}-\d{2})/);
   const entries: UpdateEntry[] = [];
-
   for (const section of sections) {
-    const dateMatch = section.match(/^## (\d{4}-\d{2}-\d{2}(?:\.\d+)?)/m);
+    const dateMatch = section.match(/^## (\d{4}-\d{2}-\d{2})/m);
     if (!dateMatch) continue;
-
     const date = dateMatch[1];
-
-    // Extract version from rulepack line
     const versionMatch = section.match(/rulepack[:\s]+([0-9.]+)/i) ||
-                         section.match(/version[:\s]+([0-9.]+)/i) ||
                          section.match(/`([0-9]{4}\.[0-9]{2}\.[0-9]{2}(?:\.[0-9]+)?)`/);
     const version = versionMatch ? versionMatch[1] : date;
-
-    // Extract rule IDs
-    const ruleMatches = section.match(/\b(MAL|ABU|EXF|INJ|CHN|CAP|PINJ|SUP|EXEC|SE|DEF|OBF|PSV|GR|EVASION)-\d{3}\b/g) || [];
-    const rules = Array.from(new Set(ruleMatches));
-
-    // Extract categories
-    const catSet = new Set<string>();
-    rules.forEach((r) => catSet.add(r.split("-")[0]));
-    const categories = Array.from(catSet);
-
-    // Extract first paragraph as summary
+    const rules = extractRules(section);
+    const catSet = new Set<string>(); rules.forEach((r) => catSet.add(r.split("-")[0]));
     const lines = section.split("\n").filter((l) => l.trim() && !l.startsWith("#") && !l.startsWith("-"));
     const summary = lines[0]?.trim() || "Pattern update — see details below.";
-
-    entries.push({
-      date,
-      version,
-      rules,
-      categories,
-      summary,
-      rawBlock: section,
-      severity: parseSeverity(section),
-    });
+    entries.push({ date, version, rules, categories: Array.from(catSet), summary, rawBlock: section, severity: parseSeverity(section), source: "pattern" });
   }
+  return entries;
+}
 
-  return entries.slice(0, 20); // Show most recent 20
+function parseChangelog(markdown: string): UpdateEntry[] {
+  const sections = markdown.split(/\n(?=## \[)/);
+  const entries: UpdateEntry[] = [];
+  for (const section of sections) {
+    const headerMatch = section.match(/^## \[([^\]]+)\][^\n]*—[^\n]*(\d{4}-\d{2}-\d{2})/);
+    if (!headerMatch) continue;
+    const version = headerMatch[1];
+    if (version === "Unreleased") continue;
+    const date = headerMatch[2];
+    const rules = extractRules(section);
+    const catSet = new Set<string>(); rules.forEach((r) => catSet.add(r.split("-")[0]));
+    let summary = "";
+    for (const l of section.split("\n")) {
+      const t = l.trim();
+      if (!t || t.startsWith("##") || t.startsWith("[")) continue;
+      if (t.startsWith("-") || t.startsWith("*")) { summary = t.replace(/^[-*]\s*/, "").replace(/\*\*/g, "").replace(/`/g, ""); break; }
+    }
+    if (!summary) summary = `Release v${version}`;
+    const ruleCountMatch = section.match(/(\d+)\s+total rules/);
+    const totalRules = ruleCountMatch ? parseInt(ruleCountMatch[1]) : 0;
+    const sev: "high" | "medium" | "low" = totalRules >= 50 ? "high" : totalRules >= 20 ? "medium" : parseSeverity(section);
+    entries.push({ date, version: `v${version}`, rules, categories: Array.from(catSet), summary, rawBlock: section, severity: sev, source: "release" });
+  }
+  return entries;
+}
+
+function mergeAndSort(a: UpdateEntry[], b: UpdateEntry[]): UpdateEntry[] {
+  return [...a, ...b].sort((x, y) => {
+    const d = y.date.localeCompare(x.date);
+    if (d !== 0) return d;
+    return x.source === "pattern" ? -1 : 1;
+  });
 }
 
 const SEVERITY_STYLES: Record<string, { label: string; bg: string; text: string; border: string }> = {
@@ -132,13 +149,16 @@ function UpdateCard({ entry, index }: { entry: UpdateEntry; index: number }) {
       {/* Header row */}
       <div className="flex flex-wrap items-start gap-3 mb-4">
         <div className="flex items-center gap-2 flex-1 min-w-0">
-          <GitCommit className="w-4 h-4 flex-shrink-0" style={{ color: "oklch(0.58 0.22 290)" }} />
+          <GitCommit className="w-4 h-4 flex-shrink-0" style={{ color: entry.source === "release" ? "oklch(0.70 0.15 160)" : "oklch(0.58 0.22 290)" }} />
           <span
             className="font-mono text-sm font-semibold"
             style={{ color: "oklch(0.85 0.01 265)" }}
           >
             {entry.version}
           </span>
+          {entry.source === "release" && (
+            <span className="text-xs px-1.5 py-0.5 rounded font-mono" style={{ background: "oklch(0.70 0.15 160 / 0.12)", color: "oklch(0.70 0.15 160)", border: "1px solid oklch(0.70 0.15 160 / 0.30)" }}>release</span>
+          )}
         </div>
 
         {/* Severity badge */}
@@ -236,14 +256,21 @@ export default function Updates() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(GITHUB_RAW_URL, { cache: "no-cache" });
-      if (!res.ok) throw new Error(`GitHub returned ${res.status}`);
-      const text = await res.text();
-      const parsed = parseUpdates(text);
-      setEntries(parsed);
+      const [patternRes, changelogRes] = await Promise.all([
+        fetch(PATTERN_UPDATES_URL, { cache: "no-cache" }),
+        fetch(CHANGELOG_URL, { cache: "no-cache" }),
+      ]);
+      const patternText = patternRes.ok ? await patternRes.text() : "";
+      const changelogText = changelogRes.ok ? await changelogRes.text() : "";
+      if (!patternText && !changelogText) throw new Error("Both sources returned errors");
+      const merged = mergeAndSort(
+        patternText ? parsePatternUpdates(patternText) : [],
+        changelogText ? parseChangelog(changelogText) : []
+      );
+      setEntries(merged);
       setLastFetched(new Date());
     } catch (e) {
-      setError("Could not load pattern updates from GitHub. Check your connection or view the file directly.");
+      setError("Could not load updates from GitHub. Check your connection or view the files directly.");
     } finally {
       setLoading(false);
     }
@@ -278,12 +305,12 @@ export default function Updates() {
                 className="text-4xl md:text-5xl font-bold mb-4"
                 style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
               >
-                Detection Rule{" "}
-                <span className="gradient-text">Changelog</span>
+                Release{" "}
+                <span className="gradient-text">History</span>
               </h1>
               <p className="text-lg mb-8" style={{ color: "oklch(0.65 0.012 265)" }}>
-                Live feed of pattern updates to the SkillScan rulepack. Updated automatically
-                as new AI agent attack techniques are identified and confirmed.
+                Full changelog — major releases and granular rulepack updates merged into a
+                single timeline, most recent first.
               </p>
 
               {/* Stats row */}
@@ -320,12 +347,12 @@ export default function Updates() {
               {/* Toolbar */}
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-sm font-medium" style={{ color: "oklch(0.55 0.012 265)" }}>
-                  {loading ? "Loading..." : `${entries.length} updates — most recent first`}
+                  {loading ? "Loading..." : `${entries.length} entries — most recent first`}
                 </h2>
                 <div className="flex items-center gap-4">
                   {lastFetched && (
-                    <span className="text-xs font-mono" style={{ color: "oklch(0.40 0.012 265)" }}>
-                      fetched {lastFetched.toLocaleTimeString()}
+                    <span className="text-xs font-mono" style={{ color: "oklch(0.50 0.012 265)" }}>
+                      {entries.length} entries · fetched {lastFetched.toLocaleTimeString()}
                     </span>
                   )}
                   <button
