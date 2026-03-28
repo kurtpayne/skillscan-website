@@ -171,6 +171,24 @@ export default function Trace() {
         </div>
         <div className="container relative">
           <div className="max-w-3xl mx-auto text-center">
+            {/* Suite breadcrumb */}
+            <div className="inline-flex items-center gap-1 mb-8 p-1 rounded-xl" style={{ background: "oklch(0.14 0.025 265)", border: "1px solid oklch(0.22 0.025 265)" }}>
+              <a href="/" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150" style={{ color: "oklch(0.55 0.015 265)" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "oklch(0.55 0.015 265)"; }}>
+                🔍 Scan
+              </a>
+              <span className="text-xs" style={{ color: "oklch(0.30 0.015 265)" }}>›</span>
+              <a href="/lint" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150" style={{ color: "oklch(0.55 0.015 265)" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "oklch(0.70 0.15 160)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "oklch(0.55 0.015 265)"; }}>
+                📐 Lint
+              </a>
+              <span className="text-xs" style={{ color: "oklch(0.30 0.015 265)" }}>›</span>
+              <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "oklch(0.72 0.19 45 / 0.15)", color: "oklch(0.72 0.19 45)" }}>
+                🔬 Trace
+              </span>
+            </div>
             <div
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-6"
               style={{ background: "oklch(0.58 0.22 290 / 0.12)", border: "1px solid oklch(0.58 0.22 290 / 0.25)", color: "oklch(0.78 0.18 290)" }}

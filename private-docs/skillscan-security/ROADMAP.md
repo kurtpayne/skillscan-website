@@ -1,7 +1,7 @@
 # SkillScan Roadmap
 
-> **Last updated:** 2026-03-26
-> **Version:** 0.3.2
+> **Last updated:** 2026-03-28
+> **Version:** 0.3.3
 >
 > SkillScan was designed and directed by Kurt Payne and built with [Manus](https://manus.im).
 
@@ -958,7 +958,7 @@ A malicious skill that is 95% identical to a popular trusted skill but with one 
 | Public scan feed | scaffolded | daily cron, 50+ skills (M14) |
 | SaaS scanner | not started | post-v1.0, when quality bar met |
 
-### Milestone Priority Order (updated 2026-03-27)
+### Milestone Priority Order (updated 2026-03-28)
 
 M5, M6, M7, M7.5, M8, M10, M10.5, M10.7, M10.8, M10.9, M10.10, M11, M11.1, M12, M13, M14.0, M14 are complete. Priority order for remaining work:
 
@@ -984,9 +984,11 @@ M5, M6, M7, M7.5, M8, M10, M10.5, M10.7, M10.8, M10.9, M10.10, M11, M11.1, M12, 
 | **11** | **Trace-B4 — Multi-model trace** | Run against 2+ models via OpenRouter, report agreement/disagreement. |
 | **12** | **Trace-B5 — `--remote` flag + `--remote-host` override** | CLI submits to hosted or self-hosted server. `source_url` URL-reachability check is the only auth for free OSS tier. |
 | **13** | **M10.12 — Feedback Mechanism** | FP/FN GitHub issue templates. Link from website + CLI output. |
-| **14** | **M10.6 — Organic Eval Pipeline** | Closes feedback loop between pattern-updater and model. |
-| **15** | **M9 — Editor Extensions** | Distribution; lower priority than product quality. |
-| **16** | **M15 — skillscan-core** | Architectural; not blocking any user feature. |
+| **14** | **P4 — analysis.py refactor** ✅ | Decomposed 1404-line analysis.py into analysis_pkg/_archive.py, _text.py, _scanner.py with compatibility shim. All tests pass. Merged 2026-03-28. |
+| **15** | **P10 — Website: Dedicated Domain** | skillscan-website currently hosts pages for both `skillscan` (security scanner) and `skillscan-lint` (linter). Dedicate the website to the full SkillScan suite: update nav, homepage hero, and meta copy to present both tools as first-class products. Add a `/lint` landing section to the homepage, ensure `/lint` and `/trace` are in the primary nav, and update the footer to list all three tools (scan, lint, trace). |
+| **16** | **M10.6 — Organic Eval Pipeline** | Closes feedback loop between pattern-updater and model. |
+| **17** | **M9 — Editor Extensions** | Distribution; lower priority than product quality. |
+| **18** | **M15 — skillscan-core** | Architectural; not blocking any user feature. |
 | **❌ DROPPED** | ~~**Private repo scanning**~~ | Requires GitHub App or PAT (security liability). Enterprise path is self-hosted Docker image (`--remote-host`). Do not build until explicitly needed. |
 | **— (Phase C)** | **Trace-C1/C2 — Hosted Reporting (Fly.io + R2 + Workers)** | Deferred. Fly Machines (~$0.000132/trace) + CF R2 (free tier ≤ 10GB) + CF Workers (submission API + SHA cache keyed on skill_sha256 + model_id). Free for public OSS repos (URL-reachability check, no account). |
 | **— (Phase C)** | **Trace-C3 — GitHub OIDC for Action** | Verify public-repo claims from GitHub JWKS. No pre-registration. |
