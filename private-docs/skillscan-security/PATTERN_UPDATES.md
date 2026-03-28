@@ -1,3 +1,48 @@
+## 2026-03-28 — Prowler EC2 Tag Injection, IDPI CSS Suppression & VSCode Live Preview Exfiltration
+
+**Sources:**
+- [Unit 42 — AI Agent Prompt Injection via External Data Fields](https://unit42.paloaltonetworks.com/ai-agent-prompt-injection/)
+- [InfoSec Writeups — Prompt Injection Grew Up: Now It Moves Laterally](https://infosecwriteups.com/prompt-injection-grew-up-now-it-moves-laterally-7530960abec5)
+- [Trail of Bits — VSCode Extension Escape Vulnerability](https://blog.trailofbits.com/2023/02/21/vscode-extension-escape-vulnerability/)
+
+**Event Summary:** Three new detection rules, four new IOC domains, and three new vulnerable package versions were added. New coverage for indirect prompt injection via EC2 instance metadata tags (Prowler/Open Mercato attack surface), web-based IDPI payload engineering using CSS suppression and zero-sized fonts, and local file exfiltration via VSCode Live Preview and SARIF viewer extensions. Intel DB updated with TeamPCP C2 domain `models.litellm.cloud`, typosquat domain `checkmarx.zone`, supply chain lure domain `reviewerpressus.mycartpanda.com`, and VSCode extension exfil scheme `file+.vscode-resource.vscode-cdn.net`. Vulnerable packages added: litellm 1.82.7–1.82.8 (critical), telnyx 2.0.0 (critical), cline 2.3.0 npm (critical).
+
+**New Patterns Added:**
+
+### PINJ-017: Indirect prompt injection via EC2 tags or CRM comments (Prowler/Open Mercato)
+- **Category:** instruction_abuse
+- **Severity:** high
+- **Confidence:** 0.85
+- **Pattern:** Detects Prowler AI agent processing EC2 metadata tags or Open Mercato CRM order comments that contain prompt injection payloads (ignore/override/execute instructions).
+- **Justification:** Unit 42 documented AI agents such as Prowler consuming untrusted EC2 instance metadata tags and CRM order comments as attack surfaces for indirect prompt injection, enabling lateral movement and credential exfiltration.
+
+### EVASION-005: Web-Based Indirect Prompt Injection (IDPI) payload engineering
+- **Category:** defense_evasion
+- **Severity:** medium
+- **Confidence:** 0.80
+- **Pattern:** Detects CSS suppression techniques (zero-sizing, display:none, color:transparent, opacity:0) used to hide IDPI payloads from human users while keeping them readable by LLMs.
+- **Justification:** Attackers use CSS/HTML obfuscation to embed invisible prompt injection payloads in web pages consumed by AI agents, bypassing human review while still influencing LLM behavior.
+
+### EXF-021: VSCode Live Preview and SARIF viewer local file exfiltration
+- **Category:** exfiltration
+- **Severity:** high
+- **Confidence:** 0.90
+- **Pattern:** Detects exploitation of VSCode Live Preview path traversal and SARIF viewer HTML injection vulnerabilities via vscode-resource.vscode-cdn.net scheme, localResourceRoots bypass, and srcdoc iframe techniques.
+- **Justification:** Trail of Bits documented HTML/JS injection and path traversal vulnerabilities in VSCode extensions (Live Preview, SARIF viewer) that allow local file exfiltration outside the workspace root.
+
+**IOC Updates:**
+- Added 4 domains: models.litellm.cloud (TeamPCP C2), checkmarx.zone (TeamPCP typosquat), reviewerpressus.mycartpanda.com (supply chain lure), file+.vscode-resource.vscode-cdn.net (VSCode exfil)
+
+**Vulnerability Database Updates:**
+- litellm 1.82.7–1.82.8: PYPI-LITELLM-2026-03, critical, fixed in 1.82.9
+- telnyx 2.0.0: PYPI-TELNYX-2026-03, critical, fixed in 2.0.1
+- cline 2.3.0 (npm): NPM-CLINE-2026-03, critical, fixed in 2.3.1
+
+**Corpus Updates:**
+- Added 3 held-out eval samples to `held_out_eval/` in the corpus repo
+
+---
+
 ## 2026-03-26 — Ghost Campaign npm Packages, TeamPCP VS Code Extension Compromise & React Native Account Takeover
 
 **Sources:**
