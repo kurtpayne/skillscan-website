@@ -118,11 +118,11 @@ export default function Home() {
         const verMatch = text.match(/^version:\s*["']?([\d.]+)["']?/m);
         if (verMatch) setRulepackVersion(verMatch[1]);
         // Count all rules across sections:
-        // static_rules and chain_rules use '- id:' (78 rules)
-        // action_patterns (19) and capability_patterns (3) are dicts without id lines
-        // Total = 100; use id-line count + 22 for the dict-based sections
+        // static_rules and chain_rules use '- id:' (134 rules)
+        // capability_patterns are dicts without id lines (3 entries)
+        // action_patterns section is empty; offset = 3
         const ids = text.match(/^- id: /gm);
-        if (ids) setRuleCount(ids.length + 22);
+        if (ids) setRuleCount(ids.length + 3);
       })
       .catch(() => { /* keep defaults on error */ });
   }, []);
