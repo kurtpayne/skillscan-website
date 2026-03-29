@@ -1285,6 +1285,32 @@ Badges are the primary distribution mechanism for Tier 0 and Tier 1. A few desig
 
 ## Backlog — Tooling
 
+### CodeQL: Clear-text logging of sensitive data — `scripts/fuzzer_tracer_pipeline.py:118`
+
+**Finding:** CodeQL rule `py/clear-text-logging-sensitive-data` (severity: Error) flagged line 118 of `scripts/fuzzer_tracer_pipeline.py`. The expression `" ".join(cmd)` is passed to `log.info(...)`. Because `cmd` is built from `["--api-key", api_key]` (line 116), the API key is logged in clear text. Affected branches: `main`, `chore/pattern-update-20260322-v2`, `chore/pattern-update-20260324-0001`, `chore/pattern-update-20260325-0001`. First detected last week.
+
+**Fix:** Redact the API key before logging:
+```python
+def _redact_cmd(cmd: list[str]) -> str:
+    out, skip = [], False
+    for tok in cmd:
+        if skip:
+            out.append("***"); skip = False
+        elif tok == "--api-key":
+            out.append(tok); skip = True
+        else:
+            out.append(tok)
+    return " ".join(out)
+
+log.info("[%s] Running fuzzer: %s", strategy, _redact_cmd(cmd))
+```
+
+**Priority:** Medium — internal script only, but API key could appear in CI logs if the workflow runs with a real key. Fix in next code-quality pass.
+
+**Source:** CodeQL GHAS alert, identified during 2026-03-28 audit.
+
+---
+
 ### `scripts/sync-website-rules.py` — Deterministic website sync script
 
 **Problem:** The pattern update skill currently uses an LLM to edit `Rules.tsx`, `Home.tsx`, and `TerminalScan.tsx` when new rules are added. This is fragile — the LLM can drop categories, miscalculate counts, or produce diffs that conflict with in-flight Manus work on the website repo.
