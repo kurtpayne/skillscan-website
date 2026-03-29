@@ -1,0 +1,600 @@
+{
+  "generated_at": "2026-03-29T00:39:17.317517+00:00",
+  "skillscan_version": "0.8.0",
+  "entry_count": 19,
+  "block_count": 12,
+  "allow_count": 4,
+  "error_count": 0,
+  "unexpected_count": 2,
+  "entries": [
+    {
+      "id": "organic_mal045_stoatwaffle_vscode",
+      "demo_title": "VS Code Theme Installer (Stoatwaffle Malware)",
+      "demo_description": "Malicious VS Code extension masquerading as a theme installer; deploys Stoatwaffle RAT via WebSocket C2.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-045",
+      "reference": "https://www.cryptika.com/waterplum-deploys-new-stoatwaffle-malware-in-vscode-based-supply-chain-campaign/",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-03-29T00:38:34.651717+00:00"
+    },
+    {
+      "id": "organic_mal046_cursorjack_deeplink",
+      "demo_title": "Cursor IDE Deep Link Handler (CursorJack)",
+      "demo_description": "Exploits Cursor IDE deep-link handler to execute arbitrary commands via crafted cursor:// URIs.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-046",
+      "reference": "https://www.bleepingcomputer.com/news/security/cursorjacking-attack-exploits-cursor-ide-deep-links/",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "critical",
+      "findings_count": 4,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Download-and-execute chain",
+          "severity": "critical",
+          "confidence": 0.95
+        },
+        {
+          "rule_id": "",
+          "title": "IDE deeplink MCP server install abuse",
+          "severity": "high",
+          "confidence": 0.88
+        },
+        {
+          "rule_id": "",
+          "title": "CursorJack-style MCP deeplink staged payload",
+          "severity": "critical",
+          "confidence": 0.9
+        },
+        {
+          "rule_id": "",
+          "title": "Download + Execute chain",
+          "severity": "critical",
+          "confidence": 0.95
+        }
+      ],
+      "scanned_at": "2026-03-29T00:38:36.922479+00:00"
+    },
+    {
+      "id": "organic_mal047_claude_hooks_rce",
+      "demo_title": "Claude Desktop Hook RCE",
+      "demo_description": "Abuses Claude Desktop's hooks system to achieve RCE by injecting commands into the hooks configuration.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-047",
+      "reference": "https://embracethered.com/blog/posts/2025/claude-desktop-rce-via-hooks/",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "critical",
+      "findings_count": 5,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Download-and-execute chain",
+          "severity": "critical",
+          "confidence": 0.95
+        },
+        {
+          "rule_id": "",
+          "title": "Claude Code project MCP auto-approval marker",
+          "severity": "high",
+          "confidence": 0.84
+        },
+        {
+          "rule_id": "",
+          "title": "Claude Code hooks RCE via project settings",
+          "severity": "critical",
+          "confidence": 0.88
+        },
+        {
+          "rule_id": "",
+          "title": "Download + Execute chain",
+          "severity": "critical",
+          "confidence": 0.95
+        },
+        {
+          "rule_id": "",
+          "title": "Secret access + Network exfiltration chain",
+          "severity": "critical",
+          "confidence": 0.95
+        }
+      ],
+      "scanned_at": "2026-03-29T00:38:39.210832+00:00"
+    },
+    {
+      "id": "organic_mal048_langflow_rce",
+      "demo_title": "LangFlow RCE (CVE-2025-3248)",
+      "demo_description": "Exploits unauthenticated code execution endpoint in LangFlow to run arbitrary Python.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-048",
+      "reference": "https://nvd.nist.gov/vuln/detail/CVE-2025-3248",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "critical",
+      "findings_count": 2,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Langflow unauthenticated RCE via build_public_tmp endpoint",
+          "severity": "critical",
+          "confidence": 0.87
+        },
+        {
+          "rule_id": "",
+          "title": "pip install in skill body with non-standard or suspicious package name",
+          "severity": "medium",
+          "confidence": 0.82
+        }
+      ],
+      "scanned_at": "2026-03-29T00:38:41.539970+00:00"
+    },
+    {
+      "id": "organic_mal049_litellm_pth_persistence",
+      "demo_title": "LiteLLM .pth Persistence (TeamPCP)",
+      "demo_description": "TeamPCP supply chain attack plants a .pth file during LiteLLM install for persistent code execution.",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "MAL-049",
+      "reference": "https://securitylabs.datadoghq.com/articles/litellm-compromised-pypi-teampcp-supply-chain-campaign/",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "critical",
+      "findings_count": 5,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "GitHub Actions credential stealer with Runner.Worker memory harvesting",
+          "severity": "critical",
+          "confidence": 0.88
+        },
+        {
+          "rule_id": "",
+          "title": "pip install in skill body with non-standard or suspicious package name",
+          "severity": "medium",
+          "confidence": 0.82
+        },
+        {
+          "rule_id": "",
+          "title": "LiteLLM .pth file persistence and sysmon backdoor (TeamPCP)",
+          "severity": "critical",
+          "confidence": 0.9
+        },
+        {
+          "rule_id": "",
+          "title": "Compromised LiteLLM package version reference",
+          "severity": "critical",
+          "confidence": 0.92
+        },
+        {
+          "rule_id": "",
+          "title": "Secret access + Network exfiltration chain",
+          "severity": "critical",
+          "confidence": 0.95
+        }
+      ],
+      "scanned_at": "2026-03-29T00:38:43.921821+00:00"
+    },
+    {
+      "id": "organic_mal050_ghost_campaign_npm",
+      "demo_title": "Ghost Campaign npm RAT (react-performance-suite)",
+      "demo_description": "Malicious npm packages using fake install logs to hide a RAT that steals cryptocurrency wallets.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-050",
+      "reference": "https://thehackernews.com/2026/03/ghost-campaign-uses-7-npm-packages-to.html",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "high",
+      "findings_count": 1,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Ghost Campaign malicious npm packages (sudo phishing RAT)",
+          "severity": "high",
+          "confidence": 0.9
+        }
+      ],
+      "scanned_at": "2026-03-29T00:38:46.207060+00:00"
+    },
+    {
+      "id": "organic_pinj007_mcp_sampling_exfil",
+      "demo_title": "MCP Sampling Context Exfiltration",
+      "demo_description": "Abuses MCP sampling API to exfiltrate conversation context to an attacker-controlled endpoint.",
+      "label": "injection",
+      "archetype": "prompt_injection",
+      "rule_id": "PINJ-007",
+      "reference": "",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "high",
+      "findings_count": 3,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "MCP sampling-based context exfiltration",
+          "severity": "high",
+          "confidence": 0.82
+        },
+        {
+          "rule_id": "",
+          "title": "Local semantic prompt-injection intent pattern",
+          "severity": "medium",
+          "confidence": 0.68
+        },
+        {
+          "rule_id": "",
+          "title": "Secret access + Network exfiltration chain",
+          "severity": "critical",
+          "confidence": 0.95
+        }
+      ],
+      "scanned_at": "2026-03-29T00:38:48.492201+00:00"
+    },
+    {
+      "id": "organic_pinj015_prompt_poaching_extension",
+      "demo_title": "Prompt Poaching Browser Extension",
+      "demo_description": "Browser extension that intercepts and exfiltrates LLM prompts before they reach the model.",
+      "label": "injection",
+      "archetype": "prompt_injection",
+      "rule_id": "PINJ-015",
+      "reference": "",
+      "verdict": "WARN",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "high",
+      "findings_count": 1,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Prompt poaching via malicious browser extension installation",
+          "severity": "high",
+          "confidence": 0.85
+        }
+      ],
+      "scanned_at": "2026-03-29T00:38:50.793766+00:00"
+    },
+    {
+      "id": "organic_sup016_mcp_server_cmd_injection",
+      "demo_title": "MCP Server Command Injection",
+      "demo_description": "Compromised MCP server package injects shell commands into tool responses.",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-016",
+      "reference": "",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "critical",
+      "findings_count": 4,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Download-and-execute chain",
+          "severity": "critical",
+          "confidence": 0.95
+        },
+        {
+          "rule_id": "",
+          "title": "MCP server command injection via unsanitized Git parameters",
+          "severity": "high",
+          "confidence": 0.85
+        },
+        {
+          "rule_id": "",
+          "title": "Vulnerable MCP server package with command injection",
+          "severity": "high",
+          "confidence": 0.85
+        },
+        {
+          "rule_id": "",
+          "title": "Download + Execute chain",
+          "severity": "critical",
+          "confidence": 0.95
+        }
+      ],
+      "scanned_at": "2026-03-29T00:38:53.061205+00:00"
+    },
+    {
+      "id": "organic_sup017_checkmarx_actions",
+      "demo_title": "Checkmarx GitHub Actions Supply Chain Attack",
+      "demo_description": "Compromised Checkmarx GitHub Actions workflow exfiltrates CI secrets via environment variable injection.",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-017",
+      "reference": "https://unit42.paloaltonetworks.com/checkmarx-github-actions-supply-chain-attack/",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "high",
+      "findings_count": 5,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "pull_request_target workflow using unpinned third-party action ref",
+          "severity": "high",
+          "confidence": 0.84
+        },
+        {
+          "rule_id": "",
+          "title": "GitHub Actions credential stealer with Runner.Worker memory harvesting",
+          "severity": "critical",
+          "confidence": 0.88
+        },
+        {
+          "rule_id": "",
+          "title": "GitHub Actions supply chain compromise via release tag repointing",
+          "severity": "critical",
+          "confidence": 0.88
+        },
+        {
+          "rule_id": "",
+          "title": "Checkmarx GitHub Actions supply chain compromise (TeamPCP)",
+          "severity": "critical",
+          "confidence": 0.88
+        },
+        {
+          "rule_id": "",
+          "title": "LiteLLM .pth file persistence and sysmon backdoor (TeamPCP)",
+          "severity": "critical",
+          "confidence": 0.9
+        }
+      ],
+      "scanned_at": "2026-03-29T00:38:55.332527+00:00"
+    },
+    {
+      "id": "organic_sup019_litellm_compromised_version",
+      "demo_title": "LiteLLM Compromised PyPI Version (TeamPCP)",
+      "demo_description": "Skill that installs a specific compromised LiteLLM version known to contain the TeamPCP backdoor.",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-019",
+      "reference": "",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "high",
+      "findings_count": 3,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Sensitive credential file access",
+          "severity": "high",
+          "confidence": 0.9
+        },
+        {
+          "rule_id": "",
+          "title": "pip install in skill body with non-standard or suspicious package name",
+          "severity": "medium",
+          "confidence": 0.82
+        },
+        {
+          "rule_id": "",
+          "title": "Compromised LiteLLM package version reference",
+          "severity": "critical",
+          "confidence": 0.92
+        }
+      ],
+      "scanned_at": "2026-03-29T00:38:57.616215+00:00"
+    },
+    {
+      "id": "organic_sup020_clawhavoc_typosquat",
+      "demo_title": "ClawHavoc Typosquat (clawhavocc)",
+      "demo_description": "Typosquat of the legitimate clawhavocc package that deploys the ClawHavoc post-exploitation framework.",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-020",
+      "reference": "",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "high",
+      "findings_count": 3,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Sensitive credential file access",
+          "severity": "high",
+          "confidence": 0.9
+        },
+        {
+          "rule_id": "",
+          "title": "ClawHavoc malicious ClawHub skill typosquat names",
+          "severity": "high",
+          "confidence": 0.88
+        },
+        {
+          "rule_id": "",
+          "title": "Secret access + Network exfiltration chain",
+          "severity": "critical",
+          "confidence": 0.95
+        }
+      ],
+      "scanned_at": "2026-03-29T00:38:59.887856+00:00"
+    },
+    {
+      "id": "organic_sup021_teampcp_checkmarx_vscode",
+      "demo_title": "TeamPCP Checkmarx VS Code Extension (Open VSX)",
+      "demo_description": "Compromised Checkmarx VS Code extensions on Open VSX registry containing an infostealer payload.",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-021",
+      "reference": "",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "critical",
+      "findings_count": 4,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "GitHub Actions credential stealer with Runner.Worker memory harvesting",
+          "severity": "critical",
+          "confidence": 0.88
+        },
+        {
+          "rule_id": "",
+          "title": "Checkmarx GitHub Actions supply chain compromise (TeamPCP)",
+          "severity": "critical",
+          "confidence": 0.88
+        },
+        {
+          "rule_id": "",
+          "title": "TeamPCP Checkmarx VS Code extension compromise (Open VSX)",
+          "severity": "critical",
+          "confidence": 0.88
+        },
+        {
+          "rule_id": "",
+          "title": "Secret access + Network exfiltration chain",
+          "severity": "critical",
+          "confidence": 0.95
+        }
+      ],
+      "scanned_at": "2026-03-29T00:39:02.197772+00:00"
+    },
+    {
+      "id": "organic_sup022_react_native_account_takeover",
+      "demo_title": "React Native Account Takeover (130K downloads)",
+      "demo_description": "Account takeover attack on popular React Native npm packages using multi-layer scoped dependency chains.",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-022",
+      "reference": "https://www.stepsecurity.io/blog/malicious-npm-releases-found-in-popular-react-native-packages---130k-monthly-downloads-compromised",
+      "verdict": "WARN",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "high",
+      "findings_count": 1,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "React Native npm account takeover supply chain attack",
+          "severity": "high",
+          "confidence": 0.88
+        }
+      ],
+      "scanned_at": "2026-03-29T00:39:04.473840+00:00"
+    },
+    {
+      "id": "demo_benign_commonpaper",
+      "demo_title": "CommonPaper Contract Management",
+      "demo_description": "Real-world contract management skill from CommonPaper. Uses permissive policy: skill includes example curl commands and NEVER-display-token instructions that trigger strict-mode rules out of context. WARN is expected.",
+      "label": "benign",
+      "archetype": "",
+      "rule_id": "",
+      "reference": "https://github.com/CommonPaper/claude-skill",
+      "verdict": "WARN",
+      "expected_verdict": "WARN",
+      "verdict_match": true,
+      "severity": "critical",
+      "findings_count": 2,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Download-and-execute chain",
+          "severity": "critical",
+          "confidence": 0.95
+        },
+        {
+          "rule_id": "",
+          "title": "Secret access + Network exfiltration chain",
+          "severity": "critical",
+          "confidence": 0.95
+        }
+      ],
+      "scanned_at": "2026-03-29T00:39:07.211753+00:00"
+    },
+    {
+      "id": "demo_benign_zendesk",
+      "demo_title": "Zendesk Support Integration",
+      "demo_description": "Community Zendesk skill. Uses permissive policy: full OAuth/API-token auth guide triggers strict-mode semantic rules out of context.",
+      "label": "benign",
+      "archetype": "",
+      "rule_id": "",
+      "reference": "https://github.com/andmarios/zendesk-skill",
+      "verdict": "ALLOW",
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
+      "severity": "high",
+      "findings_count": 2,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Local semantic prompt-injection intent pattern",
+          "severity": "high",
+          "confidence": 0.95
+        },
+        {
+          "rule_id": "",
+          "title": "Local semantic social-engineering credential-harvest pattern",
+          "severity": "high",
+          "confidence": 0.92
+        }
+      ],
+      "scanned_at": "2026-03-29T00:39:10.042194+00:00"
+    },
+    {
+      "id": "demo_benign_fal_generate",
+      "demo_title": "Fal.ai Image Generation",
+      "demo_description": "Fal.ai image generation skill. Single-purpose API wrapper, no data exfiltration or persistence.",
+      "label": "benign",
+      "archetype": "",
+      "rule_id": "",
+      "reference": "https://github.com/aleSheng/fal-agent",
+      "verdict": "ALLOW",
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-03-29T00:39:12.450815+00:00"
+    },
+    {
+      "id": "demo_benign_mailescrow",
+      "demo_title": "Mailescrow Email Escrow",
+      "demo_description": "Email escrow service skill. Explicit user consent model, no silent forwarding or exfiltration.",
+      "label": "benign",
+      "archetype": "",
+      "rule_id": "",
+      "reference": "https://github.com/acroca/mailescrow",
+      "verdict": "ALLOW",
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-03-29T00:39:14.917753+00:00"
+    },
+    {
+      "id": "demo_benign_explain_code",
+      "demo_title": "Explain Code (Developer Utility)",
+      "demo_description": "Simple developer utility skill for code explanation. No tool declarations, no network access.",
+      "label": "benign",
+      "archetype": "",
+      "rule_id": "",
+      "reference": "https://github.com/adityamparikh/explain-code-skill",
+      "verdict": "ALLOW",
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-03-29T00:39:17.317452+00:00"
+    }
+  ]
+}
