@@ -1034,6 +1034,26 @@ jobs:
             --baseline baseline.json \\
             --format sarif \\
             -o results.sarif`} lang="yaml" />
+
+                <SubTitle>Suppression hygiene gate</SubTitle>
+                <Prose>
+                  Add a <InlineCode>suppress check</InlineCode> step to catch expired or soon-to-expire suppressions before they
+                  silently accumulate. The step exits non-zero if any suppression has already expired, failing the CI job.
+                  Use <InlineCode>--warn-days</InlineCode> to also fail on suppressions expiring within a given window.
+                </Prose>
+                <CodeBlock code={`      - name: Check suppression hygiene
+        run: |
+          skillscan suppress check .skillscan-suppress.yaml \\
+            --warn-days 30   # fail if any suppression expires within 30 days
+            --json           # machine-readable output for downstream steps
+
+      # Optional: fail the job if suppressions are expiring soon
+      # The step above already exits 1 on expiry; --warn-days makes it
+      # exit 1 on "expiring soon" too, so no extra logic is needed.`} lang="yaml" />
+                <Prose>
+                  If you do not have a suppression file yet, skip this step or guard it with{" "}
+                  <InlineCode>if: hashFiles('.skillscan-suppress.yaml') != ''</InlineCode> to avoid a file-not-found error.
+                </Prose>
               </section>
 
               {/* ── OUTPUT FORMATS ── */}

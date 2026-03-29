@@ -73,10 +73,13 @@ const PROVIDER_CONTENT: Record<Provider, { setup: string; run: string; note: str
   },
   ollama: {
     envVar: "(none required)",
-    setup: `# Start Ollama with a model that supports tool calling
-ollama pull llama3.1:8b`,
+    setup: `# Pull a model that supports tool calling
+ollama pull llama3.1:8b
+
+# Smaller option (faster, still supports tools)
+ollama pull llama3.2:3b`,
     run: `skillscan-trace run ./my-skill/SKILL.md --provider ollama --model llama3.1:8b`,
-    note: "Fully air-gapped. No API key, no network calls except to localhost:11434. Ideal for sensitive environments. Model must support tool calling — llama3.1:8b and llama3.2:3b are verified to work.",
+    note: "Fully air-gapped. No API key, no network calls except to localhost:11434. Ideal for sensitive environments. The model must support tool calling — see the table below for compatible options.",
   },
 };
 
@@ -389,6 +392,56 @@ export default function Trace() {
               <div className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "oklch(0.55 0.015 265)" }}>Verify connectivity first</div>
               <CodeBlock code={`skillscan-trace check --provider ${activeProvider}`} />
             </div>
+
+            {/* Ollama model table */}
+            {activeProvider === "ollama" && (
+            <div className="mt-8">
+              <h3 className="text-base font-semibold mb-1" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.92 0.008 265)" }}>Ollama models that work with trace</h3>
+              <p className="text-xs mb-4" style={{ color: "oklch(0.55 0.012 265)" }}>
+                We have not personally run SkillScan trace against every model below. The tool-calling support column reflects Ollama's official{" "}
+                <a href="https://ollama.com/search?c=tools" target="_blank" rel="noopener noreferrer" style={{ color: "oklch(0.78 0.18 290)" }}>tools category</a>.
+                The susceptibility column is based on the{" "}
+                <a href="https://arxiv.org/abs/2403.02691" target="_blank" rel="noopener noreferrer" style={{ color: "oklch(0.78 0.18 290)" }}>InjecAgent benchmark (Zhan et al., 2024)</a>,
+                which measured indirect prompt injection attack success rates on tool-integrated agents across 1,054 test cases.
+                Models in the Llama and Mistral families — the predecessors to those listed here — showed high susceptibility (Llama2-70B: &gt;80% ASR; Mistral-7B: ~70% ASR),
+                making them useful for demonstrating what a real exploit looks like in a trace.
+              </p>
+              <div className="rounded-xl overflow-hidden" style={{ border: "1px solid oklch(0.22 0.025 265)" }}>
+                <table className="w-full text-xs" style={{ borderCollapse: "collapse" }}>
+                  <thead>
+                    <tr style={{ background: "oklch(0.13 0.020 265)", borderBottom: "1px solid oklch(0.20 0.022 265)" }}>
+                      <th className="text-left px-4 py-2.5 font-semibold" style={{ color: "oklch(0.60 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>Model</th>
+                      <th className="text-left px-4 py-2.5 font-semibold" style={{ color: "oklch(0.60 0.015 265)" }}>Size</th>
+                      <th className="text-left px-4 py-2.5 font-semibold" style={{ color: "oklch(0.60 0.015 265)" }}>Tool calling</th>
+                      <th className="text-left px-4 py-2.5 font-semibold" style={{ color: "oklch(0.60 0.015 265)" }}>Susceptibility</th>
+                      <th className="text-left px-4 py-2.5 font-semibold" style={{ color: "oklch(0.60 0.015 265)" }}>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { model: "llama3.1:8b",     size: "8B",   tools: "✓ Official",  susc: "High (family)",   suscColor: "oklch(0.65 0.22 25)",  notes: "Best balance of capability + exploitability for demos" },
+                      { model: "llama3.2:3b",     size: "3B",   tools: "✓ Official",  susc: "High (family)",   suscColor: "oklch(0.65 0.22 25)",  notes: "Faster; smaller models tend to be more susceptible" },
+                      { model: "mistral-nemo:12b",size: "12B",  tools: "✓ Official",  susc: "High (family)",   suscColor: "oklch(0.65 0.22 25)",  notes: "Mistral-7B showed ~70% ASR in InjecAgent" },
+                      { model: "qwen3:8b",        size: "8B",   tools: "✓ Official",  susc: "Moderate (family)",suscColor: "oklch(0.72 0.19 80)",  notes: "Qwen-7B showed ~74–88% ASR; tool calling more reliable in Qwen3" },
+                      { model: "granite4:3b",     size: "3B",   tools: "✓ Official",  susc: "Unknown",         suscColor: "oklch(0.55 0.015 265)",notes: "IBM enterprise model; not in InjecAgent benchmark" },
+                    ].map((row, i) => (
+                      <tr key={i} style={{ borderBottom: "1px solid oklch(0.16 0.020 265)", background: i % 2 === 0 ? "oklch(0.10 0.018 265)" : "oklch(0.115 0.020 265)" }}>
+                        <td className="px-4 py-2.5 font-mono" style={{ color: "oklch(0.78 0.18 290)" }}>{row.model}</td>
+                        <td className="px-4 py-2.5" style={{ color: "oklch(0.70 0.012 265)" }}>{row.size}</td>
+                        <td className="px-4 py-2.5" style={{ color: "oklch(0.70 0.20 145)" }}>{row.tools}</td>
+                        <td className="px-4 py-2.5 font-semibold" style={{ color: row.suscColor }}>{row.susc}</td>
+                        <td className="px-4 py-2.5" style={{ color: "oklch(0.58 0.012 265)" }}>{row.notes}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-xs mt-3" style={{ color: "oklch(0.45 0.012 265)" }}>
+                "High (family)" means the predecessor generation of the same model family showed high attack success rates in InjecAgent.
+                Newer instruction-tuned variants may be more resistant — which is exactly why running a trace is valuable.
+              </p>
+            </div>
+            )}
           </div>
         </div>
       </section>
