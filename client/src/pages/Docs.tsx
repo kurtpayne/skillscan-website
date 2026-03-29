@@ -737,6 +737,26 @@ skillscan suppress check         # validate suppression file format`} />
                   Suppressions are managed by editing <InlineCode>.skillscan-suppress.yaml</InlineCode> directly.
                   See <a href="#suppression-format" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Suppression Files</a> for the format.
                 </Prose>
+                <div
+                  className="mt-4 rounded-lg px-4 py-3 mb-4 text-sm"
+                  style={{
+                    background: "oklch(0.50 0.18 55 / 0.08)",
+                    border: "1px solid oklch(0.65 0.18 55 / 0.30)",
+                  }}
+                >
+                  <p className="font-semibold mb-1" style={{ color: "oklch(0.80 0.16 55)" }}>
+                    <Lock className="inline w-3.5 h-3.5 mr-1.5 mb-0.5" />
+                    Security design: no inline suppression
+                  </p>
+                  <p style={{ color: "oklch(0.65 0.015 265)" }}>
+                    SkillScan intentionally does not support inline suppression comments (e.g.{" "}
+                    <InlineCode>{"<!-- skillscan-disable RULE-ID -->"}</InlineCode>). When scanning
+                    third-party skill files, inline comments are attacker-controlled input — a malicious
+                    skill author could suppress findings on their own payload. All suppressions must be
+                    declared in a policy file under <em>your</em> version control, reviewed by your team,
+                    and outside the attack surface of the skill being scanned.
+                  </p>
+                </div>
               </section>
 
               {/* ── BENCHMARK ── */}
