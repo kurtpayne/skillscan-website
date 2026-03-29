@@ -120,7 +120,7 @@ export default function Footer() {
                 { label: "Rules Catalog", href: "/rules" },
                 { label: "Documentation", href: "/docs" },
                 { label: "ML Model", href: "/model" },
-                { label: "Blog", href: "/blog/skills-security-model" },
+                { label: "Blog", href: "/blog" },
                 { label: "GitHub Actions", href: "/docs#github-actions" },
                 { label: "Changelog", href: "https://github.com/kurtpayne/skillscan-security/blob/main/PATTERN_UPDATES.md", external: true },
               ].map((item) => (

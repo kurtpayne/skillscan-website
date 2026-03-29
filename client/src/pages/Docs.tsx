@@ -537,12 +537,60 @@ skillscan trace run ./skills/my-skill.md --provider openrouter --model anthropic
 
 # Trace with Ollama (local, no key required)
 skillscan trace run ./skills/my-skill.md --provider ollama --model qwen2.5:7b`} />
+                <SubTitle>Provider quick-reference</SubTitle>
+                <Prose>
+                  Every provider is a one-line change. The table below shows the env var, a recommended
+                  model, and the key tradeoff for each option.
+                </Prose>
+                <div className="overflow-x-auto rounded-lg mb-4" style={{ border: "1px solid oklch(0.58 0.22 290 / 0.18)" }}>
+                  <table className="w-full text-sm" style={{ fontFamily: "'JetBrains Mono', monospace", borderCollapse: "collapse" }}>
+                    <thead>
+                      <tr style={{ background: "oklch(0.16 0.025 265)", borderBottom: "1px solid oklch(0.58 0.22 290 / 0.20)" }}>
+                        {["Provider", "Env var", "Recommended model", "Tradeoff"].map(h => (
+                          <th key={h} className="text-left px-4 py-2.5 text-xs font-semibold" style={{ color: "oklch(0.65 0.015 265)" }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        ["openai", "OPENAI_API_KEY", "gpt-4o-mini", "Fast, cheap, good recall"],
+                        ["openrouter", "OPENROUTER_API_KEY", "anthropic/claude-3.5-sonnet", "200+ models, one key"],
+                        ["ollama", "(none)", "qwen2.5:7b", "Fully local, no data leaves machine"],
+                        ["anthropic", "ANTHROPIC_API_KEY", "claude-3-haiku-20240307", "Best reasoning, higher cost"],
+                      ].map(([provider, envVar, model, tradeoff], i) => (
+                        <tr key={provider} style={{ borderBottom: i < 3 ? "1px solid oklch(0.58 0.22 290 / 0.10)" : "none", background: i % 2 === 0 ? "oklch(0.12 0.018 265)" : "transparent" }}>
+                          <td className="px-4 py-2.5" style={{ color: "oklch(0.78 0.18 290)" }}>{provider}</td>
+                          <td className="px-4 py-2.5" style={{ color: "oklch(0.75 0.012 265)" }}>{envVar}</td>
+                          <td className="px-4 py-2.5" style={{ color: "oklch(0.70 0.012 265)" }}>{model}</td>
+                          <td className="px-4 py-2.5" style={{ color: "oklch(0.58 0.015 265)" }}>{tradeoff}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <CodeBlock code={`# OpenAI (default if OPENAI_API_KEY is set)
+skillscan trace run ./skill.md --provider openai --model gpt-4o-mini
+
+# Anthropic
+echo 'ANTHROPIC_API_KEY=sk-ant-...' >> .env
+skillscan trace run ./skill.md --provider anthropic --model claude-3-haiku-20240307
+
+# OpenRouter — access 200+ models with one key
+echo 'OPENROUTER_API_KEY=sk-or-...' >> .env
+skillscan trace run ./skill.md --provider openrouter --model mistralai/mistral-7b-instruct
+
+# Ollama — fully local, no API key needed
+ollama pull qwen2.5:7b
+skillscan trace run ./skill.md --provider ollama --model qwen2.5:7b
+
+# Auto-detect: set any key in .env and omit --provider
+# skillscan-trace will pick the first available provider`} />
                 <Prose>
                   Trace results are <InlineCode>SAFE</InlineCode> / <InlineCode>SUSPICIOUS</InlineCode> / <InlineCode>MALICIOUS</InlineCode>.
                   A <InlineCode>MALICIOUS</InlineCode> verdict means the skill called a canary tool (credential access,
                   exfiltration, persistence) during the trace run. Keys are read from <InlineCode>.env</InlineCode> or
-                  environment variables — never from the YAML config file. See the{" "}
-                  <a href="/trace" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Trace page</a>{" "}
+                  environment variables — never from the YAML config file. See the{""}  
+                  <a href="/trace" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Trace page</a>{""}  
                   for full documentation, config file reference, Docker/self-hosting, and privacy details.
                 </Prose>
               </section>
