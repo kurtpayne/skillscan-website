@@ -535,8 +535,8 @@ skillscan-trace run ./skills/my-skill.md
 echo 'OPENROUTER_API_KEY=sk-or-...' >> .env
 skillscan trace run ./skills/my-skill.md --provider openrouter --model anthropic/claude-3.5-sonnet
 
-# Trace with Ollama (local, no key required)
-skillscan trace run ./skills/my-skill.md --provider ollama --model qwen2.5:7b`} />
+# Trace with Ollama (local, no key required — model must support tool calling)
+skillscan trace run ./skills/my-skill.md --provider ollama --model llama3.1:8b`} />
                 <SubTitle>Provider quick-reference</SubTitle>
                 <Prose>
                   Every provider is a one-line change. The table below shows the env var, a recommended
@@ -555,7 +555,7 @@ skillscan trace run ./skills/my-skill.md --provider ollama --model qwen2.5:7b`} 
                       {[
                         ["openai", "OPENAI_API_KEY", "gpt-4o-mini", "Fast, cheap, good recall"],
                         ["openrouter", "OPENROUTER_API_KEY", "anthropic/claude-3.5-sonnet", "200+ models, one key"],
-                        ["ollama", "(none)", "qwen2.5:7b", "Fully local, no data leaves machine"],
+                        ["ollama", "(none)", "llama3.1:8b", "Fully local, no data leaves machine — model must support tool calling"],
                         ["anthropic", "ANTHROPIC_API_KEY", "claude-3-haiku-20240307", "Best reasoning, higher cost"],
                       ].map(([provider, envVar, model, tradeoff], i) => (
                         <tr key={provider} style={{ borderBottom: i < 3 ? "1px solid oklch(0.58 0.22 290 / 0.10)" : "none", background: i % 2 === 0 ? "oklch(0.12 0.018 265)" : "transparent" }}>
@@ -580,8 +580,9 @@ echo 'OPENROUTER_API_KEY=sk-or-...' >> .env
 skillscan trace run ./skill.md --provider openrouter --model mistralai/mistral-7b-instruct
 
 # Ollama — fully local, no API key needed
-ollama pull qwen2.5:7b
-skillscan trace run ./skill.md --provider ollama --model qwen2.5:7b
+# NOTE: model must support tool calling (function calling)
+ollama pull llama3.1:8b
+skillscan trace run ./skill.md --provider ollama --model llama3.1:8b
 
 # Auto-detect: set any key in .env and omit --provider
 # skillscan-trace will pick the first available provider`} />
@@ -731,11 +732,16 @@ skillscan policy show-default    # show the active default policy YAML`} />
               {/* ── SUPPRESS ── */}
               <section id="suppress">
                 <SectionTitle>skillscan suppress</SectionTitle>
-                <CodeBlock code={`skillscan suppress list          # list all active suppressions
-skillscan suppress check         # validate suppression file format`} />
+                <CodeBlock code={`skillscan suppress check .skillscan-suppress.yaml
+                                 # check for expired or soon-to-expire entries
+skillscan suppress check .skillscan-suppress.yaml --warn-days 60
+                                 # warn when a suppression expires within 60 days
+skillscan suppress check .skillscan-suppress.yaml --json
+                                 # machine-readable output (exits non-zero on expiry)`} />
                 <Prose>
                   Suppressions are managed by editing <InlineCode>.skillscan-suppress.yaml</InlineCode> directly.
-                  See <a href="#suppression-format" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Suppression Files</a> for the format.
+                  Run <InlineCode>suppress check</InlineCode> in CI to catch forgotten suppressions before they silently
+                  accumulate. See <a href="#suppression-format" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Suppression Files</a> for the format.
                 </Prose>
                 <div
                   className="mt-4 rounded-lg px-4 py-3 mb-4 text-sm"
@@ -1132,8 +1138,9 @@ suppressions:
 
                 <Note>
                   Suppressions without an <InlineCode>expires</InlineCode> field are permanent.
-                  Expired suppressions are ignored but not removed — they appear in{" "}
-                  <InlineCode>skillscan suppress list</InlineCode> with an EXPIRED status.
+                  Expired suppressions are ignored but not removed — run{" "}
+                  <InlineCode>skillscan suppress check</InlineCode> to see which entries have expired or are
+                  expiring soon.
                   Use <InlineCode>--no-suppress</InlineCode> to run a scan ignoring all suppressions.
                 </Note>
               </section>
@@ -1183,9 +1190,7 @@ skillscan rule test --rules my-rules.yaml --fixture test.md
                 <Note>
                   <strong>Version gating:</strong> If a user-local file shares a filename with a bundled file
                   (e.g. <InlineCode>default.yaml</InlineCode>) but has an older version string, SkillScan will
-                  skip it and emit a warning. Run <InlineCode>skillscan rules sync</InlineCode> to update, or
-                  rename the file to avoid the conflict.
-                </Note>
+                  skip it and emit a warning.  Remove or rename the conflicting file to avoid the conflict.                </Note>
 
                 <Note>
                   Custom rules use the same YAML schema as built-in rules. See{" "}

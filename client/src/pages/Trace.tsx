@@ -73,10 +73,10 @@ const PROVIDER_CONTENT: Record<Provider, { setup: string; run: string; note: str
   },
   ollama: {
     envVar: "(none required)",
-    setup: `# Start Ollama with a model first
-ollama pull qwen2.5:7b`,
-    run: `skillscan-trace run ./my-skill/SKILL.md --provider ollama --model qwen2.5:7b`,
-    note: "Fully air-gapped. No API key, no network calls except to localhost:11434. Ideal for sensitive environments.",
+    setup: `# Start Ollama with a model that supports tool calling
+ollama pull llama3.1:8b`,
+    run: `skillscan-trace run ./my-skill/SKILL.md --provider ollama --model llama3.1:8b`,
+    note: "Fully air-gapped. No API key, no network calls except to localhost:11434. Ideal for sensitive environments. Model must support tool calling — llama3.1:8b and llama3.2:3b are verified to work.",
   },
 };
 
