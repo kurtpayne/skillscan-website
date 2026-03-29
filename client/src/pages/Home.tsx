@@ -8,6 +8,7 @@ import { Shield, Zap, Lock, GitBranch, Terminal, ChevronRight, Copy, Check, Exte
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TerminalScan from "@/components/TerminalScan";
+import TerminalDemo from "@/components/TerminalDemo";
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663340703543/GpzBjr25jP63Hgax7fEfrw/hero-bg_24844349.png";
 
@@ -347,6 +348,57 @@ export default function Home() {
                 ))}
               </div>
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── TERMINAL DEMO ── */}
+      <section
+        className="py-24"
+        style={{ background: "oklch(0.09 0.018 265)", borderTop: "1px solid oklch(0.58 0.22 290 / 0.08)", borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)" }}
+      >
+        <div className="container">
+          <div className="text-center mb-12">
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-5"
+              style={{
+                background: "oklch(0.58 0.22 290 / 0.12)",
+                border: "1px solid oklch(0.58 0.22 290 / 0.30)",
+                color: "oklch(0.78 0.18 290)",
+                fontFamily: "'JetBrains Mono', monospace",
+              }}
+            >
+              Live demo
+            </div>
+            <h2
+              className="text-3xl sm:text-4xl font-bold mb-4"
+              style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}
+            >
+              See it in action
+            </h2>
+            <p className="text-base max-w-xl mx-auto" style={{ color: "oklch(0.60 0.015 265)" }}>
+              Switch between tools to see what each one outputs on a real skill file.
+              Hover to pause the animation.
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <TerminalDemo />
+          </div>
+
+          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm" style={{ color: "oklch(0.50 0.015 265)" }}>
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block w-2 h-2 rounded-full" style={{ background: "oklch(0.70 0.15 160)" }} />
+              allow — no findings
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block w-2 h-2 rounded-full" style={{ background: "oklch(0.72 0.19 45)" }} />
+              warn — review required
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block w-2 h-2 rounded-full" style={{ background: "oklch(0.65 0.22 25)" }} />
+              block — merge blocked
+            </span>
           </div>
         </div>
       </section>
