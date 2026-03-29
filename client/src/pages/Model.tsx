@@ -82,7 +82,7 @@ export default function Model() {
                 fontFamily: "'JetBrains Mono', monospace",
               }}
             >
-              Layer 6 — ML Classifier · v11
+              Layer 6 — ML Classifier · v12
             </div>
             <h1
               className="text-4xl sm:text-5xl font-bold mb-6"
@@ -141,25 +141,25 @@ export default function Model() {
               <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.72 0.19 45)" }} />
               <div>
                 <div className="text-sm font-semibold mb-1" style={{ color: "oklch(0.85 0.12 45)" }}>
-                  ML detection is experimental — v12 training in progress
+                  ML detection is experimental — v12 results available
                 </div>
                 <div className="text-sm leading-relaxed" style={{ color: "oklch(0.65 0.015 265)" }}>
-                  A post-release audit found that v11’s reported F1 of 0.926 was inflated by training/eval data leakage.
-                  The true v11 score on unseen examples is <strong style={{color:"oklch(0.82 0.15 45)"}}>Macro F1 0.555</strong> (injection recall 19.6%).
-                  We’ve decontaminated the corpus, added 86 targeted injection examples, tuned hyperparameters, and launched v12 training.
+                  v12 training completed 2026-03-29 on a fully decontaminated 21,149-example corpus.
+                  Macro F1 improved from <strong style={{color:"oklch(0.72 0.19 45)"}}>0.555 (v11 true)</strong> to <strong style={{color:"oklch(0.72 0.22 145)"}}>0.7287</strong>.
+                  Injection recall rose from 19.6% to <strong style={{color:"oklch(0.72 0.22 145)"}}>96.6%</strong>; FPR dropped to 2.5%.
                   The static rule engine (Layers 1–5) is unaffected and production-ready.
                 </div>
               </div>
             </div>
           </div>
           <SectionHeader
-            label="v12 — Training in progress"
+            label="v12 — 2026-03-29"
             title="ML detection layer"
-            sub="The ML classifier runs entirely offline via ONNX Runtime. It catches semantic attacks that static rules miss — jailbreaks, indirect injection, and novel archetypes. v12 is trained on a fully decontaminated corpus with 86 new targeted injection examples."
+            sub="The ML classifier runs entirely offline via ONNX Runtime. It catches semantic attacks that static rules miss — jailbreaks, indirect injection, and novel archetypes. v12 trained on 21,149 decontaminated examples with 86 targeted injection additions."
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <MetricCard value="0.555" label="v11 true Macro F1" sub="259 clean held-out examples · zero leakage" accent="oklch(0.72 0.19 45)" />
-            <MetricCard value="19.6%" label="v11 injection recall" sub="On unseen examples · v12 targets >60%" accent="oklch(0.65 0.18 200)" />
+            <MetricCard value="0.7287" label="v12 Macro F1" sub="463 held-out examples · zero leakage · gate 0.70 PASSED" accent="oklch(0.72 0.22 145)" />
+            <MetricCard value="96.6%" label="v12 injection recall" sub="Up from 19.6% (v11) · FPR 2.5%" accent="oklch(0.65 0.18 200)" />
             <MetricCard value="14+" label="Attack families" sub="Jailbreaks, MCP attacks, supply chain, SE" accent="oklch(0.78 0.18 290)" />
           </div>
           <div
@@ -172,8 +172,9 @@ export default function Model() {
           >
             The model is a LoRA-fine-tuned DeBERTa-v3-base adapter, shipped as ONNX FP32 (~350 MB) for offline CPU inference.
             It is trained on a corpus of real-world agent skill files and adversarially crafted injection examples across 14+ attack families.
-            v11 post-audit (2026-03-29): true Macro F1 0.555, injection recall 19.6% on 259 clean held-out examples.
-            v12 is currently training on a decontaminated 19,407-file corpus with targeted coverage of 8 previously zero-recall archetypes.
+            v12 (2026-03-29): Macro F1 0.7287, injection recall 96.6%, FPR 2.49%, accuracy 73.2% on 463 held-out examples. F1 gate 0.70 PASSED.
+            Benign: precision 0.975, recall 0.622, F1 0.760. Injection: precision 0.546, recall 0.966, F1 0.698.
+            Trained on 21,149 decontaminated examples (ONNX FP16). v11 true F1 was 0.555 on 259 clean examples (injection recall 19.6%) after C-2 decontamination.
           </div>
         </div>
       </section>
@@ -251,7 +252,7 @@ export default function Model() {
           <SectionHeader
             label="Training history"
             title="Model training progression"
-            sub="v1–v10 metrics were measured on a held-out set later found to have contamination. v11 post-audit F1 is 0.555 on 259 clean examples. v12 is currently training on a decontaminated corpus."
+            sub="v1–v10 metrics were measured on a held-out set later found to have contamination. v11 post-audit F1 is 0.555 on 259 clean examples. v12 (2026-03-29) achieved Macro F1 0.7287 on 463 clean examples."
           />
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -277,7 +278,7 @@ export default function Model() {
                   { v: "v18161", corpus: "18,161", f1: "0.9752", fpr: "1.89%", note: "Both SaaS quality thresholds met", current: false },
                   { v: "v18258", corpus: "18,258", f1: "—", fpr: "—", note: "Contaminated eval — superseded by v11", current: false },
                   { v: "v11 (2026-03-29)", corpus: "19,511 (contaminated)", f1: "0.555", fpr: "5.71%", note: "Post-audit: true F1 on 259 clean examples. Injection recall 19.6%. C-2 decontamination applied.", current: false },
-                  { v: "v12 (in training)", corpus: "19,407 (clean)", f1: "—", fpr: "—", note: "Decontaminated corpus + 86 targeted injection examples + tuned hyperparams. A10G, ~40 min.", current: true },
+                  { v: "v12 (2026-03-29)", corpus: "21,149 (clean)", f1: "0.7287", fpr: "2.49%", note: "Decontaminated corpus + 86 targeted injection examples. Injection recall 96.6%, benign F1 0.760. Gate 0.70 PASSED.", current: true },
                 ].map((row) => (
                   <tr
                     key={row.v}
@@ -387,7 +388,7 @@ export default function Model() {
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle className="w-4 h-4" style={{ color: "oklch(0.72 0.19 45)" }} />
                   <span className="text-xs font-semibold" style={{ color: "oklch(0.72 0.19 45)" }}>
-                    Known coverage gaps (v11 eval)
+                    Known coverage gaps (v12 eval)
                   </span>
                 </div>
                 <div className="space-y-1">
@@ -404,7 +405,7 @@ export default function Model() {
                   ))}
                 </div>
                 <div className="mt-3 text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
-                  These archetypes are in the v11 eval set. v12 will add targeted training examples to close the remaining recall gaps.
+                  These archetypes are in the v12 eval set. Injection recall is now 96.6% overall; remaining gaps are concentrated in high-sophistication obfuscation and novel benign-mimicking patterns.
                 </div>
               </div>
             </div>
