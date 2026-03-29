@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-03-29T00:39:17.317517+00:00",
+  "generated_at": "2026-03-29T01:57:42.891269+00:00",
   "skillscan_version": "0.8.0",
   "entry_count": 19,
-  "block_count": 12,
-  "allow_count": 4,
+  "block_count": 14,
+  "allow_count": 5,
   "error_count": 0,
   "unexpected_count": 2,
   "entries": [
@@ -21,7 +21,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T00:38:34.651717+00:00"
+      "scanned_at": "2026-03-29T01:56:58.882178+00:00"
     },
     {
       "id": "organic_mal046_cursorjack_deeplink",
@@ -62,7 +62,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T00:38:36.922479+00:00"
+      "scanned_at": "2026-03-29T01:57:01.236937+00:00"
     },
     {
       "id": "organic_mal047_claude_hooks_rce",
@@ -109,7 +109,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T00:38:39.210832+00:00"
+      "scanned_at": "2026-03-29T01:57:03.565486+00:00"
     },
     {
       "id": "organic_mal048_langflow_rce",
@@ -138,7 +138,7 @@
           "confidence": 0.82
         }
       ],
-      "scanned_at": "2026-03-29T00:38:41.539970+00:00"
+      "scanned_at": "2026-03-29T01:57:05.911043+00:00"
     },
     {
       "id": "organic_mal049_litellm_pth_persistence",
@@ -185,7 +185,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T00:38:43.921821+00:00"
+      "scanned_at": "2026-03-29T01:57:08.284807+00:00"
     },
     {
       "id": "organic_mal050_ghost_campaign_npm",
@@ -208,7 +208,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-29T00:38:46.207060+00:00"
+      "scanned_at": "2026-03-29T01:57:10.605808+00:00"
     },
     {
       "id": "organic_pinj007_mcp_sampling_exfil",
@@ -222,7 +222,7 @@
       "expected_verdict": "BLOCK",
       "verdict_match": true,
       "severity": "high",
-      "findings_count": 3,
+      "findings_count": 2,
       "top_findings": [
         {
           "rule_id": "",
@@ -235,15 +235,9 @@
           "title": "Local semantic prompt-injection intent pattern",
           "severity": "medium",
           "confidence": 0.68
-        },
-        {
-          "rule_id": "",
-          "title": "Secret access + Network exfiltration chain",
-          "severity": "critical",
-          "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T00:38:48.492201+00:00"
+      "scanned_at": "2026-03-29T01:57:12.961193+00:00"
     },
     {
       "id": "organic_pinj015_prompt_poaching_extension",
@@ -253,9 +247,9 @@
       "archetype": "prompt_injection",
       "rule_id": "PINJ-015",
       "reference": "",
-      "verdict": "WARN",
+      "verdict": "BLOCK",
       "expected_verdict": "BLOCK",
-      "verdict_match": false,
+      "verdict_match": true,
       "severity": "high",
       "findings_count": 1,
       "top_findings": [
@@ -266,7 +260,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-03-29T00:38:50.793766+00:00"
+      "scanned_at": "2026-03-29T01:57:15.279700+00:00"
     },
     {
       "id": "organic_sup016_mcp_server_cmd_injection",
@@ -307,7 +301,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T00:38:53.061205+00:00"
+      "scanned_at": "2026-03-29T01:57:17.641436+00:00"
     },
     {
       "id": "organic_sup017_checkmarx_actions",
@@ -354,7 +348,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-29T00:38:55.332527+00:00"
+      "scanned_at": "2026-03-29T01:57:20.031828+00:00"
     },
     {
       "id": "organic_sup019_litellm_compromised_version",
@@ -389,7 +383,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-03-29T00:38:57.616215+00:00"
+      "scanned_at": "2026-03-29T01:57:22.398236+00:00"
     },
     {
       "id": "organic_sup020_clawhavoc_typosquat",
@@ -424,7 +418,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T00:38:59.887856+00:00"
+      "scanned_at": "2026-03-29T01:57:24.727590+00:00"
     },
     {
       "id": "organic_sup021_teampcp_checkmarx_vscode",
@@ -438,7 +432,7 @@
       "expected_verdict": "BLOCK",
       "verdict_match": true,
       "severity": "critical",
-      "findings_count": 4,
+      "findings_count": 3,
       "top_findings": [
         {
           "rule_id": "",
@@ -457,15 +451,9 @@
           "title": "TeamPCP Checkmarx VS Code extension compromise (Open VSX)",
           "severity": "critical",
           "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "Secret access + Network exfiltration chain",
-          "severity": "critical",
-          "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T00:39:02.197772+00:00"
+      "scanned_at": "2026-03-29T01:57:27.061240+00:00"
     },
     {
       "id": "organic_sup022_react_native_account_takeover",
@@ -475,9 +463,9 @@
       "archetype": "supply_chain",
       "rule_id": "SUP-022",
       "reference": "https://www.stepsecurity.io/blog/malicious-npm-releases-found-in-popular-react-native-packages---130k-monthly-downloads-compromised",
-      "verdict": "WARN",
+      "verdict": "BLOCK",
       "expected_verdict": "BLOCK",
-      "verdict_match": false,
+      "verdict_match": true,
       "severity": "high",
       "findings_count": 1,
       "top_findings": [
@@ -488,7 +476,7 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-03-29T00:39:04.473840+00:00"
+      "scanned_at": "2026-03-29T01:57:29.381892+00:00"
     },
     {
       "id": "demo_benign_commonpaper",
@@ -498,18 +486,12 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/CommonPaper/claude-skill",
-      "verdict": "WARN",
+      "verdict": "ALLOW",
       "expected_verdict": "WARN",
-      "verdict_match": true,
+      "verdict_match": false,
       "severity": "critical",
-      "findings_count": 2,
+      "findings_count": 1,
       "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Download-and-execute chain",
-          "severity": "critical",
-          "confidence": 0.95
-        },
         {
           "rule_id": "",
           "title": "Secret access + Network exfiltration chain",
@@ -517,19 +499,19 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T00:39:07.211753+00:00"
+      "scanned_at": "2026-03-29T01:57:32.324629+00:00"
     },
     {
       "id": "demo_benign_zendesk",
       "demo_title": "Zendesk Support Integration",
-      "demo_description": "Community Zendesk skill. Uses permissive policy: full OAuth/API-token auth guide triggers strict-mode semantic rules out of context.",
+      "demo_description": "Community Zendesk skill. Uses permissive policy. The skill documents its own prompt-injection screening pipeline; the semantic classifier fires on that security vocabulary (PINJ-SEM-001, SE-SEM-001), producing a WARN. Appropriate \u2014 a reviewer should inspect the injection-adjacent content.",
       "label": "benign",
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/andmarios/zendesk-skill",
       "verdict": "ALLOW",
-      "expected_verdict": "ALLOW",
-      "verdict_match": true,
+      "expected_verdict": "WARN",
+      "verdict_match": false,
       "severity": "high",
       "findings_count": 2,
       "top_findings": [
@@ -546,7 +528,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-03-29T00:39:10.042194+00:00"
+      "scanned_at": "2026-03-29T01:57:35.321222+00:00"
     },
     {
       "id": "demo_benign_fal_generate",
@@ -562,12 +544,12 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T00:39:12.450815+00:00"
+      "scanned_at": "2026-03-29T01:57:37.818946+00:00"
     },
     {
       "id": "demo_benign_mailescrow",
       "demo_title": "Mailescrow Email Escrow",
-      "demo_description": "Email escrow service skill. Explicit user consent model, no silent forwarding or exfiltration.",
+      "demo_description": "Email escrow service skill. Uses permissive policy: PSV-001 and PSV-004 (unknown frontmatter keys) fire under strict but are noise for this simple tool. Explicit user consent model, no silent forwarding or exfiltration.",
       "label": "benign",
       "archetype": "",
       "rule_id": "",
@@ -578,7 +560,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T00:39:14.917753+00:00"
+      "scanned_at": "2026-03-29T01:57:40.364932+00:00"
     },
     {
       "id": "demo_benign_explain_code",
@@ -594,7 +576,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T00:39:17.317452+00:00"
+      "scanned_at": "2026-03-29T01:57:42.891211+00:00"
     }
   ]
 }
