@@ -82,7 +82,7 @@ export default function Model() {
                 fontFamily: "'JetBrains Mono', monospace",
               }}
             >
-              Layer 6 — ML Classifier · Beta
+              Layer 6 — ML Classifier · v11
             </div>
             <h1
               className="text-4xl sm:text-5xl font-bold mb-6"
@@ -141,25 +141,24 @@ export default function Model() {
               <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.72 0.19 45)" }} />
               <div>
                 <div className="text-sm font-semibold mb-1" style={{ color: "oklch(0.85 0.12 45)" }}>
-                  ML detection is a beta feature — metrics under revision
+                  ML detection is experimental — v11 is the first clean benchmark
                 </div>
                 <div className="text-sm leading-relaxed" style={{ color: "oklch(0.65 0.015 265)" }}>
-                  We identified eval set contamination in the v10 benchmark that artificially inflated the reported F1 score.
-                  We are retraining on a decontaminated corpus and will publish corrected metrics with v11.
-                  The static rule engine (Layer 1–5) is unaffected and production-ready.
-                  Do not rely on the v10 benchmark figures for security decisions.
+                  v11 is trained and evaluated on a fully decontaminated corpus. Macro F1 is <strong style={{color:"oklch(0.82 0.15 45)"}}>0.926</strong> on 459 held-out examples — the first result we consider reliable.
+                  The static rule engine (Layers 1–5) is unaffected and production-ready.
+                  We recommend treating the ML layer as a high-recall supplement to the rule engine, not a standalone gate.
                 </div>
               </div>
             </div>
           </div>
           <SectionHeader
-            label="Beta — v11 in training"
+            label="v11 — First clean benchmark"
             title="ML detection layer"
-            sub="The ML classifier runs entirely offline via ONNX Runtime. It is designed to catch semantic attacks that static rules miss — jailbreaks, indirect injection, and novel archetypes. Benchmark metrics will be published with v11."
+            sub="The ML classifier runs entirely offline via ONNX Runtime. It catches semantic attacks that static rules miss — jailbreaks, indirect injection, and novel archetypes. v11 is the first version evaluated on a fully decontaminated holdout set."
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <MetricCard value="~350 MB" label="Model size" sub="ONNX FP32, no GPU required" accent="oklch(0.78 0.18 290)" />
-            <MetricCard value="25,000+" label="Training examples" sub="Benign skills · injection archetypes" accent="oklch(0.65 0.18 200)" />
+            <MetricCard value="0.926" label="Macro F1 (v11)" sub="459 held-out examples · decontaminated eval" accent="oklch(0.78 0.18 290)" />
+            <MetricCard value="2.66%" label="False positive rate" sub="On enterprise benign skill corpus" accent="oklch(0.65 0.18 200)" />
             <MetricCard value="14+" label="Attack families" sub="Jailbreaks, MCP attacks, supply chain, SE" accent="oklch(0.72 0.19 45)" />
           </div>
           <div
@@ -172,7 +171,7 @@ export default function Model() {
           >
             The model is a LoRA-fine-tuned DeBERTa-v3-base adapter, shipped as ONNX FP32 (~350 MB) for offline CPU inference.
             It is trained on a corpus of real-world agent skill files and adversarially crafted injection examples across 14+ attack families.
-            Benchmark metrics (macro F1, FPR, per-archetype recall) will be published once v11 training completes on the decontaminated eval set.
+            v11 (2026-03-29): macro F1 0.926, FPR 2.66%, injection recall 94.4% on 459 held-out examples. This is the first benchmark on a fully decontaminated eval set.
           </div>
         </div>
       </section>
@@ -250,7 +249,7 @@ export default function Model() {
           <SectionHeader
             label="Training history"
             title="Model training progression"
-            sub="Each version trained on an expanded corpus. Note: v1–v10 metrics were measured on a held-out set that was later found to have contamination. Corrected metrics will be published with v11."
+            sub="Each version trained on an expanded corpus. v1–v10 metrics were measured on a held-out set later found to have contamination. v11 (2026-03-29) is the first result on a fully decontaminated eval set."
           />
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -274,7 +273,8 @@ export default function Model() {
                   { v: "v11461", corpus: "11,461", f1: "0.9110", fpr: "11.45%", note: "Enterprise benign corpus; MCP/SE coverage", current: false },
                   { v: "v16589", corpus: "16,589", f1: "0.9608", fpr: "3.69%", note: "Gap archetype closure; enterprise adversarial examples", current: false },
                   { v: "v18161", corpus: "18,161", f1: "0.9752", fpr: "1.89%", note: "Both SaaS quality thresholds met", current: false },
-                  { v: "v18258", corpus: "18,258", f1: "—", fpr: "—", note: "Contaminated eval — metrics under revision; v11 retraining in progress", current: true },
+                  { v: "v18258", corpus: "18,258", f1: "—", fpr: "—", note: "Contaminated eval — superseded by v11", current: false },
+                  { v: "v11 (2026-03-29)", corpus: "20,388", f1: "0.926", fpr: "2.66%", note: "First clean benchmark on decontaminated eval set · 459 held-out examples", current: true },
                 ].map((row) => (
                   <tr
                     key={row.v}
@@ -384,17 +384,16 @@ export default function Model() {
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle className="w-4 h-4" style={{ color: "oklch(0.72 0.19 45)" }} />
                   <span className="text-xs font-semibold" style={{ color: "oklch(0.72 0.19 45)" }}>
-                    Known coverage gaps (v10)
+                    Known coverage gaps (v11 eval)
                   </span>
                 </div>
                 <div className="space-y-1">
                   {[
-                    "jb09 (metadata field injection) — v10 training added",
-                    "jb10 (obfuscated encoding) — v10 training added",
-                    "pi42 (markdown link injection) — v10 training added",
-                    "pi50/pi24 (RSS/indirect injection) — v10 training added",
-                    "mcp_server_impersonation — 15 examples (was 10)",
-                    "malware_pattern C2/persistence — 13 examples (was 8)",
+                    "hallucination squatting (new archetype, 2026-03-29)",
+                    "calendar event indirect injection (new archetype, 2026-03-29)",
+                    "README-driven dropper / AMOS pattern",
+                    "telemetry exfil disguised as analytics",
+                    "mcp_server_impersonation — recall improving",
                   ].map((a) => (
                     <div key={a} className="text-xs" style={{ color: "oklch(0.60 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
                       · {a}
@@ -402,7 +401,7 @@ export default function Model() {
                   ))}
                 </div>
                 <div className="mt-3 text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
-                  v11 retraining adds targeted examples for all identified coverage gaps. Updated recall metrics will be published on completion.
+                  These archetypes are in the v11 eval set. v12 will add targeted training examples to close the remaining recall gaps.
                 </div>
               </div>
             </div>
