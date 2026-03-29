@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-03-29T01:57:42.891269+00:00",
+  "generated_at": "2026-03-29T05:41:55.902282+00:00",
   "skillscan_version": "0.8.0",
   "entry_count": 19,
   "block_count": 14,
   "allow_count": 5,
   "error_count": 0,
-  "unexpected_count": 2,
+  "unexpected_count": 0,
   "entries": [
     {
       "id": "organic_mal045_stoatwaffle_vscode",
@@ -21,7 +21,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T01:56:58.882178+00:00"
+      "scanned_at": "2026-03-29T05:41:08.366086+00:00"
     },
     {
       "id": "organic_mal046_cursorjack_deeplink",
@@ -62,7 +62,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:01.236937+00:00"
+      "scanned_at": "2026-03-29T05:41:10.877691+00:00"
     },
     {
       "id": "organic_mal047_claude_hooks_rce",
@@ -109,7 +109,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:03.565486+00:00"
+      "scanned_at": "2026-03-29T05:41:13.428552+00:00"
     },
     {
       "id": "organic_mal048_langflow_rce",
@@ -138,7 +138,7 @@
           "confidence": 0.82
         }
       ],
-      "scanned_at": "2026-03-29T01:57:05.911043+00:00"
+      "scanned_at": "2026-03-29T05:41:15.964339+00:00"
     },
     {
       "id": "organic_mal049_litellm_pth_persistence",
@@ -185,7 +185,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:08.284807+00:00"
+      "scanned_at": "2026-03-29T05:41:18.595960+00:00"
     },
     {
       "id": "organic_mal050_ghost_campaign_npm",
@@ -208,7 +208,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-29T01:57:10.605808+00:00"
+      "scanned_at": "2026-03-29T05:41:21.049250+00:00"
     },
     {
       "id": "organic_pinj007_mcp_sampling_exfil",
@@ -237,7 +237,7 @@
           "confidence": 0.68
         }
       ],
-      "scanned_at": "2026-03-29T01:57:12.961193+00:00"
+      "scanned_at": "2026-03-29T05:41:23.556731+00:00"
     },
     {
       "id": "organic_pinj015_prompt_poaching_extension",
@@ -260,7 +260,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-03-29T01:57:15.279700+00:00"
+      "scanned_at": "2026-03-29T05:41:26.092054+00:00"
     },
     {
       "id": "organic_sup016_mcp_server_cmd_injection",
@@ -301,7 +301,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:17.641436+00:00"
+      "scanned_at": "2026-03-29T05:41:28.639156+00:00"
     },
     {
       "id": "organic_sup017_checkmarx_actions",
@@ -348,7 +348,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-29T01:57:20.031828+00:00"
+      "scanned_at": "2026-03-29T05:41:31.207029+00:00"
     },
     {
       "id": "organic_sup019_litellm_compromised_version",
@@ -383,7 +383,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-03-29T01:57:22.398236+00:00"
+      "scanned_at": "2026-03-29T05:41:33.775273+00:00"
     },
     {
       "id": "organic_sup020_clawhavoc_typosquat",
@@ -418,7 +418,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:24.727590+00:00"
+      "scanned_at": "2026-03-29T05:41:36.355388+00:00"
     },
     {
       "id": "organic_sup021_teampcp_checkmarx_vscode",
@@ -453,7 +453,7 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-03-29T01:57:27.061240+00:00"
+      "scanned_at": "2026-03-29T05:41:38.862974+00:00"
     },
     {
       "id": "organic_sup022_react_native_account_takeover",
@@ -476,19 +476,19 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-03-29T01:57:29.381892+00:00"
+      "scanned_at": "2026-03-29T05:41:41.402301+00:00"
     },
     {
       "id": "demo_benign_commonpaper",
       "demo_title": "CommonPaper Contract Management",
-      "demo_description": "Real-world contract management skill from CommonPaper. Uses permissive policy: skill includes example curl commands and NEVER-display-token instructions that trigger strict-mode rules out of context. WARN is expected.",
+      "demo_description": "Real-world contract management skill from CommonPaper. Uses permissive policy. MAL-001 and CHN-002 tightened (PR #138) removed the findings that previously generated a WARN score; skill now correctly scores ALLOW under permissive.",
       "label": "benign",
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/CommonPaper/claude-skill",
       "verdict": "ALLOW",
-      "expected_verdict": "WARN",
-      "verdict_match": false,
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
       "severity": "critical",
       "findings_count": 1,
       "top_findings": [
@@ -499,19 +499,19 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:32.324629+00:00"
+      "scanned_at": "2026-03-29T05:41:44.460483+00:00"
     },
     {
       "id": "demo_benign_zendesk",
       "demo_title": "Zendesk Support Integration",
-      "demo_description": "Community Zendesk skill. Uses permissive policy. The skill documents its own prompt-injection screening pipeline; the semantic classifier fires on that security vocabulary (PINJ-SEM-001, SE-SEM-001), producing a WARN. Appropriate \u2014 a reviewer should inspect the injection-adjacent content.",
+      "demo_description": "Community Zendesk skill. Uses permissive policy. After MAL-001/CHN-002 tightening (PR #138) the remaining PINJ-SEM-001/SE-SEM-001 semantic findings score below the permissive WARN threshold; skill correctly scores ALLOW.",
       "label": "benign",
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/andmarios/zendesk-skill",
       "verdict": "ALLOW",
-      "expected_verdict": "WARN",
-      "verdict_match": false,
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
       "severity": "high",
       "findings_count": 2,
       "top_findings": [
@@ -528,7 +528,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-03-29T01:57:35.321222+00:00"
+      "scanned_at": "2026-03-29T05:41:47.687188+00:00"
     },
     {
       "id": "demo_benign_fal_generate",
@@ -544,7 +544,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T01:57:37.818946+00:00"
+      "scanned_at": "2026-03-29T05:41:50.413319+00:00"
     },
     {
       "id": "demo_benign_mailescrow",
@@ -560,7 +560,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T01:57:40.364932+00:00"
+      "scanned_at": "2026-03-29T05:41:53.157648+00:00"
     },
     {
       "id": "demo_benign_explain_code",
@@ -576,7 +576,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T01:57:42.891211+00:00"
+      "scanned_at": "2026-03-29T05:41:55.902209+00:00"
     }
   ]
 }
