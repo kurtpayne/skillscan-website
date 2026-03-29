@@ -970,7 +970,7 @@ M5, M6, M7, M7.5, M8, M10, M10.5, M10.7, M10.8, M10.9, M10.10, M11, M11.1, M12, 
 | ✅ | **M11 — Hardening & PyPI** ✅ | Completed 2026-03-26. v0.8.0, Apache-2.0. |
 | ❌ | ~~**M17 — Similarity Hashing**~~ | Dropped — requires running a registry. |
 | **C-2 ✅** | ~~**Adapter loading bug**~~ | Fixed PR #141 (2026-03-28). `ml_detector.py` now loads fine-tuned adapter via `get_adapter_path()`. `peft>=0.9.0` added to `[ml]` extra. |
-| **C-1** | **Eval set decontamination** | 66 of 143 injection eval files are byte-for-byte identical to training data. Process gate added to `corpus-sync.yml`. Replacement of 66 files with genuinely unseen examples in progress (Option 2). |
+| **C-1** | **Eval set decontamination** | Full decontamination: 299 files removed (66 injection + 233 benign), replaced with 66 new injection examples (new archetypes: pi, ent, mcp_imp, evasion, supply chain) + 233 new benign examples scraped from GitHub. Hash-dedup gate added to `corpus-sync.yml`. Corrected F1 pending (holdout eval running). Approved Option 2 (full replacement). |
 | **1** | **Trace-A1 — Provider UX** | `--provider openrouter/ollama/openai` shortcuts; `OPENROUTER_API_KEY` env var; OpenRouter unlocks 200+ models. Small effort, high UX impact. |
 | **2** | **Trace-A6 — Stale docs correction** | ROADMAP/README/IMPL_PLAN still say "spec only, no implementation" — wrong. 144 tests pass. Fix before public. |
 | **3** | **Trace-A3 — PRIVACY.md + README transparency** | Keys never stored/transmitted by SkillScan. Core differentiator. Must be prominent before public release. |
@@ -985,6 +985,7 @@ M5, M6, M7, M7.5, M8, M10, M10.5, M10.7, M10.8, M10.9, M10.10, M11, M11.1, M12, 
 | **12** | **Trace-B5 — `--remote` flag + `--remote-host` override** | CLI submits to hosted or self-hosted server. `source_url` URL-reachability check is the only auth for free OSS tier. |
 | **13** | **M10.12 — Feedback Mechanism** | FP/FN GitHub issue templates. Link from website + CLI output. |
 | **13a** | **`skillscan report-fp` / `report-fn` CLI** | CLI command packages skill + verdict + annotation into a structured GitHub issue submission. Closes the top of the feedback loop without telemetry. Kurt approved 2026-03-28. |
+| **13b** | **M10.7-b — `--profile ml-only` fast-path** | Skip static rules and chain analysis; run ML detector only. ~10x faster for CI eval loops (459 files × 2s → ~45s). Approved 2026-03-28. |
 | **14** | **P4 — analysis.py refactor** ✅ | Decomposed 1404-line analysis.py into analysis_pkg/_archive.py, _text.py, _scanner.py with compatibility shim. All tests pass. Merged 2026-03-28. |
 | **14a** | **M10.6 — Organic Eval Pipeline** ✅ | `holdout-eval.yml` merged PR #140 (2026-03-28). Runs all 451 eval files on every push to main, weekly, and on demand. F1 gate: 0.92. |
 | **15** | **P10 — Website: Dedicated Domain** | skillscan-website currently hosts pages for both `skillscan` (security scanner) and `skillscan-lint` (linter). Dedicate the website to the full SkillScan suite: update nav, homepage hero, and meta copy to present both tools as first-class products. Add a `/lint` landing section to the homepage, ensure `/lint` and `/trace` are in the primary nav, and update the footer to list all three tools (scan, lint, trace). |
