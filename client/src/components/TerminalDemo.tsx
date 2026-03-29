@@ -4,7 +4,7 @@
    Tabs: scan | lint | trace
    Animation: Lines appear sequentially, auto-loops, pauses on hover
    ============================================================ */
-import { useEffect, useState, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { CheckCircle2, XCircle, AlertTriangle, Minus, Info } from "lucide-react";
 
 interface DemoLine {
@@ -127,22 +127,29 @@ export default function TerminalDemo() {
   const [paused, setPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  // Track which tab the animation is currently running for to avoid stale-seq issues
+  const animTabRef = useRef<TabId>("scan");
 
   const tab = TABS.find((t) => t.id === activeTab)!;
   const seq = tab.sequence;
 
-  // Reset animation when tab changes
-  useEffect(() => {
+  // When the user clicks a tab: atomically reset everything via a callback
+  const switchTab = useCallback((id: TabId) => {
     if (timerRef.current) clearTimeout(timerRef.current);
+    animTabRef.current = id;
+    setActiveTab(id);
     setVisibleCount(0);
-  }, [activeTab]);
+    setPaused(false);
+  }, []);
 
   useEffect(() => {
+    // Guard: if the tab changed underneath us, bail — switchTab will re-trigger
+    if (animTabRef.current !== activeTab) return;
     if (paused) return;
     if (timerRef.current) clearTimeout(timerRef.current);
 
     if (visibleCount >= seq.length) {
-      // Pause at end, then restart
+      // Hold at end, then restart
       timerRef.current = setTimeout(() => setVisibleCount(0), 4500);
       return;
     }
@@ -156,7 +163,7 @@ export default function TerminalDemo() {
     }, line.delay);
 
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [visibleCount, paused, seq]);
+  }, [visibleCount, paused, seq, activeTab]);
 
   const isComplete = visibleCount >= seq.length;
   const displayLines = seq.slice(0, visibleCount);
@@ -209,7 +216,7 @@ export default function TerminalDemo() {
             return (
               <button
                 key={t.id}
-                onClick={() => setActiveTab(t.id)}
+                onClick={() => switchTab(t.id)}
                 className="px-4 py-2 text-xs font-semibold rounded-t-lg transition-all duration-200"
                 style={{
                   background: isActive ? "oklch(0.12 0.022 265)" : "transparent",
