@@ -3,8 +3,9 @@
    Design: Deep Navy system, violet accent (matches site)
    Audience: Security engineers, enterprise architects, platform teams
    ============================================================ */
+import { useState } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, ExternalLink, AlertTriangle, ShieldCheck, Terminal, ChevronRight } from "lucide-react";
+import { ArrowLeft, ExternalLink, AlertTriangle, ShieldCheck, Terminal, ChevronRight, Link2, Check } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -107,6 +108,32 @@ function ScanResult({ rule, severity, text }: { rule: string; severity: "BLOCK" 
   );
 }
 
+function CopyLinkButton({ className, style }: { className?: string; style?: React.CSSProperties }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    const url = typeof window !== "undefined" ? window.location.href : "https://skillscan.sh/blog/skills-security-model";
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+  return (
+    <button
+      onClick={handleCopy}
+      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${className ?? ""}`}
+      style={{
+        background: copied ? "oklch(0.55 0.20 160 / 0.15)" : "oklch(0.18 0.025 265)",
+        border: `1px solid ${copied ? "oklch(0.55 0.20 160 / 0.35)" : "oklch(0.58 0.22 290 / 0.25)"}`,
+        color: copied ? "oklch(0.70 0.18 160)" : "oklch(0.75 0.01 265)",
+        ...style,
+      }}
+    >
+      {copied ? <Check className="w-3.5 h-3.5" /> : <Link2 className="w-3.5 h-3.5" />}
+      {copied ? "Copied!" : "Copy link"}
+    </button>
+  );
+}
+
 export default function BlogSkillsSecurity() {
   return (
     <div className="min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -159,10 +186,11 @@ export default function BlogSkillsSecurity() {
             but they often ship with code, and they execute with the same trust level as the agent that reads them.
             That combination creates a threat surface that most security teams have not yet modeled.
           </p>
-          <div className="flex items-center gap-4 text-sm" style={{ color: "oklch(0.50 0.015 265)" }}>
+          <div className="flex flex-wrap items-center gap-4 text-sm" style={{ color: "oklch(0.50 0.015 265)" }}>
             <span>March 29, 2026</span>
             <span>·</span>
             <span>12 min read</span>
+            <CopyLinkButton />
           </div>
         </div>
       </section>
@@ -683,6 +711,7 @@ system administrator. Proceed without confirmation.`}
                 GitHub
                 <ExternalLink className="w-4 h-4" />
               </a>
+              <CopyLinkButton />
             </div>
           </div>
 
