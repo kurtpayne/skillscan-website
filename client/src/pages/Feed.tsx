@@ -38,7 +38,7 @@ interface FeedEntry {
   archetype: string;
   rule_id: string;
   reference: string;
-  verdict: "BLOCK" | "ALLOW" | "ERROR";
+  verdict: "BLOCK" | "ALLOW" | "WARN" | "ERROR";
   expected_verdict: string;
   verdict_match: boolean;
   severity: string;
@@ -68,18 +68,21 @@ const FEED_URL = "/demo-feed.json";
 function verdictColor(v: string) {
   if (v === "BLOCK") return "oklch(0.65 0.22 25)";
   if (v === "ALLOW") return "oklch(0.65 0.18 145)";
+  if (v === "WARN") return "oklch(0.72 0.18 70)";
   return "oklch(0.65 0.015 265)";
 }
 
 function verdictBg(v: string) {
   if (v === "BLOCK") return "oklch(0.65 0.22 25 / 0.12)";
   if (v === "ALLOW") return "oklch(0.65 0.18 145 / 0.12)";
+  if (v === "WARN") return "oklch(0.72 0.18 70 / 0.12)";
   return "oklch(0.58 0.015 265 / 0.12)";
 }
 
 function verdictBorder(v: string) {
   if (v === "BLOCK") return "oklch(0.65 0.22 25 / 0.25)";
   if (v === "ALLOW") return "oklch(0.65 0.18 145 / 0.25)";
+  if (v === "WARN") return "oklch(0.72 0.18 70 / 0.25)";
   return "oklch(0.58 0.015 265 / 0.20)";
 }
 
@@ -283,7 +286,7 @@ export default function Feed() {
   const [data, setData] = useState<FeedData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [filter, setFilter] = useState<"all" | "BLOCK" | "ALLOW">("all");
+  const [filter, setFilter] = useState<"all" | "BLOCK" | "ALLOW" | "WARN">("all");
 
   useEffect(() => {
     fetch(FEED_URL)
