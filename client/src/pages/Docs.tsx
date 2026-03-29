@@ -284,8 +284,9 @@ skillscan scan ./skills/
 
                 <SubTitle>2. Install the ML model</SubTitle>
                 <Prose>
-                  The ML classifier (DeBERTa-v3 + LoRA, F1 0.9787) catches semantic attacks and novel jailbreaks
+                  The ML classifier (DeBERTa-v3 + LoRA, beta) catches semantic attacks and novel jailbreaks
                   that static rules cannot express. It runs entirely offline via ONNX Runtime.
+                  Benchmark metrics will be published with v11.
                 </Prose>
                 <CodeBlock code={`skillscan model install          # downloads from HuggingFace Hub (~350 MB)
 skillscan model status           # shows installed version vs Hub latest

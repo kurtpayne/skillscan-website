@@ -76,13 +76,13 @@ export default function Model() {
             <div
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-6"
               style={{
-                background: "oklch(0.58 0.22 290 / 0.12)",
-                border: "1px solid oklch(0.58 0.22 290 / 0.30)",
-                color: "oklch(0.78 0.18 290)",
+                background: "oklch(0.72 0.19 45 / 0.12)",
+                border: "1px solid oklch(0.72 0.19 45 / 0.35)",
+                color: "oklch(0.82 0.15 45)",
                 fontFamily: "'JetBrains Mono', monospace",
               }}
             >
-              Layer 6 — ML Classifier
+              Layer 6 — ML Classifier · Beta
             </div>
             <h1
               className="text-4xl sm:text-5xl font-bold mb-6"
@@ -127,19 +127,40 @@ export default function Model() {
         </div>
       </section>
 
-      {/* ── CURRENT METRICS ── */}
+      {/* ── BETA NOTICE ── */}
       <section className="py-20">
         <div className="container">
+          <div
+            className="rounded-xl p-6 mb-10"
+            style={{
+              background: "oklch(0.72 0.19 45 / 0.07)",
+              border: "1px solid oklch(0.72 0.19 45 / 0.35)",
+            }}
+          >
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.72 0.19 45)" }} />
+              <div>
+                <div className="text-sm font-semibold mb-1" style={{ color: "oklch(0.85 0.12 45)" }}>
+                  ML detection is a beta feature — metrics under revision
+                </div>
+                <div className="text-sm leading-relaxed" style={{ color: "oklch(0.65 0.015 265)" }}>
+                  We identified eval set contamination in the v10 benchmark that artificially inflated the reported F1 score.
+                  We are retraining on a decontaminated corpus and will publish corrected metrics with v11.
+                  The static rule engine (Layer 1–5) is unaffected and production-ready.
+                  Do not rely on the v10 benchmark figures for security decisions.
+                </div>
+              </div>
+            </div>
+          </div>
           <SectionHeader
-            label="v18258-5ep (current)"
-            title="Current model performance"
-            sub="All metrics measured on the held-out eval set (451 examples). This set was locked before the first fine-tune run and has never been used for training."
+            label="Beta — v11 in training"
+            title="ML detection layer"
+            sub="The ML classifier runs entirely offline via ONNX Runtime. It is designed to catch semantic attacks that static rules miss — jailbreaks, indirect injection, and novel archetypes. Benchmark metrics will be published with v11."
           />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <MetricCard value="0.9787" label="Macro F1" sub="Target: ≥ 0.97 ✅" accent="oklch(0.78 0.18 290)" />
-            <MetricCard value="2.18%" label="False Positive Rate" sub="Target: ≤ 5% ✅" accent="oklch(0.70 0.15 160)" />
-            <MetricCard value="0.9823" label="Accuracy" sub="451-example held-out set" accent="oklch(0.72 0.19 45)" />
-            <MetricCard value="18,258" label="Training examples" sub="9,900 benign · 8,358 injection" accent="oklch(0.65 0.18 200)" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <MetricCard value="~350 MB" label="Model size" sub="ONNX FP32, no GPU required" accent="oklch(0.78 0.18 290)" />
+            <MetricCard value="25,000+" label="Training examples" sub="Benign skills · injection archetypes" accent="oklch(0.65 0.18 200)" />
+            <MetricCard value="14+" label="Attack families" sub="Jailbreaks, MCP attacks, supply chain, SE" accent="oklch(0.72 0.19 45)" />
           </div>
           <div
             className="rounded-xl p-5 text-sm"
@@ -149,9 +170,9 @@ export default function Model() {
               color: "oklch(0.62 0.015 265)",
             }}
           >
-            New project-best macro F1 (0.9787, +0.35pp over v18161). Accuracy improved to 0.9823. FPR 2.18% — within the ≤5% SaaS threshold.
-            97 new corpus examples for 5 new rule archetypes (OBF-004/MAL-051/PSV-005/MAL-052/MAL-053) absorbed without regression.
-            The model is shipped as ONNX FP32 (~350 MB). INT8 quantization was evaluated and caused F1 collapse; FP32 is the confirmed production format.
+            The model is a LoRA-fine-tuned DeBERTa-v3-base adapter, shipped as ONNX FP32 (~350 MB) for offline CPU inference.
+            It is trained on a corpus of real-world agent skill files and adversarially crafted injection examples across 14+ attack families.
+            Benchmark metrics (macro F1, FPR, per-archetype recall) will be published once v11 training completes on the decontaminated eval set.
           </div>
         </div>
       </section>
@@ -228,8 +249,8 @@ export default function Model() {
         <div className="container">
           <SectionHeader
             label="Training history"
-            title="Six versions to production quality"
-            sub="Each version trained on an expanded corpus against the same locked held-out eval set."
+            title="Model training progression"
+            sub="Each version trained on an expanded corpus. Note: v1–v10 metrics were measured on a held-out set that was later found to have contamination. Corrected metrics will be published with v11."
           />
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -253,7 +274,7 @@ export default function Model() {
                   { v: "v11461", corpus: "11,461", f1: "0.9110", fpr: "11.45%", note: "Enterprise benign corpus; MCP/SE coverage", current: false },
                   { v: "v16589", corpus: "16,589", f1: "0.9608", fpr: "3.69%", note: "Gap archetype closure; enterprise adversarial examples", current: false },
                   { v: "v18161", corpus: "18,161", f1: "0.9752", fpr: "1.89%", note: "Both SaaS quality thresholds met", current: false },
-                  { v: "v18258", corpus: "18,258", f1: "0.9787", fpr: "2.18%", note: "Current — new project-best F1; 5 new rule archetypes", current: true },
+                  { v: "v18258", corpus: "18,258", f1: "—", fpr: "—", note: "Contaminated eval — metrics under revision; v11 retraining in progress", current: true },
                 ].map((row) => (
                   <tr
                     key={row.v}
@@ -363,7 +384,7 @@ export default function Model() {
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle className="w-4 h-4" style={{ color: "oklch(0.72 0.19 45)" }} />
                   <span className="text-xs font-semibold" style={{ color: "oklch(0.72 0.19 45)" }}>
-                    Known lower-recall archetypes
+                    Known coverage gaps (v10)
                   </span>
                 </div>
                 <div className="space-y-1">
@@ -381,7 +402,7 @@ export default function Model() {
                   ))}
                 </div>
                 <div className="mt-3 text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
-                  v10 corpus expansion added 30 targeted examples across these archetypes. Next training run will evaluate recall improvement.
+                  v11 retraining adds targeted examples for all identified coverage gaps. Updated recall metrics will be published on completion.
                 </div>
               </div>
             </div>
