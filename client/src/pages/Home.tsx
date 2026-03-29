@@ -11,42 +11,6 @@ import TerminalScan from "@/components/TerminalScan";
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663340703543/GpzBjr25jP63Hgax7fEfrw/hero-bg_24844349.png";
 
-const TOOLS = [
-  {
-    id: "scan",
-    label: "Scan",
-    color: "oklch(0.58 0.22 290)",
-    colorBg: "oklch(0.58 0.22 290 / 0.12)",
-    colorBorder: "oklch(0.58 0.22 290 / 0.30)",
-    install: "pip install skillscan-security",
-    run: "skillscan scan ./skills/ --format sarif -o results.sarif",
-    runLabel: "scan",
-    repo: "https://github.com/kurtpayne/skillscan-security",
-  },
-  {
-    id: "lint",
-    label: "Lint",
-    color: "oklch(0.70 0.15 160)",
-    colorBg: "oklch(0.70 0.15 160 / 0.12)",
-    colorBorder: "oklch(0.70 0.15 160 / 0.30)",
-    install: "pip install skillscan-lint",
-    run: "skillscan-lint ./skills/",
-    runLabel: "lint",
-    repo: "https://github.com/kurtpayne/skillscan-lint",
-  },
-  {
-    id: "trace",
-    label: "Trace",
-    color: "oklch(0.72 0.19 45)",
-    colorBg: "oklch(0.72 0.19 45 / 0.12)",
-    colorBorder: "oklch(0.72 0.19 45 / 0.30)",
-    install: "pip install skillscan-trace",
-    run: "skillscan-trace run ./skills/MySkill.md",
-    runLabel: "trace",
-    repo: "https://github.com/kurtpayne/skillscan-trace",
-  },
-] as const;
-type ToolId = typeof TOOLS[number]["id"];
 const INSTALL_CMD = "pip install skillscan-security";
 const SCAN_CMD = "skillscan scan ./skills/ --format sarif -o results.sarif";
 const LINT_INSTALL_CMD = "pip install skillscan-lint";
@@ -70,73 +34,6 @@ function CopyButton({ text }: { text: string }) {
     >
       {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
     </button>
-  );
-}
-
-function TabbedInstall() {
-  const [activeTab, setActiveTab] = useState<ToolId>("scan");
-  const tool = TOOLS.find((t) => t.id === activeTab)!;
-  return (
-    <div
-      className="rounded-lg mb-8 animate-fade-up-delay-2 overflow-hidden"
-      style={{
-        background: "oklch(0.10 0.020 265 / 0.9)",
-        border: `1px solid ${tool.colorBorder}`,
-        maxWidth: "480px",
-        transition: "border-color 0.2s",
-      }}
-    >
-      {/* Tab bar */}
-      <div className="flex" style={{ borderBottom: "1px solid oklch(0.20 0.025 265)" }}>
-        {TOOLS.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setActiveTab(t.id)}
-            className="flex-1 py-2 text-xs font-semibold font-mono transition-all duration-150"
-            style={{
-              color: activeTab === t.id ? t.color : "oklch(0.45 0.012 265)",
-              background: activeTab === t.id ? t.colorBg : "transparent",
-              borderBottom: activeTab === t.id ? `2px solid ${t.color}` : "2px solid transparent",
-            }}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-      {/* Snippet body */}
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-mono" style={{ color: "oklch(0.45 0.012 265)" }}>
-            skillscan-{tool.id}
-          </span>
-          <a
-            href={tool.repo}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs transition-colors duration-150"
-            style={{ color: "oklch(0.45 0.012 265)" }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = tool.color)}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.45 0.012 265)")}
-          >
-            GitHub ↗
-          </a>
-        </div>
-        {/* install line */}
-        <div className="flex items-center justify-between mb-1">
-          <code className="text-sm" style={{ color: tool.color, fontFamily: "'JetBrains Mono', monospace" }}>
-            <span style={{ color: "oklch(0.45 0.015 265)" }}>$</span>{" "}{tool.install}
-          </code>
-          <CopyButton text={tool.install} />
-        </div>
-        {/* run line */}
-        <div className="flex items-center justify-between">
-          <code className="text-sm" style={{ color: "oklch(0.72 0.19 45)", fontFamily: "'JetBrains Mono', monospace" }}>
-            <span style={{ color: "oklch(0.45 0.015 265)" }}>$</span>{" "}{tool.run}
-          </code>
-          <CopyButton text={tool.run} />
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -300,8 +197,39 @@ export default function Home() {
                 Three open-source tools that cover the full lifecycle of AI skill security: static analysis to catch malicious patterns before deployment, quality linting to enforce best practices, and live behavioural tracing to verify what a skill actually does at runtime.
               </p>
 
-              {/* Tabbed install snippet */}
-              <TabbedInstall />
+              {/* Install snippet */}
+              <div
+                className="rounded-lg p-4 mb-8 animate-fade-up-delay-2"
+                style={{
+                  background: "oklch(0.10 0.020 265 / 0.9)",
+                  border: "1px solid oklch(0.58 0.22 290 / 0.25)",
+                  maxWidth: "480px",
+                }}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs" style={{ color: "oklch(0.50 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
+                    skillscan-security
+                  </span>
+                  <CopyButton text={INSTALL_CMD} />
+                </div>
+                <code
+                  className="text-sm"
+                  style={{ color: "oklch(0.78 0.18 290)", fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  <span style={{ color: "oklch(0.55 0.015 265)" }}>$</span>{" "}
+                  {INSTALL_CMD}
+                </code>
+                <div className="mt-2 flex items-center justify-between">
+                  <code
+                    className="text-sm"
+                    style={{ color: "oklch(0.72 0.19 45)", fontFamily: "'JetBrains Mono', monospace" }}
+                  >
+                    <span style={{ color: "oklch(0.55 0.015 265)" }}>$</span>{" "}
+                    {SCAN_CMD}
+                  </code>
+                  <CopyButton text={SCAN_CMD} />
+                </div>
+              </div>
 
               {/* CTAs */}
               <div className="flex flex-wrap gap-3 animate-fade-up-delay-3">
