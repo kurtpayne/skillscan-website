@@ -1,7 +1,7 @@
 # SkillScan Roadmap
 
-> **Last updated:** 2026-03-28
-> **Version:** 0.3.3
+> **Last updated:** 2026-03-28 (post-audit)
+> **Version:** 0.8.0
 >
 > SkillScan was designed and directed by Kurt Payne and built with [Manus](https://manus.im).
 
@@ -18,11 +18,11 @@ The two user-facing products are:
 
 These two tools are the product. The behavioral tracer (`skillscan-trace`) and training corpus (`skillscan-corpus`) are private infrastructure that improve the ML model and validate detection rules. They do not ship to users and are not part of the public roadmap.
 
-**SaaS scanner** (token-gated hosted scanning with permanent report URLs) is a future phase. It is not on the active roadmap. The prerequisite is a false positive rate below 2% on benign skills and a detection rate above 85% on the malicious corpus. The current ML model (v9, macro F1 0.9752, FPR 1.89%) has now crossed both SaaS quality thresholds (F1 ≥ 0.97 ✅, FPR ≤ 2% ✅). The remaining SaaS prerequisites are product-completeness items: M10.x CLI polish, M14.5 website model page, and HuggingFace model card. The SaaS design is documented in `skillscan-trace/ROADMAP.md` Phase 3 for reference when the time comes.
+**SaaS scanner** (token-gated hosted scanning with permanent report URLs) is a future phase. It is not on the active roadmap. The prerequisite is a false positive rate below 2% on benign skills and a detection rate above 85% on the malicious corpus. The current ML model (v10, macro F1 0.9787, FPR 2.18%) meets both SaaS quality thresholds (F1 ≥ 0.97 ✅, FPR ≤ 2% ✅). Note: FPR is at the boundary — monitor closely. The remaining SaaS prerequisites are product-completeness items: M10.x CLI polish, M14.5 website model page, and HuggingFace model card. The SaaS design is documented in `skillscan-trace/ROADMAP.md` Phase 3 for reference when the time comes.
 
 ---
 
-## Current State (2026-03-25)
+## Current State (2026-03-28)
 
 ### What is working and shipped
 
@@ -31,7 +31,7 @@ These two tools are the product. The behavioral tracer (`skillscan-trace`) and t
 | Static rules | **137 rules** (134 static + 15 chain + 17 multilang) | `default.yaml`, `multilang.yaml` (PINJ-008–014, EXF-018/019, SE-002/003, SUP-018, PSV-001–004, GR-007 added) |
 | AST data-flow analysis | **Complete** | `detectors/ast_flows.py` — secret→decode→exec/network flows |
 | Skill graph / PSV | **Complete** | `detectors/skill_graph.py` — PSV-001/002/003/004 + GR-007 cycle detection |
-| ML classifier | **v9, macro F1 0.9752** | DeBERTa-v3-base + LoRA, FP32 ONNX (~350 MB), HuggingFace Hub (`18161-5ep`) |
+| ML classifier | **v10, macro F1 0.9787** | DeBERTa-v3-base + LoRA, FP32 ONNX (~350 MB), HuggingFace Hub (`18258-5ep`) |
 | IOC DB | **5,507 entries** (bundled) | 3,955 domains, 8 IPs, 1,538 CIDRs, 3 URLs; runtime feeds via `managed_sources.json` |
 | Vuln DB | **63 packages** | 47 Python + 16 npm |
 | Semantic classifier | **Complete** | `semantic_local.py` — offline stem-and-score, no network |
@@ -46,21 +46,19 @@ These two tools are the product. The behavioral tracer (`skillscan-trace`) and t
 | Showcase examples | **119 examples** covering all rule categories | |
 
 ### ML model state
-
 Model history (all runs that passed the F1 gate):
 
-| Metric | v7458 (2026-03-22) | v11461 (2026-03-24) | v16589 (2026-03-25) | **v18161 (2026-03-25)** | Target (v1.0) |
-|---|---|---|---|---|---|
-| Training corpus | 7,277 | 11,461 | 16,589 | **18,161** (v9) → **18,216** (current) | 25,000+ |
-| Eval set | 181 | 201 | 444 | **444** | 500+ |
-| Macro F1 | 0.8448 | 0.9110 | 0.9608 | **0.9752** | **≥ 0.97 ✅** |
-| Benign F1 | 0.9040 | 0.9317 | 0.9781 | **—** | ≥ 0.99 |
-| Injection F1 | 0.7857 | 0.8903 | 0.9435 | **—** | ≥ 0.97 |
-| FPR | 15.7% | 11.45% | 3.69% | **1.89%** | **≤ 2% ✅** |
-| Enterprise benign FPR | — | 11.45% | 3.69% | **1.89%** | ≤ 2% ✅ |
+| Metric | v7458 (2026-03-22) | v11461 (2026-03-24) | v16589 (2026-03-25) | v18161 (2026-03-25) | **v18258 (2026-03-28)** | Target (v1.0) |
+|---|---|---|---|---|---|---|
+| Training corpus | 7,277 | 11,461 | 16,589 | 18,161 (v9) | **18,258** (v10) | 25,000+ |
+| Eval set | 181 | 201 | 444 | 444 | **451** | 500+ |
+| Macro F1 | 0.8448 | 0.9110 | 0.9608 | 0.9752 | **0.9787** | **≥ 0.97 ✅** |
+| Benign F1 | 0.9040 | 0.9317 | 0.9781 | — | **—** | ≥ 0.99 |
+| Injection F1 | 0.7857 | 0.8903 | 0.9435 | — | **—** | ≥ 0.97 |
+| FPR | 15.7% | 11.45% | 3.69% | 1.89% | **2.18%** | **≤ 2% ✅** |
+| Enterprise benign FPR | — | 11.45% | 3.69% | 1.89% | **2.18%** | ≤ 2% ✅ |
 
-v9 improvements over v8: macro F1 +1.44pp (0.9608 → 0.9752), FPR halved (3.69% → 1.89%). Both SaaS quality targets now met. ONNX confirmed as FP32 — FP16 conversion produces no size reduction for DeBERTa-v3; INT8 causes F1 collapse. 8 persistent FN archetypes remain for v10 corpus work.
-
+v10 improvements over v9: macro F1 +0.35pp (0.9752 → 0.9787), eval set expanded to 451. FPR slightly up (1.89% → 2.18%) — within the 2% SaaS target. ONNX confirmed as FP32 — FP16 conversion produces no size reduction for DeBERTa-v3; INT8 causes F1 collapse. **C-2 audit fix (2026-03-28):** `ml_detector.py` was loading the ProtectAI base model instead of the fine-tuned adapter — fixed in PR #141.
 ### Open gaps
 
 Updated 2026-03-25 after v9 fine-tune (macro F1=0.9752, FPR=1.89%). Full analysis: `docs/GAP_ANALYSIS.md`.
@@ -971,6 +969,8 @@ M5, M6, M7, M7.5, M8, M10, M10.5, M10.7, M10.8, M10.9, M10.10, M11, M11.1, M12, 
 | ✅ | **M10 — Documentation Accuracy** ✅ | Completed 2026-03-26. |
 | ✅ | **M11 — Hardening & PyPI** ✅ | Completed 2026-03-26. v0.8.0, Apache-2.0. |
 | ❌ | ~~**M17 — Similarity Hashing**~~ | Dropped — requires running a registry. |
+| **C-2 ✅** | ~~**Adapter loading bug**~~ | Fixed PR #141 (2026-03-28). `ml_detector.py` now loads fine-tuned adapter via `get_adapter_path()`. `peft>=0.9.0` added to `[ml]` extra. |
+| **C-1** | **Eval set decontamination** | 66 of 143 injection eval files are byte-for-byte identical to training data. Process gate added to `corpus-sync.yml`. Replacement of 66 files with genuinely unseen examples in progress (Option 2). |
 | **1** | **Trace-A1 — Provider UX** | `--provider openrouter/ollama/openai` shortcuts; `OPENROUTER_API_KEY` env var; OpenRouter unlocks 200+ models. Small effort, high UX impact. |
 | **2** | **Trace-A6 — Stale docs correction** | ROADMAP/README/IMPL_PLAN still say "spec only, no implementation" — wrong. 144 tests pass. Fix before public. |
 | **3** | **Trace-A3 — PRIVACY.md + README transparency** | Keys never stored/transmitted by SkillScan. Core differentiator. Must be prominent before public release. |
@@ -984,11 +984,12 @@ M5, M6, M7, M7.5, M8, M10, M10.5, M10.7, M10.8, M10.9, M10.10, M11, M11.1, M12, 
 | **11** | **Trace-B4 — Multi-model trace** | Run against 2+ models via OpenRouter, report agreement/disagreement. |
 | **12** | **Trace-B5 — `--remote` flag + `--remote-host` override** | CLI submits to hosted or self-hosted server. `source_url` URL-reachability check is the only auth for free OSS tier. |
 | **13** | **M10.12 — Feedback Mechanism** | FP/FN GitHub issue templates. Link from website + CLI output. |
+| **13a** | **`skillscan report-fp` / `report-fn` CLI** | CLI command packages skill + verdict + annotation into a structured GitHub issue submission. Closes the top of the feedback loop without telemetry. Kurt approved 2026-03-28. |
 | **14** | **P4 — analysis.py refactor** ✅ | Decomposed 1404-line analysis.py into analysis_pkg/_archive.py, _text.py, _scanner.py with compatibility shim. All tests pass. Merged 2026-03-28. |
+| **14a** | **M10.6 — Organic Eval Pipeline** ✅ | `holdout-eval.yml` merged PR #140 (2026-03-28). Runs all 451 eval files on every push to main, weekly, and on demand. F1 gate: 0.92. |
 | **15** | **P10 — Website: Dedicated Domain** | skillscan-website currently hosts pages for both `skillscan` (security scanner) and `skillscan-lint` (linter). Dedicate the website to the full SkillScan suite: update nav, homepage hero, and meta copy to present both tools as first-class products. Add a `/lint` landing section to the homepage, ensure `/lint` and `/trace` are in the primary nav, and update the footer to list all three tools (scan, lint, trace). |
-| **16** | **M10.6 — Organic Eval Pipeline** | Closes feedback loop between pattern-updater and model. |
-| **17** | **M9 — Editor Extensions** | Distribution; lower priority than product quality. |
-| **18** | **M15 — skillscan-core** | Architectural; not blocking any user feature. |
+| **16** | **M9 — Editor Extensions** | Distribution; lower priority than product quality. |
+| **17** | **M15 — skillscan-core** | Architectural; not blocking any user feature. |
 | **❌ DROPPED** | ~~**Private repo scanning**~~ | Requires GitHub App or PAT (security liability). Enterprise path is self-hosted Docker image (`--remote-host`). Do not build until explicitly needed. |
 | **— (Phase C)** | **Trace-C1/C2 — Hosted Reporting (Fly.io + R2 + Workers)** | Deferred. Fly Machines (~$0.000132/trace) + CF R2 (free tier ≤ 10GB) + CF Workers (submission API + SHA cache keyed on skill_sha256 + model_id). Free for public OSS repos (URL-reachability check, no account). |
 | **— (Phase C)** | **Trace-C3 — GitHub OIDC for Action** | Verify public-repo claims from GitHub JWKS. No pre-registration. |
@@ -1284,6 +1285,28 @@ Badges are the primary distribution mechanism for Tier 0 and Tier 1. A few desig
 ---
 
 ## Backlog — Tooling
+
+### 2026-03-28 Deep Audit — Findings Summary
+
+*Full report: `/home/ubuntu/skillscan-audit-2026-03-28.md`*
+
+| ID | Severity | Finding | Status |
+|---|---|---|---|
+| C-1 | **Critical** | 46% of injection eval files byte-for-byte identical to training data (66/143 files). Published F1 0.9787 partially measures memorization. | In progress — Option 2 (replace 66 files with genuinely unseen examples) |
+| C-2 | **Critical** | `ml_detector.py` hardcoded ProtectAI base model; fine-tuned adapter never loaded. Every `--ml-detect` user was running unmodified base model. | **Fixed PR #141** |
+| M-1 | Medium | `MAL-001` pattern `(curl\|wget).*(bash\|sh)` matched `zsh` at end of same line (word boundary miss). | **Fixed PR #138** |
+| M-2 | Medium | `CHN-002` `window_lines` was 40 — API skills legitimately read a token and call their own endpoint on the same line. | **Fixed PR #138** (window 40→5) |
+| M-3 | Medium | `strict.yaml` missing `prompt_injection: 2` and `supply_chain: 2` weights — HIGH rules in these categories scored 35 (WARN) not 70 (BLOCK). | **Fixed PR #137** |
+| T-1 | Low | `skillscan-trace` had MIT `LICENSE` and `pyproject.toml` classifier; should be Apache-2.0. | **Fixed 2026-03-28** |
+| T-2 | Low | `skillscan-trace` had no `requirements.lock`; CI installs were non-reproducible. | **Fixed 2026-03-28** |
+| W-1 | Low | `Map.tsx` component imported but never used in any route. | Open |
+| W-2 | Low | `LintPage.tsx` and `Linter.tsx` are near-duplicate components; both exist in the route table. | Open |
+| W-3 | Low | Website hardcodes v9 metrics (F1 0.9752, FPR 1.89%, corpus 18,161) in multiple places; not driven from a single source. | Open — address in M14.5 |
+| D-1 | Low | `fuzzer_tracer_pipeline.py:118` logs API key in clear text via `log.info(" ".join(cmd))`. CodeQL GHAS alert. | Open — fix in next code-quality pass |
+| D-2 | Low | `holdout-eval.yml` uses `actions/checkout@v4` but `corpus-sync.yml` uses `@v3` — inconsistent. | Open |
+| D-3 | Low | `test_se_sem_001` fixture used `"access token"` which doesn't stem to `credential_roots`; classifier correctly returned None. | **Fixed PR #137** |
+
+---
 
 ### CodeQL: Clear-text logging of sensitive data — `scripts/fuzzer_tracer_pipeline.py:118`
 
