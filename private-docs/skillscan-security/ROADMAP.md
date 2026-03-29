@@ -1330,7 +1330,42 @@ log.info("[%s] Running fuzzer: %s", strategy, _redact_cmd(cmd))
 
 ---
 
-## Milestone 20 — Trace-as-a-Service: BYOK, Dedicated Instances & Queue Architecture
+### Issue Triage Agent — daily automated issue response
+
+**Goal:** A Manus-scheduled agent that runs once per day, reads all open GitHub issues across `skillscan-security`, `skillscan-trace`, and `skillscan-lint`, and takes automated action where possible — surfacing anything that needs human attention.
+
+**Motivation:** The demo-feed workflow now opens `[demo-feed-regression]` issues automatically. The pattern-update agent opens `[pattern-update]` PRs. As the project grows, the issue backlog will accumulate faster than manual review allows. This agent closes the loop.
+
+**Behaviour by label:**
+
+| Label | Automated action | Human escalation |
+|---|---|---|
+| `demo-feed-regression` | Parse unexpected-verdict table; for each FP entry, check if a suppression already exists; for each FN entry, generate 3–5 new corpus examples and open a PR to `skillscan-corpus`. Close issue if all regressions are resolved. | If the FP root cause is ambiguous (multiple rules firing, low-confidence signal) or the FN requires a new rule category, add `needs-human-review` label and send a summary to Kurt. |
+| `false-positive` (user-filed) | Re-scan the referenced skill with the current model. If verdict is now ALLOW, comment with the resolution and close. If still BLOCK, identify the triggering rule(s) and add a comment with the rule ID and confidence. | Always add `needs-human-review` — user-filed FPs require human sign-off before suppression. |
+| `false-negative` (user-filed) | Re-scan. If now BLOCK, comment and close. If still ALLOW, generate 2–3 corpus examples and open a draft PR. | Add `needs-human-review` with a summary of the gap. |
+| `domain-allowlist` | No automated action — domain changes require human review. | Ping Kurt via issue comment if the issue is >7 days old without a response. |
+| `bug-report` | Attempt to reproduce using the steps in the issue body. If reproduced, add a `confirmed` label and a reproduction note. | Always escalate — bugs require human fix. |
+| `maintenance` / `dependabot` | Merge if CI is green and the PR is a patch/minor bump. Skip major version bumps. | Escalate major bumps with a changelog summary. |
+| No label / unknown | Add `triage` label and a comment asking for more detail. | Surface in daily summary. |
+
+**Daily summary:** After processing, the agent posts a brief summary comment on any issue it touched, and sends a consolidated Markdown summary to Kurt (via a pinned issue or a private Gist) listing: issues auto-resolved, issues escalated, PRs opened.
+
+**Relationship to pattern-update agent:** The pattern-update agent proactively hunts for new threat patterns. The issue triage agent reactively responds to signals already in the issue tracker. They share the corpus-writing and PR-opening machinery but have different triggers.
+
+**Implementation notes:**
+- Built as a Manus skill (`skillscan-issue-triage/SKILL.md`), scheduled daily at 08:00 UTC
+- Uses `gh issue list --json` + `gh pr create` — same tooling as pattern-update
+- Corpus example generation reuses the FN archetype templates from P6
+- Issue dedup: checks for existing open issues with the same entry ID before opening a new one (same pattern as demo-feed regression)
+- Dry-run mode: `--dry-run` flag prints planned actions without writing to GitHub
+
+**Priority:** Medium-High. Implement after the v10 model training run is complete and the demo-feed pipeline is stable. Estimated effort: 1 session.
+
+**Source:** Kurt request, 2026-03-28 session.
+
+---
+
+## Milestone 200 — Trace-as-a-Service: BYOK, Dedicated Instances & Queue Architecture
 
 > **Full specification:** `TAAS_SPEC.md` in `kurtpayne/skillscan-trace` (commit e17aba6). Covers infrastructure, auth, token model, Stripe payments, queue, SSE live results, admin panel, `online-trace` CLI subcommand, HA, backups, audit logging, BYOK key encryption, data model, and test environment. The notes below are a high-level summary; the spec is the authoritative document.
 
