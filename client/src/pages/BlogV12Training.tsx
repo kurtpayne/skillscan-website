@@ -263,21 +263,21 @@ export default function BlogV12Training() {
                     </tr>
                   </thead>
                   <tbody>
-                    <MetricRow label="Macro F1" v11bad="0.926" v11clean="0.555" v12="pending" />
-                    <MetricRow label="Injection recall" v11bad="0.944" v11clean="0.196" v12="pending" />
-                    <MetricRow label="Injection precision" v11bad="0.861" v11clean="0.617" v12="pending" />
-                    <MetricRow label="FPR (benign)" v11bad="2.66%" v11clean="5.71%" v12="pending" />
+                    <MetricRow label="Macro F1" v11bad="0.926" v11clean="0.555" v12="0.7287" />
+                    <MetricRow label="Injection recall" v11bad="0.944" v11clean="0.196" v12="0.966" />
+                    <MetricRow label="Injection precision" v11bad="0.861" v11clean="0.617" v12="0.844" />
+                    <MetricRow label="FPR (benign)" v11bad="2.66%" v11clean="5.71%" v12="2.49%" />
                     <MetricRow label="Eval set size" v11bad="463 (44% leaked)" v11clean="259 (clean)" v12="463 (clean)" />
                   </tbody>
                 </table>
               </div>
-              <div className="rounded-xl p-5" style={{ background: "oklch(0.58 0.22 290 / 0.06)", border: "1px solid oklch(0.58 0.22 290 / 0.18)" }}>
-                <p className="text-sm font-semibold mb-1" style={{ color: "oklch(0.78 0.18 290)", fontFamily: "'Space Grotesk', sans-serif" }}>v12 results pending</p>
+              <div className="rounded-xl p-5" style={{ background: "oklch(0.70 0.15 160 / 0.06)", border: "1px solid oklch(0.70 0.15 160 / 0.25)" }}>
+                <p className="text-sm font-semibold mb-1" style={{ color: "oklch(0.75 0.18 160)", fontFamily: "'Space Grotesk', sans-serif" }}>v12 results — published Mar 29, 2026</p>
                 <p className="text-sm" style={{ color: "oklch(0.62 0.015 265)" }}>
-                  v12 training completed on Mar 29, 2026. Eval results will be published here and on the{" "}
-                  <Link href="/model"><a className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Model page</a></Link>{" "}
-                  as soon as the clean eval run finishes. We expect injection recall to improve significantly
-                  given the targeted augmentation of the five zero-recall archetypes.
+                  Injection recall recovered from 19.6% to 96.6% on the clean 463-example eval set.
+                  Macro F1 reached 0.7287 — below the contaminated v11 number (0.926) but a genuine,
+                  verifiable result. FPR improved from 5.71% to 2.49%. Full metrics are on the{"|"}
+                  <Link href="/model"><a className="underline" style={{ color: "oklch(0.75 0.18 160)" }}>Model page</a></Link>.
                 </p>
               </div>
             </section>
@@ -295,9 +295,9 @@ export default function BlogV12Training() {
               </p>
               <p className="mt-4">
                 The <InlineCode>--ml-detect</InlineCode> flag, which enables the ML classifier as a
-                supplementary layer, should be treated as experimental until v12 results are published.
-                The Model page reflects this with an explicit experimental notice and the honest v11
-                numbers.
+                supplementary layer, is now backed by v12b — a model trained and evaluated on a clean,
+                non-overlapping corpus. Injection recall is 96.6% on the 463-example held-out eval set.
+                The Model page has the full metrics.
               </p>
               <p className="mt-4">
                 Going forward, every model version will include: the training corpus hash, the eval set
@@ -317,7 +317,7 @@ export default function BlogV12Training() {
                   Questions or feedback?
                 </p>
                 <p className="text-sm" style={{ color: "oklch(0.55 0.015 265)" }}>
-                  Open an issue on GitHub or follow the project for v12 results.
+                  Open an issue on GitHub or use <InlineCode>skillscan feedback fp</InlineCode> to report a false positive.
                 </p>
               </div>
               <div className="flex items-center gap-3">
