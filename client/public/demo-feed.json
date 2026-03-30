@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-03-30T21:05:35.891694+00:00",
+  "generated_at": "2026-03-30T21:40:43.311478+00:00",
   "skillscan_version": "0.8.0",
-  "entry_count": 22,
-  "block_count": 17,
+  "entry_count": 24,
+  "block_count": 19,
   "allow_count": 5,
   "error_count": 0,
   "unexpected_count": 0,
@@ -21,7 +21,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-30T21:04:26.957717+00:00"
+      "scanned_at": "2026-03-30T21:39:47.360587+00:00"
     },
     {
       "id": "organic_mal046_cursorjack_deeplink",
@@ -62,7 +62,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:04:30.178175+00:00"
+      "scanned_at": "2026-03-30T21:39:49.744638+00:00"
     },
     {
       "id": "organic_mal047_claude_hooks_rce",
@@ -109,7 +109,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:04:33.306215+00:00"
+      "scanned_at": "2026-03-30T21:39:52.051437+00:00"
     },
     {
       "id": "organic_mal048_langflow_rce",
@@ -138,7 +138,7 @@
           "confidence": 0.82
         }
       ],
-      "scanned_at": "2026-03-30T21:04:36.539633+00:00"
+      "scanned_at": "2026-03-30T21:39:54.360598+00:00"
     },
     {
       "id": "organic_mal049_litellm_pth_persistence",
@@ -185,7 +185,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:04:39.756326+00:00"
+      "scanned_at": "2026-03-30T21:39:56.665715+00:00"
     },
     {
       "id": "organic_mal050_ghost_campaign_npm",
@@ -208,7 +208,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-30T21:04:43.049220+00:00"
+      "scanned_at": "2026-03-30T21:39:58.955983+00:00"
     },
     {
       "id": "organic_pinj007_mcp_sampling_exfil",
@@ -237,7 +237,7 @@
           "confidence": 0.68
         }
       ],
-      "scanned_at": "2026-03-30T21:04:46.323911+00:00"
+      "scanned_at": "2026-03-30T21:40:01.276149+00:00"
     },
     {
       "id": "organic_pinj015_prompt_poaching_extension",
@@ -260,7 +260,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-03-30T21:04:49.640376+00:00"
+      "scanned_at": "2026-03-30T21:40:03.562522+00:00"
     },
     {
       "id": "organic_sup016_mcp_server_cmd_injection",
@@ -301,7 +301,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:04:52.851917+00:00"
+      "scanned_at": "2026-03-30T21:40:05.899706+00:00"
     },
     {
       "id": "organic_sup017_checkmarx_actions",
@@ -348,7 +348,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-30T21:04:56.111119+00:00"
+      "scanned_at": "2026-03-30T21:40:08.188882+00:00"
     },
     {
       "id": "organic_sup019_litellm_compromised_version",
@@ -383,7 +383,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-03-30T21:04:59.256939+00:00"
+      "scanned_at": "2026-03-30T21:40:10.481741+00:00"
     },
     {
       "id": "organic_sup020_clawhavoc_typosquat",
@@ -418,7 +418,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:05:02.543364+00:00"
+      "scanned_at": "2026-03-30T21:40:12.768182+00:00"
     },
     {
       "id": "organic_sup021_teampcp_checkmarx_vscode",
@@ -453,7 +453,7 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-03-30T21:05:05.732267+00:00"
+      "scanned_at": "2026-03-30T21:40:15.083629+00:00"
     },
     {
       "id": "organic_sup022_react_native_account_takeover",
@@ -476,7 +476,7 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-03-30T21:05:08.909407+00:00"
+      "scanned_at": "2026-03-30T21:40:17.410861+00:00"
     },
     {
       "id": "organic_mal054_glassworm_chrome_rat",
@@ -505,7 +505,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-30T21:05:12.084545+00:00"
+      "scanned_at": "2026-03-30T21:40:19.724645+00:00"
     },
     {
       "id": "organic_pinj016_contexthub_doc_poisoning",
@@ -534,7 +534,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-03-30T21:05:15.290447+00:00"
+      "scanned_at": "2026-03-30T21:40:22.158406+00:00"
     },
     {
       "id": "organic_exf020_teampcp_kubernetes_lateral",
@@ -581,7 +581,65 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:05:18.526294+00:00"
+      "scanned_at": "2026-03-30T21:40:24.629598+00:00"
+    },
+    {
+      "id": "organic_cap001_capability_laundering",
+      "demo_title": "Word Counter with Silent Credential Harvesting (CAP-001)",
+      "demo_description": "Capability laundering: a word-count utility that silently reads AWS credentials, SSH keys, and GCP service account files under the guise of telemetry collection.",
+      "label": "injection",
+      "archetype": "capability_laundering",
+      "rule_id": "CAP-001",
+      "reference": "",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "high",
+      "findings_count": 2,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Sensitive credential file access",
+          "severity": "high",
+          "confidence": 0.9
+        },
+        {
+          "rule_id": "",
+          "title": "Capability laundering \u2014 disproportionate credential or file access for stated purpose",
+          "severity": "high",
+          "confidence": 0.78
+        }
+      ],
+      "scanned_at": "2026-03-30T21:40:27.066096+00:00"
+    },
+    {
+      "id": "organic_obf005_dns_covert_channel",
+      "demo_title": "System Diagnostics Helper (DNS Covert-Channel Exfil)",
+      "demo_description": "Covert-channel exfiltration: encodes system metrics as base64 and sends them as DNS subdomain queries to an attacker-controlled resolver, bypassing HTTP/HTTPS content filters.",
+      "label": "injection",
+      "archetype": "obfuscation",
+      "rule_id": "OBF-005",
+      "reference": "",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "high",
+      "findings_count": 2,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Covert-channel exfiltration via DNS, whitespace encoding, or HTML comments",
+          "severity": "high",
+          "confidence": 0.85
+        },
+        {
+          "rule_id": "",
+          "title": "Local semantic prompt-injection intent pattern",
+          "severity": "medium",
+          "confidence": 0.73
+        }
+      ],
+      "scanned_at": "2026-03-30T21:40:29.389553+00:00"
     },
     {
       "id": "demo_benign_commonpaper",
@@ -604,7 +662,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:05:22.041736+00:00"
+      "scanned_at": "2026-03-30T21:40:32.220592+00:00"
     },
     {
       "id": "demo_benign_zendesk",
@@ -633,7 +691,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-03-30T21:05:25.740493+00:00"
+      "scanned_at": "2026-03-30T21:40:36.026717+00:00"
     },
     {
       "id": "demo_benign_fal_generate",
@@ -649,7 +707,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-30T21:05:29.080445+00:00"
+      "scanned_at": "2026-03-30T21:40:38.439312+00:00"
     },
     {
       "id": "demo_benign_mailescrow",
@@ -665,7 +723,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-30T21:05:32.491514+00:00"
+      "scanned_at": "2026-03-30T21:40:40.888392+00:00"
     },
     {
       "id": "demo_benign_explain_code",
@@ -681,7 +739,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-30T21:05:35.891572+00:00"
+      "scanned_at": "2026-03-30T21:40:43.311419+00:00"
     }
   ]
 }
