@@ -13,20 +13,40 @@ SkillScan is a security scanner that detects **prompt injection, jailbreaks, and
 
 ## Secrets File
 
-Location: `~/.skillscan-secrets`
+> ⚠️ **SANDBOX RESETS EVERY SESSION — always recover secrets first before any `gh` or `git push`.**
+
+### Recovery (run at the start of every session)
 
 ```bash
+# 1. Decrypt secrets from the private website repo
+openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 \
+  -in /home/ubuntu/skillscan-website/private-docs/.secrets.enc \
+  -pass env:OWNER_OPEN_ID \
+  > ~/.skillscan-secrets && chmod 600 ~/.skillscan-secrets
 source ~/.skillscan-secrets
+
+# 2. Re-authenticate gh CLI
+unset GH_TOKEN
+echo "$GITHUB_PAT" | gh auth login --with-token
+gh auth status
 ```
+
+If `skillscan-website` is not yet cloned (fresh sandbox), bootstrap with the injected `GH_TOKEN` first:
+```bash
+gh repo clone kurtpayne/skillscan-website ~/skillscan-website
+# then run the decrypt block above
+```
+
+### Location and contents
+
+Location: `~/.skillscan-secrets`
 
 Contains:
 - `HF_TOKEN` — HuggingFace write token (user: **kurtpayne**)
-- `GITHUB_PAT` — GitHub personal access token (use `unset GH_TOKEN` first if gh auth fails)
+- `GITHUB_PAT` — GitHub personal access token
 - `OPENAI_API_KEY`
 - `ANTHROPIC_API_KEY`
 - `MODAL_TOKEN_ID` + `MODAL_TOKEN_SECRET` — Modal GPU compute
-
-**Note:** If `gh` auth fails with "token invalid", run: `source ~/.skillscan-secrets && unset GH_TOKEN && echo "$GITHUB_PAT" | gh auth login --with-token`
 
 ---
 
