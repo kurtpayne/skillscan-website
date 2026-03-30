@@ -25,7 +25,7 @@ interface TabDef {
 
 const SCAN_SEQUENCE: DemoLine[] = [
   { type: "cmd",     text: "$ skillscan scan ./skills/ --format compact", delay: 0 },
-  { type: "info",    text: "SkillScan v2026.03.29.1  •  rulepack 2026.03.29.1  •  153 rules", delay: 600 },
+  { type: "info",    text: "SkillScan v2026.03.29.1  •  rulepack 2026.03.29.1  •  156 rules", delay: 600 },
   { type: "info",    text: "Scanning 5 skill files in ./skills/ ...", delay: 400 },
   { type: "blank",   text: "", delay: 300 },
   { type: "pass",    text: "verdict=allow  score=0    findings=0  search_tool.md", delay: 350 },
