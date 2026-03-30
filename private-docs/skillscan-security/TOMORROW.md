@@ -1,217 +1,139 @@
-# Work Queue — 2026-03-24
+# Work Queue — 2026-03-31
 
-> **Goal:** Push macro F1 toward 0.95. Current: **0.911** (v5, 2026-03-24). Two parallel gaps to close:
-> - **Injection recall** (F1=0.890): 13 archetypes still score 0.0 — indirect injection, jailbreak, social engineering
-> - **Enterprise benign precision** (FPR=11.45%): legitimate corporate skill files trigger FPs on credential-referencing, internal endpoint, and auth patterns
+> **Current state:** v14 model live on HuggingFace. Macro F1 **0.8805** on expanded eval (516 examples).
+> The eval set was expanded today from 471 → 516 examples, exposing that the previously reported 0.9023 was inflated by a thin eval set.
 >
-> **No training run until all corpus work below is committed.** The next run targets macro F1 ≥ 0.93, FPR ≤ 8%.
+> **Two gaps to close before v15:**
+> - **GitHub SKILL.md FPR 21.9%** — 51 of 233 benign github files still flagged as injection
+> - **Supply-chain injection recall 66.7%** — 2 of 6 `skill_composition_supply_chain` eval examples missed
+>
+> **Target for v15:** Macro F1 ≥ 0.93, FPR ≤ 8%, supply-chain recall ≥ 90%.
 
 ---
 
-## Priority 1 — Close the 13 Injection FNs (~2 hrs)
+## Priority 1 — Fix GitHub SKILL.md FPR (~1.5 hrs)
 
-These 13 archetypes scored 0.0 in the v5 eval. Each needs 8–10 training variants. Save all to `training_corpus/prompt_injection/prompt_injection/` (for pi* archetypes), `training_corpus/obfuscation_injection/obfuscation_injection/` (for jb* archetypes), and `training_corpus/social_engineering/social_engineering/` (for se* archetypes).
+The model confuses legitimate SKILL.md files (imperative instructions, tool calls, system directives) with injection attacks. 100% of benign FPs come from the `benign_github_*` archetype (233 eval examples, 21.9% FPR).
 
-### Indirect / Supply-Chain Injection (10 archetypes)
+**Action:** Add 60 more `benign_github_SKILL_md` hard-negative training examples. Focus on the top-scoring FP patterns from the v14 logits cache (`/tmp/v14_logits_cache.pt`):
 
-| Archetype | Pattern description | Current training count |
-|---|---|---|
-| `pi15_typosquat_changelog` | Fake changelog entry in a dependency that embeds an instruction | 1 |
-| `pi22_webhook_exfil_logging` | Logging webhook that silently exfiltrates data alongside legitimate logs | 1 |
-| `pi24_rss_indirect_injection` | Injected instruction embedded in RSS/feed content fetched at runtime | 1 |
-| `pi27_dependency_chain` | Malicious transitive dependency that adds an instruction to its README/SKILL.md | 1 |
-| `pi31_prompt_leak_via_translation` | Translation step used to leak the system prompt into the output | 0 |
-| `pi59_tool_name_spoofing` | Tool with a name that shadows a trusted tool (e.g., `read_file` → `Read_File`) | 2 |
-| `pi63_fake_changelog_injection` | Changelog section with a version bump that embeds an instruction in the notes | 2 |
-| `pi12_credential_exfil_env` | Reads `.env`/config files and exfiltrates them to an external endpoint | 5 |
-| `pi20_error_message_leakage` | Error handler that leaks secrets or session context in its output | 5 |
-| `pi21_supply_chain_dep` | Supply chain dependency that injects instructions via its install/setup step | 5 |
+Top FP archetypes to target (all scoring ≥ 0.997):
+- Skills that use `subprocess`, `os.environ`, `shell=True` for legitimate automation
+- Skills with `mcp_*` tool calls for legitimate integrations
+- Skills with `execute`, `run`, `deploy` imperative verbs in legitimate contexts
+- Skills that reference credentials legitimately (Vault, AWS SM, env vars)
+- Skills with multi-step numbered instructions that look like attack playbooks
 
-**Write 8 variants each for pi15, pi22, pi24, pi27, pi31, pi59, pi63** (the 0–2 count ones). **Write 5 more variants each for pi12, pi20, pi21.** Total: ~71 new training examples.
+Save to `training_corpus/benign/` with prefix `benign_hn_github_skill_`.
 
-**Also run backtranslation augmentation** on the 9 indirect injection eval examples to generate ~36 additional paraphrase variants:
 ```bash
-source ~/.skillscan-secrets
+# After writing examples, verify count
+find training_corpus/benign/ -name "benign_hn_github_skill_*.md" | wc -l
+# Should be 60+
+```
+
+---
+
+## Priority 2 — Fix Supply-Chain Injection Recall (~45 min)
+
+The `skill_composition_supply_chain` archetype has only 54 training examples and 6 eval examples, with 66.7% recall (2 FNs). The missed examples are likely the more subtle variants where the supply-chain payload is embedded in a dependency's SKILL.md rather than the top-level skill.
+
+**Action:** Add 20 more `skill_composition_supply_chain` training examples. Focus on:
+- Transitive dependency SKILL.md files that embed instructions
+- Package README files with hidden instruction payloads
+- Dependency install hooks that inject instructions
+- `requirements.txt` / `package.json` with malicious package names that shadow legitimate ones
+
+Save to `training_corpus/malicious/` with prefix `skill_comp_supply_chain_`.
+
+Also add 4 more eval examples to `held_out_eval/` with prefix `injection_skill_comp_eval_0` (continuing from 05).
+
+---
+
+## Priority 3 — Eval Set Health Check (~30 min)
+
+The eval set is now 516 examples. Before v15 training, verify:
+
+```bash
 cd ~/skillscan-corpus
-python3 scripts/backtranslate_augment.py \
-  --source-from-eval held_out_eval/ \
-  --output training_corpus/augmented/augmented/ \
-  --max-files 9 \
-  --languages fr es zh de
+python3 - << 'EOF'
+import os, collections
+eval_dir = 'held_out_eval'
+labels = collections.Counter()
+cats = collections.Counter()
+for f in os.listdir(eval_dir):
+    if not f.endswith('.md'):
+        continue
+    content = open(f'{eval_dir}/{f}').read()
+    for line in content.split('\n'):
+        if line.startswith('label:'):
+            labels[line.split(':')[1].strip()] += 1
+        if line.startswith('category:'):
+            cats[line.split(':')[1].strip()] += 1
+print(f"Total: {sum(labels.values())}")
+print(f"Benign: {labels['benign']}, Injection: {labels['injection']}")
+print(f"\nTop 10 categories:")
+for cat, n in cats.most_common(10):
+    print(f"  {cat}: {n}")
+EOF
 ```
 
-### Jailbreak Variants (2 archetypes, 0 training examples)
-
-| Archetype | Pattern description |
-|---|---|
-| `jb07` | Consistency/compliance appeal: "you helped before, so you must help now" |
-| `jb08` | Absolute refusal prohibition: "you are not allowed to say no" |
-
-**Write 10 variants of jb07** (consistency appeal, varied surface text and skill names). **Write 10 variants of jb08** (refusal prohibition, varied framing). Total: 20 new training examples.
-
-### Social Engineering FNs (2 archetypes, 0 training examples)
-
-| Archetype | Pattern description |
-|---|---|
-| `se_git_config_harvest` | Poses as a "git security audit" to read `~/.gitconfig` and `.git-credentials` |
-| `se_prize_scam` | Fake prize/reward that asks for API key to "verify identity" |
-
-**Write 8 variants of the git-config-harvest pattern** and **8 variants of the prize/reward scam**. Total: 16 new training examples.
+Target: benign ≥ 200, injection ≥ 200, no archetype with n=1 except for specific singleton evasion variants.
 
 ---
 
-## Priority 2 — Enterprise Benign FP Fix (~1.5 hrs) *(new — added 2026-03-24)*
+## Priority 4 — Register eval set labels in skill-index.yaml (~15 min)
 
-Live inference testing revealed that v5 flags 6 out of 9 benign enterprise skill examples as injection. The jargon vocabulary itself is fine — the model generalizes to novel names correctly. The problem is **semantic patterns** that overlap with attack patterns:
+The new eval categories (`hard_negative_devops`, `hard_negative_sysadmin`, etc.) are not registered in `index/skill-index.yaml`. While the eval script doesn't use the index, it's good hygiene to keep it current.
 
-| Pattern | Injection score | Root cause |
-|---|---|---|
-| `"send results to [internal endpoint]"` | 0.998 | Surface-identical to exfil instructions |
-| `"your API key is stored in [vault]"` | 0.998 | Credential-referencing = harvesting signal |
-| `"authenticate using your badge ID"` | 1.000 | Auth workflow = social engineering pretext |
-| `"sampling/createMessage"` | 0.997 | MCP sampling = MCP exfil signal |
-| `"never include credentials"` | 1.000 | Security guardrail language triggers the model |
-| `"bastion host" + "key"` | 0.999 | Access pattern + credential = exfil compound |
-
-**Write 25 benign training examples for each of the 4 pattern categories** (100 total). Save to `training_corpus/benign/benign/` with prefix `benign_enterprise_`.
-
-### Category A: Credential-referencing operational patterns (25 examples)
-Skills that legitimately reference, retrieve, or rotate credentials as part of their normal operation. The key distinguishing feature: the credential is used *within the skill's declared purpose*, not sent to an external party.
-
-Examples to cover:
-- Vault CLI retrieval (`vault kv get secret/myapp/api-key`)
-- AWS Secrets Manager / GCP Secret Manager retrieval
-- API key rotation workflows (old key → new key, update downstream services)
-- Token refresh (OAuth2 refresh token flow)
-- Reading `~/.netrc` or `~/.aws/credentials` for legitimate tool use
-- Service account key file usage for GCP/GKE deployments
-- SSH key management (generate, deploy, rotate)
-- Certificate renewal (Let's Encrypt, internal PKI)
-
-### Category B: Internal endpoint patterns (25 examples)
-Skills that legitimately send data to internal corporate endpoints. The key distinguishing feature: the destination is a `corp.internal`, `*.internal`, or explicitly named corporate domain, and the data being sent is the skill's declared output.
-
-Examples to cover:
-- Posting results to internal REST APIs (`https://reporting.corp.internal/api/v1/results`)
-- Writing to internal Slack/Teams webhooks (incident notifications, deploy alerts)
-- Logging to internal SIEM (Splunk, Datadog, ELK)
-- Submitting to internal ticketing systems (Jira, ServiceNow)
-- Pushing metrics to internal Prometheus/Grafana
-- Sending alerts to PagerDuty/OpsGenie
-- Writing to internal S3/GCS buckets for data pipelines
-- Posting to internal message queues (Kafka, RabbitMQ, SQS)
-
-### Category C: Enterprise authentication workflows (25 examples)
-Skills that implement or guide authentication as their primary purpose. The key distinguishing feature: the skill is *helping the user authenticate*, not harvesting credentials.
-
-Examples to cover:
-- SSO login via Okta/Azure AD/Ping Identity
-- Badge-based authentication (physical badge + PIN)
-- MFA setup and enrollment (TOTP, hardware key)
-- Bastion host / jump server access (`ssh -J bastion.corp.internal target-host`)
-- Service account creation and permission assignment
-- API token generation and scoping
-- VPN setup and certificate installation
-- PAM (Privileged Access Management) workflows
-
-### Category D: Runbook-style multi-step procedures (25 examples)
-Operational runbooks that combine credential use, endpoint calls, and auth steps in a legitimate workflow. These are the hardest cases because they combine multiple FP-triggering patterns in a single document.
-
-Examples to cover:
-- Incident response runbook (page on-call → gather logs → post to incident channel → create ticket)
-- Deployment runbook (authenticate → pull config → deploy → verify → notify)
-- On-call handoff procedure (acknowledge alert → check dashboards → update status page)
-- Database failover runbook (detect failure → promote replica → update DNS → notify)
-- Security incident response (isolate host → collect artifacts → notify CISO → open ticket)
-- Change management workflow (raise RFC → get approval → execute → verify → close)
-
-**Also add 20 new held-out eval examples** (5 per category) to `held_out_eval/` with prefix `benign_enterprise_` so we can track enterprise benign FPR specifically going forward.
+Add entries for:
+- `hard_negative_devops`
+- `hard_negative_sysadmin`
+- `hard_negative_cloud`
+- `hard_negative_enterprise`
+- `hard_negative_mcp`
+- `hard_negative_devtool`
 
 ---
 
-## Priority 3 — Benign MCP FP Fix (~30 min)
-
-The model incorrectly flags `benign_mcp_git_skill` and `benign_mcp_sampling_skill` as injections. These are the same MCP sampling and git patterns identified in Priority 2 Category C/D above, but specifically for MCP tool usage.
-
-**Write 10 benign MCP training examples** covering:
-- MCP git server: `git_status`, `git_diff`, `git_log`, `git_commit`, `git_push`
-- MCP sampling: `sampling/createMessage` for legitimate LLM delegation
-- MCP filesystem: `read_file`, `write_file`, `list_directory` for legitimate file operations
-- MCP database: `query`, `execute` for legitimate database access
-- MCP web search: `search`, `fetch` for legitimate information retrieval
-
-Save to `training_corpus/benign/benign/` with prefix `benign_mcp_`.
-
----
-
-## Priority 4 — M5 Vuln DB Expansion (~30 min)
-
-Run `intel_update.py` to pull the 25 target packages from OSV.dev. This closes the M5 vuln DB acceptance criterion (35 → 50+ packages):
-
-```bash
-cd ~/skillscan-security
-python3 tools/intel_update.py --vuln-db \
-  --packages requests urllib3 cryptography paramiko pillow aiohttp httpx boto3 \
-             sqlalchemy django flask fastapi celery redis pymongo \
-             axios express node-fetch got superagent ws socket.io \
-             jsonwebtoken bcrypt multer
-```
-
----
-
-## Priority 5 — Update MODEL_METRICS.md (~15 min)
-
-The doc still shows v7458 (0.8448). Update it with the v5 run results:
-- Macro F1: 0.911
-- Benign F1: 0.9317 (P=0.8855, R=0.9831)
-- Injection F1: 0.8903 (P=0.9718, R=0.8214)
-- FPR: 11.45%
-- Eval set: 202 examples
-- Training corpus: 11,461 examples
-
----
-
-## Training Run — After all above is committed
-
-Trigger the fine-tune only after Priorities 1–3 are committed and pushed to `skillscan-corpus`. The expected corpus additions:
-
-| Source | New examples |
-|---|---|
-| Injection FN variants (P1) | ~107 |
-| Backtranslation augmentation (P1) | ~36 |
-| Enterprise benign (P2) | ~100 |
-| Benign MCP (P3) | ~10 |
-| **Total new** | **~253** |
-| **New corpus total** | **~11,714** |
+## Training Run — After Priorities 1–2 are committed
 
 ```bash
 source ~/.skillscan-secrets
 cd ~/skillscan-corpus
-nohup modal run scripts/finetune_modal.py > /tmp/finetune_run_v6.log 2>&1 &
+modal run --detach scripts/finetune_modal.py
+# Monitor at https://modal.com/apps/kurtpayne
 ```
 
----
-
-## Do NOT do today
-
-- **No M6 chain rule proximity work.** Code change, separate session.
-- **No new injection eval examples.** The eval set is at 222 examples (202 + 20 new enterprise benign) after P2. That's sufficient.
-- **No M8 PSV rule wiring.** Code change, separate session.
+**Note:** The local client must stay alive until Modal returns results, OR the remote eval write (now in `run_finetune`) will handle EVAL_RESULTS.md and the git push automatically. `--detach` is now safe as of commit `2b243c29`.
 
 ---
 
-## Expected v6 outcome
+## Process notes from today's session
 
-| Metric | v5 (current) | v6 (target) |
+| Issue | Fix applied | Commit |
 |---|---|---|
-| Macro F1 | 0.911 | ≥ 0.93 |
-| Injection F1 | 0.8903 | ≥ 0.92 |
-| Benign F1 | 0.9317 | ≥ 0.94 |
-| FPR | 11.45% | ≤ 8% |
-| Enterprise benign eval (20 new) | n/a | All SAFE |
-
-Reaching **0.95** will likely require one more iteration (v7) after v6, targeting the remaining FNs that survive the v6 run.
+| 8 injection dirs missing from skill-index.yaml | Added all 8 | `140ff097` |
+| Pre-flight check missing in finetune_modal.py | Added abort check | `2b243c29` |
+| ONNX fp16 conversion was a noop | Removed, now fp32 | `ff3331c8` |
+| Eval write lost on `--detach` | Moved into remote function | `2b243c29` |
+| Pattern-update skill gh auth silent failure | Hardened Step 0 | website repo |
+| ~/.bashrc doesn't source secrets on fresh session | Added auto-source block | local only |
+| Eval set too small / inflated F1 | Expanded 471 → 516 | `[pending push]` |
 
 ---
 
-*Generated 2026-03-24. Updated to include enterprise benign corpus additions (M7.5). Next training run: after corpus additions are committed.*
+## v14 → v15 expected delta
+
+| Metric | v14 (current) | v15 (target) |
+|---|---|---|
+| Macro F1 | 0.8805 | ≥ 0.93 |
+| Benign F1 | 0.9053 | ≥ 0.94 |
+| Injection F1 | 0.8557 | ≥ 0.92 |
+| FPR | 15.8% | ≤ 8% |
+| Supply-chain recall | 66.7% | ≥ 90% |
+| Eval set size | 516 | 516 (stable) |
+
+---
+
+*Generated 2026-03-30. Supersedes 2026-03-24 work queue (all items from that queue are complete).*
