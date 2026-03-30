@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-03-29T01:57:42.891269+00:00",
+  "generated_at": "2026-03-30T21:05:35.891694+00:00",
   "skillscan_version": "0.8.0",
-  "entry_count": 19,
-  "block_count": 14,
+  "entry_count": 22,
+  "block_count": 17,
   "allow_count": 5,
   "error_count": 0,
-  "unexpected_count": 2,
+  "unexpected_count": 0,
   "entries": [
     {
       "id": "organic_mal045_stoatwaffle_vscode",
@@ -21,7 +21,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T01:56:58.882178+00:00"
+      "scanned_at": "2026-03-30T21:04:26.957717+00:00"
     },
     {
       "id": "organic_mal046_cursorjack_deeplink",
@@ -62,7 +62,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:01.236937+00:00"
+      "scanned_at": "2026-03-30T21:04:30.178175+00:00"
     },
     {
       "id": "organic_mal047_claude_hooks_rce",
@@ -109,7 +109,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:03.565486+00:00"
+      "scanned_at": "2026-03-30T21:04:33.306215+00:00"
     },
     {
       "id": "organic_mal048_langflow_rce",
@@ -138,7 +138,7 @@
           "confidence": 0.82
         }
       ],
-      "scanned_at": "2026-03-29T01:57:05.911043+00:00"
+      "scanned_at": "2026-03-30T21:04:36.539633+00:00"
     },
     {
       "id": "organic_mal049_litellm_pth_persistence",
@@ -185,7 +185,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:08.284807+00:00"
+      "scanned_at": "2026-03-30T21:04:39.756326+00:00"
     },
     {
       "id": "organic_mal050_ghost_campaign_npm",
@@ -208,7 +208,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-29T01:57:10.605808+00:00"
+      "scanned_at": "2026-03-30T21:04:43.049220+00:00"
     },
     {
       "id": "organic_pinj007_mcp_sampling_exfil",
@@ -237,7 +237,7 @@
           "confidence": 0.68
         }
       ],
-      "scanned_at": "2026-03-29T01:57:12.961193+00:00"
+      "scanned_at": "2026-03-30T21:04:46.323911+00:00"
     },
     {
       "id": "organic_pinj015_prompt_poaching_extension",
@@ -260,7 +260,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-03-29T01:57:15.279700+00:00"
+      "scanned_at": "2026-03-30T21:04:49.640376+00:00"
     },
     {
       "id": "organic_sup016_mcp_server_cmd_injection",
@@ -301,7 +301,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:17.641436+00:00"
+      "scanned_at": "2026-03-30T21:04:52.851917+00:00"
     },
     {
       "id": "organic_sup017_checkmarx_actions",
@@ -348,7 +348,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-29T01:57:20.031828+00:00"
+      "scanned_at": "2026-03-30T21:04:56.111119+00:00"
     },
     {
       "id": "organic_sup019_litellm_compromised_version",
@@ -383,7 +383,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-03-29T01:57:22.398236+00:00"
+      "scanned_at": "2026-03-30T21:04:59.256939+00:00"
     },
     {
       "id": "organic_sup020_clawhavoc_typosquat",
@@ -418,7 +418,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:24.727590+00:00"
+      "scanned_at": "2026-03-30T21:05:02.543364+00:00"
     },
     {
       "id": "organic_sup021_teampcp_checkmarx_vscode",
@@ -453,7 +453,7 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-03-29T01:57:27.061240+00:00"
+      "scanned_at": "2026-03-30T21:05:05.732267+00:00"
     },
     {
       "id": "organic_sup022_react_native_account_takeover",
@@ -476,19 +476,124 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-03-29T01:57:29.381892+00:00"
+      "scanned_at": "2026-03-30T21:05:08.909407+00:00"
+    },
+    {
+      "id": "organic_mal054_glassworm_chrome_rat",
+      "demo_title": "GlassWorm Chrome Extension RAT",
+      "demo_description": "Multi-stage RAT that force-installs a malicious Chrome extension for keylogging, kills Ledger Live, and exfiltrates via Solana dead-drops.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-054",
+      "reference": "https://www.aikido.dev/blog/glassworm-chrome-extension-rat",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "critical",
+      "findings_count": 2,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "Solana RPC blockchain C2 resolution marker",
+          "severity": "critical",
+          "confidence": 0.9
+        },
+        {
+          "rule_id": "",
+          "title": "GlassWorm multi-stage Chrome extension RAT",
+          "severity": "critical",
+          "confidence": 0.9
+        }
+      ],
+      "scanned_at": "2026-03-30T21:05:12.084545+00:00"
+    },
+    {
+      "id": "organic_pinj016_contexthub_doc_poisoning",
+      "demo_title": "ContextHub AI Documentation Poisoning",
+      "demo_description": "Attacker-poisoned documentation portal (contexthub.ai) with hidden instructions that trick AI coding agents into installing malicious packages.",
+      "label": "injection",
+      "archetype": "prompt_injection",
+      "rule_id": "PINJ-016",
+      "reference": "https://www.theregister.com/2026/03/25/ai_agents_supply_chain_attack_context_hub/",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "medium",
+      "findings_count": 2,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "pip install in skill body with non-standard or suspicious package name",
+          "severity": "medium",
+          "confidence": 0.82
+        },
+        {
+          "rule_id": "",
+          "title": "AI documentation context poisoning (ContextHub)",
+          "severity": "high",
+          "confidence": 0.85
+        }
+      ],
+      "scanned_at": "2026-03-30T21:05:15.290447+00:00"
+    },
+    {
+      "id": "organic_exf020_teampcp_kubernetes_lateral",
+      "demo_title": "TeamPCP Kubernetes Secret Enumeration (LiteLLM)",
+      "demo_description": "TeamPCP C2 backdoor (deployed via LiteLLM) that enumerates Kubernetes secrets across all namespaces for lateral movement.",
+      "label": "injection",
+      "archetype": "exfiltration",
+      "rule_id": "EXF-020",
+      "reference": "https://www.stepsecurity.io/blog/litellm-credential-stealer-hidden-in-pypi-wheel",
+      "verdict": "BLOCK",
+      "expected_verdict": "BLOCK",
+      "verdict_match": true,
+      "severity": "critical",
+      "findings_count": 5,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "LiteLLM .pth file persistence and sysmon backdoor (TeamPCP)",
+          "severity": "critical",
+          "confidence": 0.9
+        },
+        {
+          "rule_id": "",
+          "title": "TeamPCP sysmon backdoor Kubernetes lateral movement",
+          "severity": "critical",
+          "confidence": 0.9
+        },
+        {
+          "rule_id": "",
+          "title": "Local semantic prompt-injection intent pattern",
+          "severity": "medium",
+          "confidence": 0.78
+        },
+        {
+          "rule_id": "",
+          "title": "Local semantic social-engineering credential-harvest pattern",
+          "severity": "high",
+          "confidence": 0.92
+        },
+        {
+          "rule_id": "",
+          "title": "Secret access + Network exfiltration chain",
+          "severity": "critical",
+          "confidence": 0.95
+        }
+      ],
+      "scanned_at": "2026-03-30T21:05:18.526294+00:00"
     },
     {
       "id": "demo_benign_commonpaper",
       "demo_title": "CommonPaper Contract Management",
-      "demo_description": "Real-world contract management skill from CommonPaper. Uses permissive policy: skill includes example curl commands and NEVER-display-token instructions that trigger strict-mode rules out of context. WARN is expected.",
+      "demo_description": "Real-world contract management skill from CommonPaper. Uses permissive policy. MAL-001 and CHN-002 tightened (PR #138) removed the findings that previously generated a WARN score; skill now correctly scores ALLOW under permissive.",
       "label": "benign",
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/CommonPaper/claude-skill",
       "verdict": "ALLOW",
-      "expected_verdict": "WARN",
-      "verdict_match": false,
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
       "severity": "critical",
       "findings_count": 1,
       "top_findings": [
@@ -499,19 +604,19 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-29T01:57:32.324629+00:00"
+      "scanned_at": "2026-03-30T21:05:22.041736+00:00"
     },
     {
       "id": "demo_benign_zendesk",
       "demo_title": "Zendesk Support Integration",
-      "demo_description": "Community Zendesk skill. Uses permissive policy. The skill documents its own prompt-injection screening pipeline; the semantic classifier fires on that security vocabulary (PINJ-SEM-001, SE-SEM-001), producing a WARN. Appropriate \u2014 a reviewer should inspect the injection-adjacent content.",
+      "demo_description": "Community Zendesk skill. Uses permissive policy. After MAL-001/CHN-002 tightening (PR #138) the remaining PINJ-SEM-001/SE-SEM-001 semantic findings score below the permissive WARN threshold; skill correctly scores ALLOW.",
       "label": "benign",
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/andmarios/zendesk-skill",
       "verdict": "ALLOW",
-      "expected_verdict": "WARN",
-      "verdict_match": false,
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
       "severity": "high",
       "findings_count": 2,
       "top_findings": [
@@ -528,7 +633,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-03-29T01:57:35.321222+00:00"
+      "scanned_at": "2026-03-30T21:05:25.740493+00:00"
     },
     {
       "id": "demo_benign_fal_generate",
@@ -544,7 +649,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T01:57:37.818946+00:00"
+      "scanned_at": "2026-03-30T21:05:29.080445+00:00"
     },
     {
       "id": "demo_benign_mailescrow",
@@ -560,7 +665,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T01:57:40.364932+00:00"
+      "scanned_at": "2026-03-30T21:05:32.491514+00:00"
     },
     {
       "id": "demo_benign_explain_code",
@@ -576,7 +681,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-29T01:57:42.891211+00:00"
+      "scanned_at": "2026-03-30T21:05:35.891572+00:00"
     }
   ]
 }
