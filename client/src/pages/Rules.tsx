@@ -48,7 +48,7 @@ const rules: Rule[] = [
   // DEF — Defense Evasion
   { id: "DEF-001", category: "DEF", severity: "BLOCK", title: "Windows Defender exclusion manipulation", description: "Remove all commands that disable or weaken Windows Defender protections. Security controls should never be programmatically disabled.", tags: [] },
   // EVASION — EVASION
-  { id: "EVASION-005", category: "EVASION", severity: "WARN", title: "Web-Based Indirect Prompt Injection (IDPI) payload engineering", description: "Sanitize web content consumed by LLMs to remove hidden text, zero-sized fonts, and CSS suppression techniques used for Indirect Prompt Injection (IDPI).", tags: ["idpi", "css-suppression", "zero-width"] },
+  { id: "EVASION-005", category: "EVASION", severity: "BLOCK", title: "Web-Based Indirect Prompt Injection (IDPI) payload engineering", description: "Sanitize web content consumed by LLMs to remove hidden text, zero-sized fonts, and CSS suppression techniques used for Indirect Prompt Injection (IDPI).", tags: ["idpi", "css-suppression", "zero-width"] },
   // EXEC — Execution Hijack
   { id: "EXEC-041", category: "EXEC", severity: "BLOCK", title: "API traffic hijacking via AI agent settings override", description: "Do not override AI agent API endpoints in settings files. The flyingtimes/podcast-using-skill attack redirected all Claude Code API traffic to Zhipu AI BigModel platform in China by modifying .claude/settings.json, silently intercepting all user conversations and code context.", tags: ["api-hijack"] },
   // EXF — Exfiltration
@@ -450,7 +450,8 @@ export default function Rules() {
               Detection Signals
             </h2>
             <p className="text-sm mb-5" style={{ color: "oklch(0.50 0.015 265)" }}>
-              Beyond the named rules above, the scanner uses <strong style={{ color: "oklch(0.70 0.015 265)" }}>23 named detection signals</strong> — regex fragments referenced by chain rules to detect multi-step attack sequences. A chain rule fires when two or more signals co-occur within a sliding line window. These signals account for the difference between the {rules.length} rules shown here and the total detection signal count.
+              Beyond the named rules above, the scanner uses <strong style={{ color: "oklch(0.70 0.015 265)" }}>23 named detection signals</strong> — regex fragments referenced by chain rules to detect multi-step attack sequences. A chain rule fires when two or more signals co-occur within a sliding line window. These signals account for the difference between the {rules.length} rules shown here and the total detection signal count.{" "}
+              <span style={{ color: "oklch(0.42 0.015 265)", fontStyle: "italic" }}>as of rulepack 2026.03.29.1 — update this count when action_patterns or capability_patterns change in default.yaml</span>
             </p>
             <div className="mb-5">
               <h3 className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "oklch(0.65 0.18 200)", fontFamily: "'JetBrains Mono', monospace" }}>Action Patterns (20)</h3>
