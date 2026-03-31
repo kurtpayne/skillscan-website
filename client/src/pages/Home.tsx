@@ -79,12 +79,12 @@ const features = [
 
 const ruleCategories = [
 // AUTO_SYNC_BEGIN: ruleCategories
-  { prefix: "MAL", label: "Malware Patterns", count: 54, color: "oklch(0.65 0.22 25)" },
+  { prefix: "MAL", label: "Malware Patterns", count: 56, color: "oklch(0.65 0.22 25)" },
   { prefix: "EXF", label: "Exfiltration", count: 21, color: "oklch(0.72 0.19 45)" },
   { prefix: "ABU", label: "Abuse Patterns", count: 7, color: "oklch(0.70 0.15 160)" },
   { prefix: "CHN", label: "Chain Rules", count: 14, color: "oklch(0.65 0.18 200)" },
   { prefix: "PINJ", label: "Prompt/Pipeline Injection", count: 17, color: "oklch(0.55 0.24 280)" },
-  { prefix: "SUP", label: "Supply Chain", count: 22, color: "oklch(0.68 0.16 80)" },
+  { prefix: "SUP", label: "Supply Chain", count: 23, color: "oklch(0.68 0.16 80)" },
   { prefix: "SE", label: "Social Engineering", count: 3, color: "oklch(0.62 0.20 340)" },
   { prefix: "DEF", label: "Defense Evasion", count: 1, color: "oklch(0.60 0.18 240)" },
   { prefix: "EXEC", label: "Execution Hijack", count: 1, color: "oklch(0.63 0.20 15)" },
@@ -664,7 +664,7 @@ export default function Home() {
               <tbody>
                 {[
                   { n: "1", mech: "IOC matching", detail: "Intel DB scan (5,500 entries: domains, IPs, CIDRs)", catches: "Known malicious domains and IPs embedded in skill content", accent: "oklch(0.65 0.22 25)" },
-                  { n: "2", mech: "Static rules", detail: "Regex pattern matching (158 rules across 9 categories)", catches: "Known attack patterns, structural violations, dangerous constructs", accent: "oklch(0.72 0.19 45)" },
+                  { n: "2", mech: "Static rules", detail: "Regex pattern matching (161 rules across 9 categories)", catches: "Known attack patterns, structural violations, dangerous constructs", accent: "oklch(0.72 0.19 45)" },
                   { n: "3", mech: "Python AST data-flow", detail: "Source-to-sink taint analysis (.py files only)", catches: "Secret → decode → exec/network flows in embedded Python scripts", accent: "oklch(0.70 0.15 160)" },
                   { n: "4", mech: "Stemmed feature scorer", detail: "Porter-stemmed axis scoring (prompt injection + social engineering)", catches: "Multi-sentence intent distributed across text — jailbreaks, credential harvest instructions not caught by single-line rules", accent: "oklch(0.65 0.18 200)" },
                   { n: "5", mech: "Skill graph analysis", detail: "Graph-based PSV rules", catches: "Tool drift, circular dependencies, permission scope violations", accent: "oklch(0.68 0.16 80)" },
