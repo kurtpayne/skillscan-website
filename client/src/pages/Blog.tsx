@@ -40,6 +40,16 @@ const posts: Post[] = [
     excerpt:
       "When we discovered that 44% of our evaluation set had leaked into training, we didn't paper over the number. We fixed the process, rebuilt the corpus, and retrained from scratch. Here's exactly what we did and why it matters.",
   },
+  {
+    slug: "/blog/v15-model",
+    title: "v15: Improved Class Balance with Fine-Tuned DeBERTa Adapter",
+    subtitle: "Class weighting, ProtectAI base model, and the ONNX phase 0 tooling pipeline",
+    date: "April 3, 2026",
+    readTime: "8 min read",
+    tags: ["ML / Training", "DeBERTa", "ONNX", "Class Balance"],
+    excerpt:
+      "v15 addresses the underlying class imbalance in the SkillScan corpus with calibrated class weights (benign=0.866, injection=1.183) and adapter fine-tuning on top of ProtectAI/deberta-v3-base-prompt-injection-v2. Corpus grows from 20,865 to 21,468 examples.",
+  },
 ];
 
 function FeaturedPost({ post }: { post: Post }) {

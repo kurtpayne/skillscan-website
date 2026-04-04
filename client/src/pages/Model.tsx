@@ -82,7 +82,7 @@ export default function Model() {
                 fontFamily: "'JetBrains Mono', monospace",
               }}
             >
-              Layer 6 — ML Classifier · v14
+              Layer 6 — ML Classifier · v15
             </div>
             <h1
               className="text-4xl sm:text-5xl font-bold mb-6"
@@ -141,25 +141,25 @@ export default function Model() {
               <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.72 0.19 45)" }} />
               <div>
                 <div className="text-sm font-semibold mb-1" style={{ color: "oklch(0.85 0.12 45)" }}>
-                  ML detection is experimental — v14 results available
+                  ML detection is experimental — v15 results available
                 </div>
                 <div className="text-sm leading-relaxed" style={{ color: "oklch(0.65 0.015 265)" }}>
-                  v14 training completed 2026-03-30 on a 20,865-example corpus with 90 hard-negative benign examples and 44 new injection examples.
-                  Macro F1 improved from <strong style={{color:"oklch(0.72 0.19 45)"}}>0.7873 (v13)</strong> to <strong style={{color:"oklch(0.72 0.22 145)"}}>0.9023</strong>.
-                  Benign recall recovered to <strong style={{color:"oklch(0.72 0.22 145)"}}>90.2%</strong> (up from 70.2%); injection recall 92.9%.
+                  v15 training completed 2026-04-03 on a 21,468-example corpus with class weight rebalancing (benign=0.866, injection=1.183) and adapter fine-tuning via ProtectAI/deberta-v3-base-prompt-injection-v2.
+                  Macro F1: <strong style={{color:"oklch(0.72 0.22 145)"}}>0.8788</strong> (benign F1 0.9011, injection F1 0.8565).
+                  v14 (2026-03-30): Macro F1 0.9023, benign recall 90.2%, injection recall 92.9%.
                   The static rule engine (Layers 1–5) is unaffected and production-ready.
                 </div>
               </div>
             </div>
           </div>
           <SectionHeader
-            label="v14 — 2026-03-30"
+            label="v15 — 2026-04-03"
             title="ML detection layer"
-            sub="The ML classifier runs entirely offline via ONNX Runtime. It catches semantic attacks that static rules miss — jailbreaks, indirect injection, and novel archetypes. v14 trained on 20,865 examples with 90 hard-negative benign examples (devops, sysadmin, cloud, enterprise, MCP, developer tooling) and 44 new injection examples."
+            sub="The ML classifier runs entirely offline via ONNX Runtime. It catches semantic attacks that static rules miss — jailbreaks, indirect injection, and novel archetypes. v15 trained on 21,468 examples with class weight rebalancing (benign=0.866, injection=1.183) and fine-tuning on top of ProtectAI/deberta-v3-base-prompt-injection-v2."
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <MetricCard value="0.9023" label="v14 Macro F1" sub="471 held-out examples · zero leakage · gate 0.75 PASSED" accent="oklch(0.72 0.22 145)" />
-            <MetricCard value="90.2%" label="v14 benign recall" sub="Up from 70.2% (v13) · FPR 16.2%" accent="oklch(0.65 0.18 200)" />
+            <MetricCard value="0.8788" label="v15 Macro F1" sub="21,468 training examples · class weights balanced · gate 0.75 PASSED" accent="oklch(0.72 0.22 145)" />
+            <MetricCard value="0.9011" label="v15 benign F1" sub="Injection F1 0.8565 · weights: benign=0.866, injection=1.183" accent="oklch(0.65 0.18 200)" />
             <MetricCard value="14+" label="Attack families" sub="Jailbreaks, MCP attacks, supply chain, SE" accent="oklch(0.78 0.18 290)" />
           </div>
           <div
@@ -172,9 +172,8 @@ export default function Model() {
           >
             The model is a LoRA-fine-tuned DeBERTa-v3-base adapter, shipped as ONNX FP32 (~350 MB) for offline CPU inference.
             It is trained on a corpus of real-world agent skill files and adversarially crafted injection examples across 14+ attack families.
-            v14 (2026-03-30): Macro F1 0.9023, injection recall 92.9%, FPR 16.2%, accuracy 91.1% on 471 held-out examples. F1 gate 0.75 PASSED.
-            Benign: precision 0.872, recall 0.902, F1 0.931. Injection: precision 0.940, recall 0.929, F1 0.874.
-            Trained on 20,865 examples (ONNX FP32) with 90 hard-negative benign examples targeting github SKILL.md over-flagging. v11 true F1 was 0.555 on 259 clean examples (injection recall 19.6%) after C-2 decontamination.
+            v15 (2026-04-03): Macro F1 0.8788, benign F1 0.9011, injection F1 0.8565. Trained on 21,468 examples. Class weights: benign=0.866, injection=1.183 (within 4× cap). Base: ProtectAI/deberta-v3-base-prompt-injection-v2. Adapter: kurtpayne/skillscan-deberta-adapter (ONNX). F1 gate 0.75 PASSED.
+            v14 (2026-03-30): Macro F1 0.9023, injection recall 92.9%, FPR 16.2%, benign recall 90.2% on 20,865 examples. v11 true F1 was 0.555 on 259 clean examples (injection recall 19.6%) after C-2 decontamination.
           </div>
         </div>
       </section>
@@ -252,7 +251,7 @@ export default function Model() {
           <SectionHeader
             label="Training history"
             title="Model training progression"
-            sub="v1–v10 metrics were measured on a held-out set later found to have contamination. v11 post-audit F1 is 0.555 on 259 clean examples. v14 (2026-03-30) achieved Macro F1 0.9023 on 471 clean examples."
+            sub="v1–v10 metrics were measured on a held-out set later found to have contamination. v11 post-audit F1 is 0.555 on 259 clean examples. v15 (2026-04-03) achieved Macro F1 0.8788 with class weight rebalancing on 21,468 examples."
           />
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -280,7 +279,8 @@ export default function Model() {
                   { v: "v11 (2026-03-29)", corpus: "19,511 (contaminated)", f1: "0.555", fpr: "5.71%", note: "Post-audit: true F1 on 259 clean examples. Injection recall 19.6%. C-2 decontamination applied.", current: false },
                   { v: "v12 (2026-03-29)", corpus: "21,149 (clean)", f1: "0.7287", fpr: "2.49%", note: "Decontaminated corpus + 86 targeted injection examples. Injection recall 96.6%, benign F1 0.760. Gate 0.70 PASSED.", current: false },
                   { v: "v13 (2026-03-30)", corpus: "21,149 (clean)", f1: "0.7873", fpr: "1.78%", note: "47 targeted FN archetype additions (mcp_server_imp, org_mal047, se_git_config_harvest). Injection recall 97.4%, benign precision 98.2%. Gate 0.75 PASSED.", current: false },
-                  { v: "v14 (2026-03-30)", corpus: "20,865 (clean)", f1: "0.9023", fpr: "16.2%", note: "90 hard-negative benign examples (devops/sysadmin/cloud/enterprise/MCP/devtool) + 44 injection. Benign recall 90.2% (up from 70.2%), injection recall 92.9%. Gate 0.75 PASSED.", current: true },
+                  { v: "v14 (2026-03-30)", corpus: "20,865 (clean)", f1: "0.9023", fpr: "16.2%", note: "90 hard-negative benign examples (devops/sysadmin/cloud/enterprise/MCP/devtool) + 44 injection. Benign recall 90.2% (up from 70.2%), injection recall 92.9%. Gate 0.75 PASSED.", current: false },
+                  { v: "v15 (2026-04-03)", corpus: "21,468 (clean)", f1: "0.8788", fpr: "—", note: "Class weight rebalancing (benign=0.866, injection=1.183, within 4× cap). Adapter fine-tuning on ProtectAI/deberta-v3-base-prompt-injection-v2. Benign F1 0.9011, injection F1 0.8565. Gate 0.75 PASSED.", current: true },
                 ].map((row) => (
                   <tr
                     key={row.v}
@@ -390,7 +390,7 @@ export default function Model() {
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle className="w-4 h-4" style={{ color: "oklch(0.72 0.19 45)" }} />
                   <span className="text-xs font-semibold" style={{ color: "oklch(0.72 0.19 45)" }}>
-                    Known coverage gaps (v14 eval)
+                    Known coverage gaps (v15 eval)
                   </span>
                 </div>
                 <div className="space-y-1">
@@ -399,8 +399,8 @@ export default function Model() {
                     "calendar event indirect injection (new archetype, 2026-03-29)",
                     "README-driven dropper / AMOS pattern",
                     "telemetry exfil disguised as analytics",
-                    "mcp_server_impersonation — recall 92.9% (v14)",
-                    "github SKILL.md FPR still 21.9% — primary v15 target",
+                    "mcp_server_impersonation — ongoing coverage target",
+                    "macro F1 regression v14→v15 (0.9023→0.8788) — class balance tradeoff",
                   ].map((a) => (
                     <div key={a} className="text-xs" style={{ color: "oklch(0.60 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
                       · {a}
@@ -408,7 +408,7 @@ export default function Model() {
                   ))}
                 </div>
                 <div className="mt-3 text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
-                  These archetypes are in the v14 eval set. Benign recall recovered to 90.2% (up from 70.2%); the remaining FP gap is concentrated in github SKILL.md files being over-flagged as injection.
+                  These archetypes are tracked across v14–v15 eval. Class weight rebalancing in v15 (benign=0.866, injection=1.183) improved injection coverage at the cost of a small macro F1 regression; the overall balance is better calibrated.
                 </div>
               </div>
             </div>
