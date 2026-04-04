@@ -47,7 +47,7 @@ const features = [
   },
   {
     icon: Shield,
-    title: "100+ Detection Rules",
+    title: "170+ Detection Rules",
     description: "Covers MCP tool poisoning, prompt injection, credential exfiltration, container escape, social engineering chains, and more.",
     color: "oklch(0.72 0.19 45)",
   },
@@ -104,7 +104,7 @@ const scanResults = [
 
 export default function Home() {
   const [visibleStats, setVisibleStats] = useState(false);
-  const [ruleCount, setRuleCount] = useState(100);
+  const [ruleCount, setRuleCount] = useState(173);
   const [rulepackVersion, setRulepackVersion] = useState("0.3");
 
   useEffect(() => {
@@ -122,10 +122,10 @@ export default function Home() {
         const verMatch = text.match(/^version:\s*["']?([\d.]+)["']?/m);
         if (verMatch) setRulepackVersion(verMatch[1]);
         // Count all rules across sections:
-        // static_rules and chain_rules use '- id:' (134 rules)
+        // static_rules and chain_rules use '  - id:' (2-space indent)
         // capability_patterns are dicts without id lines (3 entries)
-        // action_patterns section is empty; offset = 3
-        const ids = text.match(/^- id: /gm);
+        // offset = 3
+        const ids = text.match(/^  - id: /gm);
         if (ids) setRuleCount(ids.length + 3);
       })
       .catch(() => { /* keep defaults on error */ });
@@ -664,12 +664,12 @@ export default function Home() {
               <tbody>
                 {[
                   { n: "1", mech: "IOC matching", detail: "Intel DB scan (5,500 entries: domains, IPs, CIDRs)", catches: "Known malicious domains and IPs embedded in skill content", accent: "oklch(0.65 0.22 25)" },
-                  { n: "2", mech: "Static rules", detail: "Regex pattern matching (161 rules across 9 categories)", catches: "Known attack patterns, structural violations, dangerous constructs", accent: "oklch(0.72 0.19 45)" },
+                  { n: "2", mech: "Static rules", detail: "Regex pattern matching (156 rules across 9 categories)", catches: "Known attack patterns, structural violations, dangerous constructs", accent: "oklch(0.72 0.19 45)" },
                   { n: "3", mech: "Python AST data-flow", detail: "Source-to-sink taint analysis (.py files only)", catches: "Secret → decode → exec/network flows in embedded Python scripts", accent: "oklch(0.70 0.15 160)" },
                   { n: "4", mech: "Stemmed feature scorer", detail: "Porter-stemmed axis scoring (prompt injection + social engineering)", catches: "Multi-sentence intent distributed across text — jailbreaks, credential harvest instructions not caught by single-line rules", accent: "oklch(0.65 0.18 200)" },
                   { n: "5", mech: "Skill graph analysis", detail: "Graph-based PSV rules", catches: "Tool drift, circular dependencies, permission scope violations", accent: "oklch(0.68 0.16 80)" },
                   { n: "6", mech: "ML classifier", detail: "DeBERTa-v3 + LoRA  ·  Beta  ·  v11 in training", catches: "Novel phrasing, obfuscated attacks, and semantic patterns no rule or scorer can express", accent: "oklch(0.78 0.18 290)", highlight: true },
-                  { n: "7", mech: "Vuln DB matching", detail: "Dependency scan (23 Python pkgs, 4 npm pkgs, 111 versions)", catches: "Known-vulnerable package versions in requirements.txt / package.json", accent: "oklch(0.60 0.20 320)" },
+                  { n: "7", mech: "Vuln DB matching", detail: "Dependency scan (28 Python pkgs, 23 npm pkgs, 166 versions)", catches: "Known-vulnerable package versions in requirements.txt / package.json", accent: "oklch(0.60 0.20 320)" },
                   { n: "8", mech: "ClamAV", detail: "Signature-based AV scan (optional, via --clamav)", catches: "Known malware signatures in embedded script files (.py, .sh, .js…)", accent: "oklch(0.62 0.20 340)" },
                 ].map((row) => (
                   <tr
