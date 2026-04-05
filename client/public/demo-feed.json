@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-30T21:40:43.311478+00:00",
+  "generated_at": "2026-04-05T05:44:16.334406+00:00",
   "skillscan_version": "0.8.0",
   "entry_count": 24,
   "block_count": 19,
@@ -18,10 +18,17 @@
       "verdict": "BLOCK",
       "expected_verdict": "BLOCK",
       "verdict_match": true,
-      "severity": "",
-      "findings_count": 0,
-      "top_findings": [],
-      "scanned_at": "2026-03-30T21:39:47.360587+00:00"
+      "severity": "high",
+      "findings_count": 1,
+      "top_findings": [
+        {
+          "rule_id": "",
+          "title": "StoatWaffle Node.js malware family (WaterPlum/Contagious Interview)",
+          "severity": "high",
+          "confidence": 0.86
+        }
+      ],
+      "scanned_at": "2026-04-05T05:43:16.295712+00:00"
     },
     {
       "id": "organic_mal046_cursorjack_deeplink",
@@ -62,7 +69,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:39:49.744638+00:00"
+      "scanned_at": "2026-04-05T05:43:18.836151+00:00"
     },
     {
       "id": "organic_mal047_claude_hooks_rce",
@@ -109,7 +116,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:39:52.051437+00:00"
+      "scanned_at": "2026-04-05T05:43:21.374565+00:00"
     },
     {
       "id": "organic_mal048_langflow_rce",
@@ -138,7 +145,7 @@
           "confidence": 0.82
         }
       ],
-      "scanned_at": "2026-03-30T21:39:54.360598+00:00"
+      "scanned_at": "2026-04-05T05:43:23.926854+00:00"
     },
     {
       "id": "organic_mal049_litellm_pth_persistence",
@@ -185,7 +192,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:39:56.665715+00:00"
+      "scanned_at": "2026-04-05T05:43:26.489329+00:00"
     },
     {
       "id": "organic_mal050_ghost_campaign_npm",
@@ -208,7 +215,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-30T21:39:58.955983+00:00"
+      "scanned_at": "2026-04-05T05:43:29.033343+00:00"
     },
     {
       "id": "organic_pinj007_mcp_sampling_exfil",
@@ -237,7 +244,7 @@
           "confidence": 0.68
         }
       ],
-      "scanned_at": "2026-03-30T21:40:01.276149+00:00"
+      "scanned_at": "2026-04-05T05:43:31.599704+00:00"
     },
     {
       "id": "organic_pinj015_prompt_poaching_extension",
@@ -260,7 +267,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-03-30T21:40:03.562522+00:00"
+      "scanned_at": "2026-04-05T05:43:34.151983+00:00"
     },
     {
       "id": "organic_sup016_mcp_server_cmd_injection",
@@ -301,7 +308,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:40:05.899706+00:00"
+      "scanned_at": "2026-04-05T05:43:36.687026+00:00"
     },
     {
       "id": "organic_sup017_checkmarx_actions",
@@ -348,7 +355,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-30T21:40:08.188882+00:00"
+      "scanned_at": "2026-04-05T05:43:39.208313+00:00"
     },
     {
       "id": "organic_sup019_litellm_compromised_version",
@@ -383,7 +390,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-03-30T21:40:10.481741+00:00"
+      "scanned_at": "2026-04-05T05:43:41.747585+00:00"
     },
     {
       "id": "organic_sup020_clawhavoc_typosquat",
@@ -418,7 +425,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:40:12.768182+00:00"
+      "scanned_at": "2026-04-05T05:43:44.281291+00:00"
     },
     {
       "id": "organic_sup021_teampcp_checkmarx_vscode",
@@ -453,7 +460,7 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-03-30T21:40:15.083629+00:00"
+      "scanned_at": "2026-04-05T05:43:46.824535+00:00"
     },
     {
       "id": "organic_sup022_react_native_account_takeover",
@@ -476,7 +483,7 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-03-30T21:40:17.410861+00:00"
+      "scanned_at": "2026-04-05T05:43:49.355839+00:00"
     },
     {
       "id": "organic_mal054_glassworm_chrome_rat",
@@ -505,7 +512,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-03-30T21:40:19.724645+00:00"
+      "scanned_at": "2026-04-05T05:43:51.901240+00:00"
     },
     {
       "id": "organic_pinj016_contexthub_doc_poisoning",
@@ -534,7 +541,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-03-30T21:40:22.158406+00:00"
+      "scanned_at": "2026-04-05T05:43:54.432822+00:00"
     },
     {
       "id": "organic_exf020_teampcp_kubernetes_lateral",
@@ -581,7 +588,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:40:24.629598+00:00"
+      "scanned_at": "2026-04-05T05:43:56.971091+00:00"
     },
     {
       "id": "organic_cap001_capability_laundering",
@@ -610,7 +617,7 @@
           "confidence": 0.78
         }
       ],
-      "scanned_at": "2026-03-30T21:40:27.066096+00:00"
+      "scanned_at": "2026-04-05T05:43:59.490991+00:00"
     },
     {
       "id": "organic_obf005_dns_covert_channel",
@@ -639,7 +646,7 @@
           "confidence": 0.73
         }
       ],
-      "scanned_at": "2026-03-30T21:40:29.389553+00:00"
+      "scanned_at": "2026-04-05T05:44:02.050440+00:00"
     },
     {
       "id": "demo_benign_commonpaper",
@@ -662,7 +669,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-03-30T21:40:32.220592+00:00"
+      "scanned_at": "2026-04-05T05:44:05.171397+00:00"
     },
     {
       "id": "demo_benign_zendesk",
@@ -691,7 +698,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-03-30T21:40:36.026717+00:00"
+      "scanned_at": "2026-04-05T05:44:08.335236+00:00"
     },
     {
       "id": "demo_benign_fal_generate",
@@ -707,7 +714,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-30T21:40:38.439312+00:00"
+      "scanned_at": "2026-04-05T05:44:10.982949+00:00"
     },
     {
       "id": "demo_benign_mailescrow",
@@ -723,7 +730,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-30T21:40:40.888392+00:00"
+      "scanned_at": "2026-04-05T05:44:13.669096+00:00"
     },
     {
       "id": "demo_benign_explain_code",
@@ -739,7 +746,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-03-30T21:40:43.311419+00:00"
+      "scanned_at": "2026-04-05T05:44:16.334347+00:00"
     }
   ]
 }
