@@ -17,6 +17,7 @@ import Blog from "./pages/Blog";
 import BlogSkillsSecurity from "./pages/BlogSkillsSecurity";
 import BlogV12Training from "./pages/BlogV12Training";
 import BlogV15Training from "./pages/BlogV15Training";
+import TraceRun from "./pages/TraceRun";
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/feed" component={Feed} />
       <Route path="/model" component={Model} />
       <Route path="/trace" component={Trace} />
+      <Route path="/trace/run" component={TraceRun} />
       <Route path="/lint" component={LintPage} />
       <Route path="/blog" component={Blog} />
       <Route path="/blog/skills-security-model" component={BlogSkillsSecurity} />
