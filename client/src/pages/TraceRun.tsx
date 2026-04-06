@@ -11,7 +11,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const API_BASE = "https://trace.skillscan.dev";
+const API_BASE = "https://trace.skillscan.sh";
 
 const PROVIDERS = [
   { id: "openrouter", label: "OpenRouter", badge: "200+ models", defaultModel: "anthropic/claude-sonnet-4-5", envKey: "OPENROUTER_API_KEY" },
