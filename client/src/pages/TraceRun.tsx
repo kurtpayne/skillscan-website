@@ -2,7 +2,7 @@
    TRACE RUN PAGE — interactive hosted trace form
    Route: /trace/run
    ============================================================ */
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import {
   Upload, Link2, ChevronDown, ChevronUp, Shield, AlertTriangle,
   CheckCircle2, XCircle, Loader2, Copy, Check, Download, ExternalLink,
@@ -14,10 +14,31 @@ import Footer from "@/components/Footer";
 const API_BASE = "https://trace.skillscan.sh";
 
 const PROVIDERS = [
-  { id: "openrouter", label: "OpenRouter", badge: "200+ models", defaultModel: "anthropic/claude-sonnet-4-5", envKey: "OPENROUTER_API_KEY" },
-  { id: "openai",     label: "OpenAI",     badge: "",             defaultModel: "gpt-4.1-mini",                envKey: "OPENAI_API_KEY" },
-  { id: "anthropic",  label: "Anthropic",  badge: "",             defaultModel: "claude-sonnet-4-5",          envKey: "ANTHROPIC_API_KEY" },
+  { id: "openrouter", label: "OpenRouter", badge: "200+ models", defaultModel: "anthropic/claude-3.5-sonnet", defaultJudge: "anthropic/claude-sonnet-4-6", envKey: "OPENROUTER_API_KEY" },
+  { id: "openai",     label: "OpenAI",     badge: "",             defaultModel: "gpt-4.1-mini",                defaultJudge: "gpt-4.1",                     envKey: "OPENAI_API_KEY" },
+  { id: "anthropic",  label: "Anthropic",  badge: "",             defaultModel: "claude-3-5-sonnet-latest",    defaultJudge: "claude-sonnet-4-6-latest",    envKey: "ANTHROPIC_API_KEY" },
 ];
+
+// ── localStorage persistence ──────────────────────────────────────────────────
+
+const LS_KEY = "skillscan-trace-prefs";
+
+type SavedPrefs = {
+  providerId?: string;
+  apiKey?: string;
+  model?: string;
+  judgeModel?: string;
+  variants?: number;
+  maxTurns?: number;
+};
+
+function loadPrefs(): SavedPrefs {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); } catch { return {}; }
+}
+
+function savePrefs(p: SavedPrefs) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(p)); } catch {}
+}
 
 function CopyBtn({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
@@ -204,18 +225,26 @@ type Phase = "form" | "submitting" | "polling" | "done" | "error";
 type InputMode = "file" | "url";
 
 export default function TraceRun() {
+  const saved = loadPrefs();
+  const initProvider = PROVIDERS.find(p => p.id === saved.providerId) || PROVIDERS[0];
+
   const [inputMode, setInputMode] = useState<InputMode>("file");
   const [skillContent, setSkillContent] = useState("");
   const [fileName, setFileName] = useState("");
   const [skillUrl, setSkillUrl] = useState("");
-  const [providerId, setProviderId] = useState("openrouter");
-  const [apiKey, setApiKey] = useState("");
+  const [providerId, setProviderId] = useState(initProvider.id);
+  const [apiKey, setApiKey] = useState(saved.apiKey || "");
   const [showKey, setShowKey] = useState(false);
-  const [model, setModel] = useState(PROVIDERS[0].defaultModel);
-  const [judgeModel, setJudgeModel] = useState("");
+  const [model, setModel] = useState(saved.model || initProvider.defaultModel);
+  const [judgeModel, setJudgeModel] = useState(saved.judgeModel || initProvider.defaultJudge);
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [variants, setVariants] = useState(3);
-  const [maxTurns, setMaxTurns] = useState(10);
+  const [variants, setVariants] = useState(saved.variants || 3);
+  const [maxTurns, setMaxTurns] = useState(saved.maxTurns || 10);
+
+  // Persist choices to localStorage
+  useEffect(() => {
+    savePrefs({ providerId, apiKey, model, judgeModel, variants, maxTurns });
+  }, [providerId, apiKey, model, judgeModel, variants, maxTurns]);
 
   const [phase, setPhase] = useState<Phase>("form");
   const [jobId, setJobId] = useState<string | null>(null);
@@ -231,7 +260,7 @@ export default function TraceRun() {
   const handleProviderChange = (id: string) => {
     setProviderId(id);
     const p = PROVIDERS.find(x => x.id === id);
-    if (p) setModel(p.defaultModel);
+    if (p) { setModel(p.defaultModel); setJudgeModel(p.defaultJudge); }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
