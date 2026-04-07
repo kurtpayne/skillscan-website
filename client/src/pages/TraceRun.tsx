@@ -14,9 +14,9 @@ import Footer from "@/components/Footer";
 const API_BASE = "https://trace.skillscan.sh";
 
 const PROVIDERS = [
-  { id: "openrouter", label: "OpenRouter", badge: "200+ models", defaultModel: "anthropic/claude-3.5-sonnet", defaultJudge: "anthropic/claude-sonnet-4-6", envKey: "OPENROUTER_API_KEY" },
-  { id: "openai",     label: "OpenAI",     badge: "",             defaultModel: "gpt-4.1-mini",                defaultJudge: "gpt-4.1",                     envKey: "OPENAI_API_KEY" },
-  { id: "anthropic",  label: "Anthropic",  badge: "",             defaultModel: "claude-3-5-sonnet-latest",    defaultJudge: "claude-sonnet-4-6-latest",    envKey: "ANTHROPIC_API_KEY" },
+  { id: "openrouter", label: "OpenRouter", badge: "200+ models", defaultModel: "anthropic/claude-3-5-sonnet-20241022", defaultJudge: "anthropic/claude-sonnet-4-6", envKey: "OPENROUTER_API_KEY" },
+  { id: "openai",     label: "OpenAI",     badge: "",             defaultModel: "gpt-4.1-mini",                             defaultJudge: "gpt-4.1",                     envKey: "OPENAI_API_KEY" },
+  { id: "anthropic",  label: "Anthropic",  badge: "",             defaultModel: "claude-3-5-sonnet-20241022",               defaultJudge: "claude-sonnet-4-6-latest",    envKey: "ANTHROPIC_API_KEY" },
 ];
 
 // ── localStorage persistence ──────────────────────────────────────────────────
