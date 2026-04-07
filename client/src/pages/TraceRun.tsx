@@ -179,6 +179,7 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
   const verdict = report.error ? "ERROR" : (report.verdict as string) || "REVIEW";
   const findings = [...((report.findings as Record<string, unknown>[]) || []),
                     ...((report.trace_findings as Record<string, unknown>[]) || [])];
+  const toolCalls = (report.total_tool_calls as number) ?? 0;
   const [copied, setCopied] = useState(false);
   const bySev = (s: string) => findings.filter(f => ((f.severity as string) || "").toUpperCase() === s);
 
@@ -205,6 +206,11 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
               </p>
             )}
             {report.model && <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>Model: {report.model as string}</p>}
+            <p className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
+              {toolCalls} tool call{toolCalls !== 1 ? "s" : ""}
+              {report.duration_seconds ? ` · ${(report.duration_seconds as number).toFixed(1)}s` : ""}
+              {report.user_messages ? ` · ${(report.user_messages as string[]).length} input${(report.user_messages as string[]).length !== 1 ? "s" : ""}` : ""}
+            </p>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <button onClick={() => { navigator.clipboard.writeText(reportUrl); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
@@ -250,6 +256,21 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
           <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>Findings ({findings.length})</h3>
           {findings.map((f, i) => <FindingCard key={i} f={f} />)}
         </div>
+      ) : toolCalls === 0 ? (
+        <Card>
+          <div className="flex items-start gap-3">
+            <Shield className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.65 0.08 265)" }} />
+            <div className="space-y-1">
+              <p className="text-sm font-medium" style={{ color: "oklch(0.75 0.012 265)" }}>No tool calls observed</p>
+              <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>
+                The model responded with text only and did not invoke any tools (bash, read_file, http_fetch, etc.)
+                during the trace. This can happen when the skill references tools not in the canary server's surface,
+                or when the model decides no tool use is needed for the generated inputs.
+                This is an inconclusive result — not a pass.
+              </p>
+            </div>
+          </div>
+        </Card>
       ) : (
         <Card>
           <div className="flex items-center gap-3">
