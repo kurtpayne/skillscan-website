@@ -622,6 +622,7 @@ export default function TraceRun() {
 
   const [inputMode, setInputMode] = useState<InputMode>("file");
   const [skillContent, setSkillContent] = useState("");
+  const [skillZipB64, setSkillZipB64] = useState("");
   const [fileName, setFileName] = useState("");
   const [skillUrl, setSkillUrl] = useState("");
   const [providerId, setProviderId] = useState(initProvider.id);
@@ -659,21 +660,37 @@ export default function TraceRun() {
     if (p) { setModel(p.defaultModel); setJudgeModel(p.defaultJudge); }
   };
 
+  const handleFileLoad = (file: File) => {
+    setFileName(file.name);
+    if (file.name.toLowerCase().endsWith(".zip")) {
+      setSkillContent("");
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const arrayBuf = ev.target?.result as ArrayBuffer;
+        const bytes = new Uint8Array(arrayBuf);
+        let binary = "";
+        for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+        setSkillZipB64(btoa(binary));
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      setSkillZipB64("");
+      const reader = new FileReader();
+      reader.onload = ev => setSkillContent((ev.target?.result as string) || "");
+      reader.readAsText(file);
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return;
-    setFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = ev => setSkillContent((ev.target?.result as string) || "");
-    reader.readAsText(file);
+    handleFileLoad(file);
   };
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0]; if (!file) return;
-    setFileName(file.name); setInputMode("file");
-    const reader = new FileReader();
-    reader.onload = ev => setSkillContent((ev.target?.result as string) || "");
-    reader.readAsText(file);
+    setInputMode("file");
+    handleFileLoad(file);
   }, []);
 
   const poll = useCallback(async (id: string) => {
@@ -703,12 +720,13 @@ export default function TraceRun() {
 
   const handleSubmit = async () => {
     const content = skillContent;
+    const isZip = !!skillZipB64;
     if (inputMode === "url") {
       if (!skillUrl.trim()) { setErrorMsg("Enter a skill URL."); setPhase("error"); return; }
       // Don't fetch client-side — raw.githubusercontent.com blocks CORS.
       // The CF Worker fetches the URL server-side when skill_content is empty.
     } else {
-      if (!content.trim()) { setErrorMsg("Upload a skill file."); setPhase("error"); return; }
+      if (!content.trim() && !isZip) { setErrorMsg("Upload a skill file."); setPhase("error"); return; }
     }
     if (!apiKey.trim()) { setErrorMsg("Enter your API key."); setPhase("error"); return; }
     if (!model.trim()) { setErrorMsg("Enter a model name."); setPhase("error"); return; }
@@ -722,6 +740,7 @@ export default function TraceRun() {
         model, variants, max_turns: maxTurns,
         include_scan: includeScan, include_lint: includeLint,
         ...(inputMode === "url" ? { source_url: skillUrl } : {}),
+        ...(isZip ? { skill_zip_b64: skillZipB64 } : {}),
         ...(parsedDomains.length ? { allow_domains: parsedDomains } : {}),
         ...(parsedCommands.length ? { allow_commands: parsedCommands } : {}),
       };
@@ -835,11 +854,11 @@ export default function TraceRun() {
               </div>
               {inputMode === "file" ? (
                 <div className="rounded-lg border-2 border-dashed flex flex-col items-center justify-center py-8 px-4 cursor-pointer"
-                  style={{ borderColor: skillContent ? "oklch(0.40 0.08 290)" : "oklch(0.25 0.025 265)" }}
+                  style={{ borderColor: (skillContent || skillZipB64) ? "oklch(0.40 0.08 290)" : "oklch(0.25 0.025 265)" }}
                   onDragOver={e => e.preventDefault()} onDrop={handleDrop} onClick={() => fileRef.current?.click()}>
-                  <input ref={fileRef} type="file" accept=".md,.txt" className="hidden" onChange={handleFileChange} />
-                  {skillContent ? (
-                    <p className="text-sm font-mono" style={{ color: "oklch(0.78 0.18 290)" }}>✓ {fileName || "file loaded"}</p>
+                  <input ref={fileRef} type="file" accept=".md,.txt,.zip" className="hidden" onChange={handleFileChange} />
+                  {(skillContent || skillZipB64) ? (
+                    <p className="text-sm font-mono" style={{ color: "oklch(0.78 0.18 290)" }}>✓ {fileName || (skillZipB64 ? "ZIP loaded" : "file loaded")}</p>
                   ) : (
                     <>
                       <Upload className="w-6 h-6 mb-2" style={{ color: "oklch(0.45 0.015 265)" }} />
