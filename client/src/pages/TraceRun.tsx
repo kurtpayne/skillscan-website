@@ -296,15 +296,11 @@ export default function TraceRun() {
   }, []);
 
   const handleSubmit = async () => {
-    let content = skillContent;
+    const content = skillContent;
     if (inputMode === "url") {
       if (!skillUrl.trim()) { setErrorMsg("Enter a skill URL."); setPhase("error"); return; }
-      try {
-        setPhase("submitting");
-        const r = await fetch(skillUrl);
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        content = await r.text();
-      } catch (e) { setErrorMsg(`Could not fetch skill URL: ${(e as Error).message}`); setPhase("error"); return; }
+      // Don't fetch client-side — raw.githubusercontent.com blocks CORS.
+      // The CF Worker fetches the URL server-side when skill_content is empty.
     } else {
       if (!content.trim()) { setErrorMsg("Upload a skill file."); setPhase("error"); return; }
     }
