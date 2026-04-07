@@ -79,8 +79,9 @@ function VerdictBadge({ verdict }: { verdict: string }) {
   const map: Record<string, { bg: string; text: string; border: string; icon: React.ReactNode }> = {
     PASS:  { bg: "oklch(0.18 0.06 155)", text: "oklch(0.78 0.18 155)", border: "oklch(0.30 0.10 155)", icon: <CheckCircle2 className="w-4 h-4" /> },
     BLOCK: { bg: "oklch(0.18 0.06 25)",  text: "oklch(0.78 0.18 25)",  border: "oklch(0.30 0.10 25)",  icon: <XCircle className="w-4 h-4" /> },
-    REVIEW:{ bg: "oklch(0.18 0.06 80)",  text: "oklch(0.78 0.18 80)",  border: "oklch(0.30 0.10 80)",  icon: <AlertTriangle className="w-4 h-4" /> },
-    ERROR: { bg: "oklch(0.18 0.06 55)",  text: "oklch(0.78 0.18 55)",  border: "oklch(0.30 0.10 55)",  icon: <AlertTriangle className="w-4 h-4" /> },
+    REVIEW:      { bg: "oklch(0.18 0.06 80)",  text: "oklch(0.78 0.18 80)",  border: "oklch(0.30 0.10 80)",  icon: <AlertTriangle className="w-4 h-4" /> },
+    ERROR:       { bg: "oklch(0.18 0.06 55)",  text: "oklch(0.78 0.18 55)",  border: "oklch(0.30 0.10 55)",  icon: <AlertTriangle className="w-4 h-4" /> },
+    INCONCLUSIVE:{ bg: "oklch(0.16 0.03 265)", text: "oklch(0.65 0.04 265)", border: "oklch(0.28 0.04 265)", icon: <Shield className="w-4 h-4" /> },
   };
   const s = map[v] || map.REVIEW;
   return (
@@ -175,11 +176,98 @@ function FindingCard({ f }: { f: Record<string, unknown> }) {
   );
 }
 
+function EventTimeline({ events }: { events: Record<string, unknown>[] }) {
+  if (!events.length) return null;
+  return (
+    <div className="space-y-2">
+      <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
+        Tool call timeline ({events.length})
+      </h3>
+      {events.map((ev, i) => {
+        const tool = ev.tool as string;
+        const turn = ev.turn as number;
+        const args = ev.arguments as Record<string, unknown> | undefined;
+        const evFindings = (ev.findings as Record<string, unknown>[]) || [];
+        const hasFinding = evFindings.length > 0;
+        return (
+          <div key={i} className="rounded-lg overflow-hidden"
+            style={{ border: `1px solid ${hasFinding ? "oklch(0.28 0.08 25)" : "oklch(0.20 0.022 265)"}` }}>
+            <div className="flex items-center gap-3 px-4 py-2.5"
+              style={{ background: hasFinding ? "oklch(0.11 0.03 25)" : "oklch(0.09 0.018 265)" }}>
+              <span className="text-xs font-mono px-1.5 py-0.5 rounded"
+                style={{ background: "oklch(0.15 0.022 265)", color: "oklch(0.60 0.015 265)" }}>
+                T{turn}
+              </span>
+              <span className="text-sm font-mono font-medium"
+                style={{ color: hasFinding ? "oklch(0.78 0.18 25)" : "oklch(0.78 0.08 210)" }}>
+                {tool}
+              </span>
+              {hasFinding && (
+                <span className="text-xs px-1.5 py-0.5 rounded-full"
+                  style={{ background: "oklch(0.18 0.06 25)", color: "oklch(0.78 0.18 25)", border: "1px solid oklch(0.30 0.10 25)" }}>
+                  flagged
+                </span>
+              )}
+            </div>
+            {args && Object.keys(args).length > 0 && (
+              <div className="px-4 py-2" style={{ borderTop: `1px solid ${hasFinding ? "oklch(0.20 0.05 25)" : "oklch(0.18 0.022 265)"}` }}>
+                {Object.entries(args).map(([k, v]) => (
+                  <p key={k} className="text-xs font-mono truncate" style={{ color: "oklch(0.60 0.015 265)" }}>
+                    <span style={{ color: "oklch(0.50 0.015 265)" }}>{k}:</span>{" "}
+                    {typeof v === "string" ? v : JSON.stringify(v)}
+                  </p>
+                ))}
+              </div>
+            )}
+            {evFindings.map((ef, j) => (
+              <div key={j} className="flex items-center gap-2 px-4 py-2"
+                style={{ borderTop: "1px solid oklch(0.20 0.05 25)", background: "oklch(0.10 0.02 25)" }}>
+                <SeverityPill sev={ef.severity as string} />
+                <span className="text-xs font-mono" style={{ color: "oklch(0.55 0.015 265)" }}>{ef.rule_id as string}</span>
+                <span className="text-xs truncate" style={{ color: "oklch(0.70 0.012 265)" }}>{ef.message as string}</span>
+              </div>
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function UserMessagesSection({ messages }: { messages: string[] }) {
+  if (!messages.length) return null;
+  return (
+    <div className="space-y-2">
+      <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
+        Fuzz inputs ({messages.length})
+      </h3>
+      {messages.map((m, i) => (
+        <div key={i} className="flex items-start gap-2 rounded-lg px-4 py-2.5"
+          style={{ background: "oklch(0.09 0.018 265)", border: "1px solid oklch(0.20 0.022 265)" }}>
+          <span className="text-xs font-mono mt-0.5 flex-shrink-0"
+            style={{ color: "oklch(0.45 0.015 265)" }}>#{i + 1}</span>
+          <p className="text-sm" style={{ color: "oklch(0.72 0.012 265)" }}>{m}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function ReportView({ report, reportUrl }: { report: Record<string, unknown>; reportUrl: string }) {
-  const verdict = report.error ? "ERROR" : (report.verdict as string) || "REVIEW";
   const findings = [...((report.findings as Record<string, unknown>[]) || []),
                     ...((report.trace_findings as Record<string, unknown>[]) || [])];
+  const events = (report.events as Record<string, unknown>[]) || [];
   const toolCalls = (report.total_tool_calls as number) ?? 0;
+  const userMessages = (report.user_messages as string[]) || [];
+
+  // Derive verdict: judge_verdict if judge ran, otherwise infer from results
+  let verdict: string;
+  if (report.error) verdict = "ERROR";
+  else if (report.judge_verdict) verdict = (report.judge_verdict as string).toUpperCase();
+  else if (findings.length > 0) verdict = "BLOCK";
+  else if (toolCalls === 0) verdict = "INCONCLUSIVE";
+  else verdict = "PASS";
+
   const [copied, setCopied] = useState(false);
   const bySev = (s: string) => findings.filter(f => ((f.severity as string) || "").toUpperCase() === s);
 
@@ -191,6 +279,7 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <Card>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-2">
@@ -208,9 +297,15 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
             {report.model && <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>Model: {report.model as string}</p>}
             <p className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
               {toolCalls} tool call{toolCalls !== 1 ? "s" : ""}
+              {` · ${findings.length} finding${findings.length !== 1 ? "s" : ""}`}
               {report.duration_seconds ? ` · ${(report.duration_seconds as number).toFixed(1)}s` : ""}
-              {report.user_messages ? ` · ${(report.user_messages as string[]).length} input${(report.user_messages as string[]).length !== 1 ? "s" : ""}` : ""}
+              {userMessages.length ? ` · ${userMessages.length} input${userMessages.length !== 1 ? "s" : ""}` : ""}
             </p>
+            {report.skill_sha256 && (
+              <p className="text-xs font-mono" style={{ color: "oklch(0.40 0.015 265)" }}>
+                sha256:{(report.skill_sha256 as string).slice(0, 16)}…
+              </p>
+            )}
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <button onClick={() => { navigator.clipboard.writeText(reportUrl); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
@@ -241,7 +336,8 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
         )}
       </Card>
 
-      {report.error ? (
+      {/* Error */}
+      {report.error && (
         <Card>
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.78 0.18 55)" }} />
@@ -251,35 +347,53 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
             </div>
           </div>
         </Card>
-      ) : findings.length > 0 ? (
+      )}
+
+      {/* Findings */}
+      {!report.error && findings.length > 0 && (
         <div className="space-y-2">
           <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>Findings ({findings.length})</h3>
           {findings.map((f, i) => <FindingCard key={i} f={f} />)}
         </div>
-      ) : toolCalls === 0 ? (
+      )}
+
+      {/* Tool call timeline */}
+      {!report.error && <EventTimeline events={events} />}
+
+      {/* No tool calls message */}
+      {!report.error && toolCalls === 0 && (
         <Card>
           <div className="flex items-start gap-3">
             <Shield className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.65 0.08 265)" }} />
             <div className="space-y-1">
               <p className="text-sm font-medium" style={{ color: "oklch(0.75 0.012 265)" }}>No tool calls observed</p>
               <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>
-                The model responded with text only and did not invoke any tools (bash, read_file, http_fetch, etc.)
-                during the trace. This can happen when the skill references tools not in the canary server's surface,
+                The model responded with text only and did not invoke any tools during the trace.
+                This can happen when the skill references tools not in the canary server's surface,
                 or when the model decides no tool use is needed for the generated inputs.
                 This is an inconclusive result — not a pass.
               </p>
             </div>
           </div>
         </Card>
-      ) : (
+      )}
+
+      {/* Clean pass */}
+      {!report.error && toolCalls > 0 && findings.length === 0 && (
         <Card>
           <div className="flex items-center gap-3">
             <CheckCircle2 className="w-5 h-5" style={{ color: "oklch(0.78 0.18 155)" }} />
-            <p className="text-sm" style={{ color: "oklch(0.75 0.012 265)" }}>No findings — skill passed all detection layers.</p>
+            <p className="text-sm" style={{ color: "oklch(0.75 0.012 265)" }}>
+              No findings — {toolCalls} tool call{toolCalls !== 1 ? "s" : ""} observed, none flagged.
+            </p>
           </div>
         </Card>
       )}
 
+      {/* User messages */}
+      <UserMessagesSection messages={userMessages} />
+
+      {/* Permalink */}
       <div className="flex items-center justify-between rounded-lg px-4 py-3"
         style={{ background: "oklch(0.09 0.018 265)", border: "1px solid oklch(0.20 0.022 265)" }}>
         <span className="text-xs font-mono truncate" style={{ color: "oklch(0.55 0.015 265)" }}>{reportUrl}</span>
