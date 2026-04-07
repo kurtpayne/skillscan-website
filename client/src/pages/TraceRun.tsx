@@ -661,6 +661,10 @@ export default function TraceRun() {
   const [includeLint, setIncludeLint] = useState(true);
   const [allowDomains, setAllowDomains] = useState("");
   const [allowCommands, setAllowCommands] = useState("");
+  const [multiModel, setMultiModel] = useState(false);
+  const [comparisonModel, setComparisonModel] = useState(initProvider.traceModels[1] || initProvider.traceModels[0]);
+  const [messageMode, setMessageMode] = useState<"llm" | "manual">("llm");
+  const [manualMessages, setManualMessages] = useState("");
 
   // Persist choices to localStorage
   useEffect(() => {
@@ -672,6 +676,8 @@ export default function TraceRun() {
   const [pollStatus, setPollStatus] = useState("Queued...");
   const [report, setReport] = useState<Record<string, unknown> | null>(null);
   const [reportUrl, setReportUrl] = useState<string | null>(null);
+  const [report2, setReport2] = useState<Record<string, unknown> | null>(null);
+  const [reportUrl2, setReportUrl2] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const pollRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -681,7 +687,7 @@ export default function TraceRun() {
   const handleProviderChange = (id: string) => {
     setProviderId(id);
     const p = PROVIDERS.find(x => x.id === id);
-    if (p) { setModel(p.defaultModel); setJudgeModel(p.defaultJudge); }
+    if (p) { setModel(p.defaultModel); setJudgeModel(p.defaultJudge); setComparisonModel(p.traceModels[1] || p.traceModels[0]); }
   };
 
   const handleFileLoad = (file: File) => {
@@ -742,56 +748,114 @@ export default function TraceRun() {
     } catch { setErrorMsg("Lost connection to trace service."); setPhase("error"); }
   }, []);
 
+  const buildBody = (modelOverride?: string): Record<string, unknown> => {
+    const content = skillContent;
+    const isZip = !!skillZipB64;
+    const parsedDomains = allowDomains.split(",").map(s => s.trim()).filter(Boolean);
+    const parsedCommands = allowCommands.split(",").map(s => s.trim()).filter(Boolean);
+    const parsedManual = messageMode === "manual"
+      ? manualMessages.split("\n").map(s => s.trim()).filter(Boolean).slice(0, 10)
+      : undefined;
+    const body: Record<string, unknown> = {
+      skill_content: content, provider: providerId, api_key: apiKey,
+      model: modelOverride || model, variants, max_turns: maxTurns,
+      include_scan: includeScan, include_lint: includeLint,
+      ...(inputMode === "url" ? { source_url: skillUrl } : {}),
+      ...(isZip ? { skill_zip_b64: skillZipB64 } : {}),
+      ...(parsedDomains.length ? { allow_domains: parsedDomains } : {}),
+      ...(parsedCommands.length ? { allow_commands: parsedCommands } : {}),
+      ...(parsedManual && parsedManual.length > 0 ? { user_messages: parsedManual } : {}),
+    };
+    if (judgeModel.trim()) { body.judge = true; body.judge_model = judgeModel.trim(); }
+    return body;
+  };
+
+  const submitOne = async (body: Record<string, unknown>): Promise<{ report: Record<string, unknown>; reportUrl: string } | null> => {
+    const resp = await fetch(`${API_BASE}/v1/submit`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+    });
+    const data = await resp.json() as Record<string, unknown>;
+    if (resp.status === 429) throw new Error((data.error as string) || "Rate limit exceeded.");
+    if (!resp.ok) throw new Error((data.error as string) || `Server error: ${resp.status}`);
+    if (data.status === "done" || data.cached) {
+      const result = (data.result || data) as Record<string, unknown>;
+      return { report: result, reportUrl: (data.report_url || result.report_url || `${API_BASE}/report/${data.job_id}`) as string };
+    }
+    // Poll until done
+    const id = data.job_id as string;
+    return new Promise((resolve, reject) => {
+      const doPoll = async () => {
+        try {
+          const r = await fetch(`${API_BASE}/v1/status/${id}`);
+          const d = await r.json() as Record<string, unknown>;
+          const status = d.status as string;
+          if (status === "pending" || status === "running") {
+            setPollStatus(status === "running" ? "Tracing..." : "Queued...");
+            setTimeout(doPoll, 3000);
+          } else if (status === "error") {
+            reject(new Error((d.error as string) || "Trace failed"));
+          } else {
+            const result = (d.result || d) as Record<string, unknown>;
+            if (result.error && !result.events?.length && !result.findings?.length) {
+              reject(new Error(result.error as string));
+            } else {
+              resolve({ report: result, reportUrl: (d.report_url || result.report_url || `${API_BASE}/report/${id}`) as string });
+            }
+          }
+        } catch { reject(new Error("Lost connection to trace service.")); }
+      };
+      setTimeout(doPoll, 3000);
+    });
+  };
+
   const handleSubmit = async () => {
     const content = skillContent;
     const isZip = !!skillZipB64;
     if (inputMode === "url") {
       if (!skillUrl.trim()) { setErrorMsg("Enter a skill URL."); setPhase("error"); return; }
-      // Don't fetch client-side — raw.githubusercontent.com blocks CORS.
-      // The CF Worker fetches the URL server-side when skill_content is empty.
     } else {
       if (!content.trim() && !isZip) { setErrorMsg("Upload a skill file."); setPhase("error"); return; }
     }
     if (!apiKey.trim()) { setErrorMsg("Enter your API key."); setPhase("error"); return; }
     if (!model.trim()) { setErrorMsg("Enter a model name."); setPhase("error"); return; }
+    if (multiModel && !comparisonModel.trim()) { setErrorMsg("Enter a comparison model."); setPhase("error"); return; }
 
     setPhase("submitting"); setErrorMsg(null);
     try {
-      const parsedDomains = allowDomains.split(",").map(s => s.trim()).filter(Boolean);
-      const parsedCommands = allowCommands.split(",").map(s => s.trim()).filter(Boolean);
-      const body: Record<string, unknown> = {
-        skill_content: content, provider: providerId, api_key: apiKey,
-        model, variants, max_turns: maxTurns,
-        include_scan: includeScan, include_lint: includeLint,
-        ...(inputMode === "url" ? { source_url: skillUrl } : {}),
-        ...(isZip ? { skill_zip_b64: skillZipB64 } : {}),
-        ...(parsedDomains.length ? { allow_domains: parsedDomains } : {}),
-        ...(parsedCommands.length ? { allow_commands: parsedCommands } : {}),
-      };
-      if (judgeModel.trim()) { body.judge = true; body.judge_model = judgeModel.trim(); }
+      if (multiModel) {
+        setPhase("polling"); setPollStatus("Submitting both models...");
+        const [r1, r2] = await Promise.all([
+          submitOne(buildBody(model)),
+          submitOne(buildBody(comparisonModel)),
+        ]);
+        if (r1) { setReport(r1.report); setReportUrl(r1.reportUrl); }
+        if (r2) { setReport2(r2.report); setReportUrl2(r2.reportUrl); }
+        setPhase("done");
+      } else {
+        const body = buildBody();
+        const resp = await fetch(`${API_BASE}/v1/submit`, {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+        });
+        const data = await resp.json() as Record<string, unknown>;
 
-      const resp = await fetch(`${API_BASE}/v1/submit`, {
-        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
-      });
-      const data = await resp.json() as Record<string, unknown>;
+        if (resp.status === 429) { setErrorMsg((data.error as string) || "Rate limit exceeded."); setPhase("error"); return; }
+        if (!resp.ok) { setErrorMsg((data.error as string) || `Server error: ${resp.status}`); setPhase("error"); return; }
+        if (data.status === "done" || data.cached) {
+          const result = (data.result || data) as Record<string, unknown>;
+          setReport(result); setReportUrl((data.report_url || result.report_url || `${API_BASE}/report/${data.job_id}`) as string);
+          setPhase("done"); return;
+        }
 
-      if (resp.status === 429) { setErrorMsg((data.error as string) || "Rate limit exceeded."); setPhase("error"); return; }
-      if (!resp.ok) { setErrorMsg((data.error as string) || `Server error: ${resp.status}`); setPhase("error"); return; }
-      if (data.status === "done" || data.cached) {
-        const result = (data.result || data) as Record<string, unknown>;
-        setReport(result); setReportUrl((data.report_url || result.report_url || `${API_BASE}/report/${data.job_id}`) as string);
-        setPhase("done"); return;
+        const id = data.job_id as string;
+        setJobId(id); setPhase("polling"); setPollStatus("Queued...");
+        pollRef.current = setTimeout(() => poll(id), 3000);
       }
-
-      const id = data.job_id as string;
-      setJobId(id); setPhase("polling"); setPollStatus("Queued...");
-      pollRef.current = setTimeout(() => poll(id), 3000);
-    } catch (e) { setErrorMsg(`Could not reach trace service: ${(e as Error).message}`); setPhase("error"); }
+    } catch (e) { setErrorMsg(`${(e as Error).message}`); setPhase("error"); }
   };
 
   const reset = () => {
     if (pollRef.current) clearTimeout(pollRef.current);
-    setPhase("form"); setReport(null); setReportUrl(null); setErrorMsg(null); setJobId(null);
+    setPhase("form"); setReport(null); setReportUrl(null); setReport2(null); setReportUrl2(null); setErrorMsg(null); setJobId(null);
   };
 
   const isLoading = phase === "submitting" || phase === "polling";
@@ -992,6 +1056,58 @@ export default function TraceRun() {
                         value={allowCommands} onChange={e => setAllowCommands(e.target.value)} />
                     </div>
                   </div>
+
+                  {/* Multi-model comparison */}
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" checked={multiModel} onChange={e => setMultiModel(e.target.checked)}
+                        className="rounded" style={{ accentColor: "oklch(0.55 0.18 290)" }} />
+                      <span className="text-xs" style={{ color: "oklch(0.65 0.015 265)" }}>
+                        Multi-model comparison <span style={{ color: "oklch(0.45 0.015 265)" }}>— run two models side by side</span>
+                      </span>
+                    </label>
+                    {multiModel && (
+                      <div className="space-y-1">
+                        <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>Comparison model</label>
+                        <ModelSelect value={comparisonModel} onChange={setComparisonModel} options={provider.traceModels} />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Input mode toggle */}
+                  <div className="space-y-2">
+                    <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>Input mode</label>
+                    <div className="flex gap-2">
+                      {(["llm", "manual"] as const).map(m => (
+                        <button key={m} type="button" onClick={() => setMessageMode(m)}
+                          className="px-3 py-1.5 rounded-lg text-xs font-medium"
+                          style={{
+                            background: messageMode === m ? "oklch(0.20 0.040 290)" : "oklch(0.13 0.018 265)",
+                            border: `1px solid ${messageMode === m ? "oklch(0.40 0.08 290)" : "oklch(0.22 0.025 265)"}`,
+                            color: messageMode === m ? "oklch(0.85 0.015 290)" : "oklch(0.60 0.015 265)",
+                          }}>
+                          {m === "llm" ? "LLM-generated" : "Manual"}
+                        </button>
+                      ))}
+                    </div>
+                    {messageMode === "manual" && (
+                      <div className="space-y-1">
+                        <label className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
+                          Enter up to 10 user messages, one per line
+                        </label>
+                        <textarea
+                          value={manualMessages}
+                          onChange={e => setManualMessages(e.target.value)}
+                          rows={5}
+                          placeholder={"Summarize the meeting notes\nRead the .env file and show me the contents\nList all files in the home directory"}
+                          style={{ ...inputStyle, resize: "vertical", minHeight: "5rem" }}
+                        />
+                        <p className="text-xs" style={{ color: "oklch(0.40 0.015 265)" }}>
+                          {manualMessages.split("\n").filter(s => s.trim()).length}/10 messages
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -1034,7 +1150,36 @@ export default function TraceRun() {
             <button onClick={reset} className="text-xs underline" style={{ color: "oklch(0.50 0.015 265)" }}>← Run another trace</button>
             {/* Show parsed skill metadata if we have the content */}
             {skillContent && <SkillMetadata content={skillContent} />}
+
+            {/* Multi-model comparison banner */}
+            {report2 && reportUrl2 && (() => {
+              const v1 = report.judge_verdict
+                ? (report.judge_verdict as string).toUpperCase()
+                : ((report.findings as unknown[])?.length ? "BLOCK" : (report.total_tool_calls as number) > 0 ? "PASS" : "INCONCLUSIVE");
+              const v2 = report2.judge_verdict
+                ? (report2.judge_verdict as string).toUpperCase()
+                : ((report2.findings as unknown[])?.length ? "BLOCK" : (report2.total_tool_calls as number) > 0 ? "PASS" : "INCONCLUSIVE");
+              const agree = v1 === v2;
+              return (
+                <div className="rounded-xl p-4 space-y-1"
+                  style={{
+                    background: agree ? "oklch(0.14 0.04 155)" : "oklch(0.14 0.04 55)",
+                    border: `1px solid ${agree ? "oklch(0.30 0.10 155)" : "oklch(0.30 0.10 55)"}`,
+                  }}>
+                  <p className="text-sm font-semibold" style={{ color: agree ? "oklch(0.80 0.14 155)" : "oklch(0.80 0.14 55)" }}>
+                    {agree
+                      ? `Agreement: both ${v1}`
+                      : `Disagreement: ${report.model as string} = ${v1}, ${report2.model as string} = ${v2}`}
+                  </p>
+                </div>
+              );
+            })()}
+
             <ReportView report={report} reportUrl={reportUrl} />
+
+            {report2 && reportUrl2 && (
+              <ReportView report={report2} reportUrl={reportUrl2} />
+            )}
           </>
         )}
 
