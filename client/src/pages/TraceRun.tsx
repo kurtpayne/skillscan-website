@@ -479,6 +479,26 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
         </Card>
       )}
 
+      {/* Static scan findings */}
+      {((report.static_findings as Record<string, unknown>[]) || []).length > 0 && (
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
+            Static scan ({(report.static_findings as Record<string, unknown>[]).length})
+          </h3>
+          {(report.static_findings as Record<string, unknown>[]).map((f, i) => <FindingCard key={`s${i}`} f={f} />)}
+        </div>
+      )}
+
+      {/* Lint findings */}
+      {((report.lint_findings as Record<string, unknown>[]) || []).length > 0 && (
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
+            Quality lint ({(report.lint_findings as Record<string, unknown>[]).length})
+          </h3>
+          {(report.lint_findings as Record<string, unknown>[]).map((f, i) => <FindingCard key={`l${i}`} f={f} />)}
+        </div>
+      )}
+
       {/* User messages */}
       <UserMessagesSection messages={userMessages} />
 
@@ -513,6 +533,8 @@ export default function TraceRun() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [variants, setVariants] = useState(saved.variants || 3);
   const [maxTurns, setMaxTurns] = useState(saved.maxTurns || 10);
+  const [includeScan, setIncludeScan] = useState(true);
+  const [includeLint, setIncludeLint] = useState(true);
 
   // Persist choices to localStorage
   useEffect(() => {
@@ -595,6 +617,7 @@ export default function TraceRun() {
       const body: Record<string, unknown> = {
         skill_content: content, provider: providerId, api_key: apiKey,
         model, variants, max_turns: maxTurns,
+        include_scan: includeScan, include_lint: includeLint,
         ...(inputMode === "url" ? { source_url: skillUrl } : {}),
       };
       if (judgeModel.trim()) { body.judge = true; body.judge_model = judgeModel.trim(); }
@@ -756,6 +779,24 @@ export default function TraceRun() {
                 </label>
                 <ModelSelect value={model} onChange={setModel} options={provider.traceModels} />
               </div>
+            </div>
+
+            {/* Scan + lint toggles */}
+            <div className="flex items-center gap-5">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={includeScan} onChange={e => setIncludeScan(e.target.checked)}
+                  className="rounded" style={{ accentColor: "oklch(0.55 0.18 290)" }} />
+                <span className="text-xs" style={{ color: "oklch(0.65 0.015 265)" }}>
+                  Static scan <span style={{ color: "oklch(0.45 0.015 265)" }}>— no key needed</span>
+                </span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={includeLint} onChange={e => setIncludeLint(e.target.checked)}
+                  className="rounded" style={{ accentColor: "oklch(0.55 0.18 290)" }} />
+                <span className="text-xs" style={{ color: "oklch(0.65 0.015 265)" }}>
+                  Lint <span style={{ color: "oklch(0.45 0.015 265)" }}>— quality checks</span>
+                </span>
+              </label>
             </div>
 
             {/* Advanced */}
