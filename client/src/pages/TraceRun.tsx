@@ -344,10 +344,29 @@ function UserMessagesSection({ messages }: { messages: string[] }) {
 
 function ToolSurfaceSummary({ events }: { events: Record<string, unknown>[] }) {
   const CANARY_TOOLS = [
+    // Filesystem & network
     "bash", "read_file", "write_file", "http_fetch", "list_directory",
-    "email_send", "gmail_send", "calendar_create", "calendar_list",
-    "github_create_issue", "github_push_file", "slack_post_message",
+    // Email & messaging
+    "email_send", "gmail_send", "search_emails", "read_email", "slack_post_message",
+    // Calendar
+    "calendar_create", "calendar_list",
+    // GitHub
+    "github_create_issue", "github_push_file", "get_file_contents", "search_code",
+    "create_pull_request", "merge_pull_request", "get_secret_scanning_alert",
+    // Notion
     "notion_create_page", "notion_append_block",
+    // Database
+    "execute_sql", "list_tables", "describe_table",
+    // Secrets & vault
+    "read_secret", "list_secrets", "get_vault_item",
+    // Cloud CLI
+    "call_aws_cli", "call_kubectl",
+    // Code execution
+    "python", "computer",
+    // Agent memory
+    "memory_write", "memory_read", "context_write",
+    // Web
+    "web_search", "web_fetch",
   ];
   const calledTools = new Set(events.map(ev => ev.tool as string));
   if (!events.length) return null;
