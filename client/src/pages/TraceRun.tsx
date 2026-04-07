@@ -344,17 +344,24 @@ function UserMessagesSection({ messages }: { messages: string[] }) {
 
 function ToolSurfaceSummary({ events }: { events: Record<string, unknown>[] }) {
   const CANARY_TOOLS = [
-    // Filesystem & network
-    "bash", "read_file", "write_file", "http_fetch", "list_directory",
+    // Filesystem
+    "bash", "read_file", "write_file", "list_directory",
+    "search_files", "edit_file", "move_file", "directory_tree", "read_multiple_files",
+    // Network
+    "http_fetch", "web_search", "web_fetch",
     // Email & messaging
-    "email_send", "gmail_send", "search_emails", "read_email", "slack_post_message",
+    "email_send", "gmail_send", "search_emails", "read_email",
+    "slack_post_message", "slack_search_messages", "slack_read_channel", "slack_read_thread", "slack_list_channels",
     // Calendar
     "calendar_create", "calendar_list",
-    // GitHub
+    // GitHub & Git
     "github_create_issue", "github_push_file", "get_file_contents", "search_code",
     "create_pull_request", "merge_pull_request", "get_secret_scanning_alert",
+    "git_log", "git_diff", "git_show", "git_clone", "git_push", "git_commit",
     // Notion
-    "notion_create_page", "notion_append_block",
+    "notion_create_page", "notion_append_block", "notion_search", "notion_fetch", "notion_get_users",
+    // Google Drive
+    "gdrive_search", "gdrive_read_file", "gdrive_upload_file",
     // Database
     "execute_sql", "list_tables", "describe_table",
     // Secrets & vault
@@ -365,8 +372,8 @@ function ToolSurfaceSummary({ events }: { events: Record<string, unknown>[] }) {
     "python", "computer",
     // Agent memory
     "memory_write", "memory_read", "context_write",
-    // Web
-    "web_search", "web_fetch",
+    // Browser automation
+    "browser_navigate", "browser_screenshot", "browser_click", "browser_fill", "browser_evaluate",
   ];
   const calledTools = new Set(events.map(ev => ev.tool as string));
   if (!events.length) return null;
