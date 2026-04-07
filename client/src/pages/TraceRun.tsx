@@ -14,9 +14,27 @@ import Footer from "@/components/Footer";
 const API_BASE = "https://trace.skillscan.sh";
 
 const PROVIDERS = [
-  { id: "openrouter", label: "OpenRouter", badge: "200+ models", defaultModel: "anthropic/claude-3.5-haiku", defaultJudge: "anthropic/claude-sonnet-4-6", envKey: "OPENROUTER_API_KEY" },
-  { id: "openai",     label: "OpenAI",     badge: "",             defaultModel: "gpt-4.1-mini",                defaultJudge: "gpt-4.1",                     envKey: "OPENAI_API_KEY" },
-  { id: "anthropic",  label: "Anthropic",  badge: "",             defaultModel: "claude-3-5-sonnet-latest",    defaultJudge: "claude-sonnet-4-6-latest",    envKey: "ANTHROPIC_API_KEY" },
+  {
+    id: "openrouter", label: "OpenRouter", badge: "200+ models",
+    defaultModel: "anthropic/claude-3.5-haiku", defaultJudge: "anthropic/claude-sonnet-4-6",
+    envKey: "OPENROUTER_API_KEY",
+    traceModels: ["anthropic/claude-3.5-haiku", "anthropic/claude-3-haiku", "anthropic/claude-3.7-sonnet", "google/gemini-2.0-flash-001", "openai/gpt-4.1-mini"],
+    judgeModels: ["anthropic/claude-sonnet-4-6", "anthropic/claude-sonnet-4-5", "openai/gpt-4.1", "anthropic/claude-3.7-sonnet"],
+  },
+  {
+    id: "openai", label: "OpenAI", badge: "",
+    defaultModel: "gpt-4.1-mini", defaultJudge: "gpt-4.1",
+    envKey: "OPENAI_API_KEY",
+    traceModels: ["gpt-4.1-mini", "gpt-4.1-nano", "gpt-4o-mini"],
+    judgeModels: ["gpt-4.1", "gpt-4o", "o3-mini"],
+  },
+  {
+    id: "anthropic", label: "Anthropic", badge: "",
+    defaultModel: "claude-3-5-sonnet-latest", defaultJudge: "claude-sonnet-4-6-latest",
+    envKey: "ANTHROPIC_API_KEY",
+    traceModels: ["claude-3-5-sonnet-latest", "claude-3-5-haiku-latest", "claude-3-haiku-20240307"],
+    judgeModels: ["claude-sonnet-4-6-latest", "claude-sonnet-4-5-latest", "claude-3-5-sonnet-latest"],
+  },
 ];
 
 // ── localStorage persistence ──────────────────────────────────────────────────
@@ -103,6 +121,26 @@ function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
 
 function Sel(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return <select style={{ ...inputStyle, cursor: "pointer", appearance: "none", WebkitAppearance: "none", paddingRight: "2rem" }} {...props} />;
+}
+
+function ModelSelect({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: string[] }) {
+  const isCustom = !options.includes(value) && value !== "";
+  const [showCustom, setShowCustom] = useState(isCustom);
+
+  return showCustom ? (
+    <div className="flex gap-1.5">
+      <Input type="text" value={value} onChange={e => onChange(e.target.value)} placeholder="model id" />
+      <button type="button" onClick={() => { setShowCustom(false); onChange(options[0]); }}
+        className="text-xs px-2 whitespace-nowrap" style={{ color: "oklch(0.55 0.015 265)" }}>
+        ← presets
+      </button>
+    </div>
+  ) : (
+    <Sel value={value} onChange={e => { if (e.target.value === "__other") { setShowCustom(true); onChange(""); } else { onChange(e.target.value); } }}>
+      {options.map(m => <option key={m} value={m}>{m}</option>)}
+      <option value="__other">Other…</option>
+    </Sel>
+  );
 }
 
 // ── report view ───────────────────────────────────────────────────────────────
@@ -425,7 +463,7 @@ export default function TraceRun() {
                 <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>
                   Trace model <span style={{ color: "oklch(0.45 0.015 265)" }}>— smaller = more susceptible</span>
                 </label>
-                <Input type="text" value={model} onChange={e => setModel(e.target.value)} placeholder="model name" />
+                <ModelSelect value={model} onChange={setModel} options={provider.traceModels} />
               </div>
             </div>
 
@@ -454,8 +492,7 @@ export default function TraceRun() {
                     <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>
                       Judge model <span style={{ color: "oklch(0.45 0.015 265)" }}>— smarter interpreter</span>
                     </label>
-                    <Input type="text" value={judgeModel} onChange={e => setJudgeModel(e.target.value)}
-                      placeholder="e.g. gpt-4.1 (optional)" />
+                    <ModelSelect value={judgeModel} onChange={setJudgeModel} options={provider.judgeModels} />
                   </div>
                 </div>
               )}
