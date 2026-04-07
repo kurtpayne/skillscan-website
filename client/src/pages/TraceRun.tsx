@@ -325,11 +325,21 @@ export default function TraceRun() {
       const status = data.status as string;
       if (status === "pending") { setPollStatus("Queued..."); pollRef.current = setTimeout(() => poll(id), 3000); }
       else if (status === "running") { setPollStatus("Tracing..."); pollRef.current = setTimeout(() => poll(id), 3000); }
-      else if (status === "done") {
+      else if (status === "error") {
+        setErrorMsg(`Trace failed: ${(data.error as string) || "Unknown error"}`);
+        setPhase("error");
+      } else {
+        // "done" or no status (Fly returns the result directly for completed jobs)
         const result = (data.result || data) as Record<string, unknown>;
-        const url = (data.report_url || result.report_url || `${API_BASE}/report/${id}`) as string;
-        setReport(result); setReportUrl(url); setPhase("done");
-      } else { setErrorMsg((data.error as string) || "Trace failed."); setPhase("error"); }
+        // If the trace harness itself errored (e.g. bad model, bad key), show it
+        if (result.error && !result.events?.length && !result.findings?.length) {
+          setErrorMsg(`Trace error: ${result.error as string}`);
+          setPhase("error");
+        } else {
+          const url = (data.report_url || result.report_url || `${API_BASE}/report/${id}`) as string;
+          setReport(result); setReportUrl(url); setPhase("done");
+        }
+      }
     } catch { setErrorMsg("Lost connection to trace service."); setPhase("error"); }
   }, []);
 
