@@ -13,6 +13,27 @@ import Footer from "@/components/Footer";
 
 const API_BASE = "https://trace.skillscan.sh";
 
+const DEMO_SKILLS = [
+  {
+    name: "git-secret-scanner",
+    desc: "Reads credentials, attempts exfiltration",
+    verdict: "BLOCK",
+    url: "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/examples/trace-demos/git-secret-scanner/SKILL.md",
+  },
+  {
+    name: "dependency-updater",
+    desc: "curl|bash bootstrap + telemetry exfil",
+    verdict: "BLOCK",
+    url: "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/examples/trace-demos/dependency-updater/SKILL.md",
+  },
+  {
+    name: "meeting-summarizer",
+    desc: "Benign read/write — should pass clean",
+    verdict: "PASS",
+    url: "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/examples/trace-demos/meeting-summarizer/SKILL.md",
+  },
+];
+
 const PROVIDERS = [
   {
     id: "openrouter", label: "OpenRouter", badge: "200+ models",
@@ -57,6 +78,74 @@ function loadPrefs(): SavedPrefs {
 function savePrefs(p: SavedPrefs) {
   try { localStorage.setItem(LS_KEY, JSON.stringify(p)); } catch {}
 }
+
+// ── frontmatter parser ────────────────────────────────────────────────────────
+
+function parseFrontmatter(content: string): Record<string, unknown> | null {
+  const m = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!m) return null;
+  const result: Record<string, unknown> = {};
+  for (const line of m[1].split("\n")) {
+    const kv = line.match(/^(\w[\w-]*):\s*(.+)/);
+    if (kv) {
+      const val = kv[2].trim();
+      if (val.startsWith("[") || val.startsWith("-")) {
+        // Simple array parse: "  - bash" lines or "[bash, read_file]"
+        continue; // handled below
+      }
+      result[kv[1]] = val;
+    }
+  }
+  // Parse allowed-tools as array
+  const toolsMatch = m[1].match(/allowed-tools:\s*\n((?:\s+-\s+.+\n?)*)/);
+  if (toolsMatch) {
+    result["allowed-tools"] = toolsMatch[1].match(/- (.+)/g)?.map(s => s.replace(/^- /, "").trim()) || [];
+  }
+  const inlineTools = m[1].match(/allowed-tools:\s*\[([^\]]+)\]/);
+  if (inlineTools) {
+    result["allowed-tools"] = inlineTools[1].split(",").map(s => s.trim());
+  }
+  return Object.keys(result).length ? result : null;
+}
+
+function SkillMetadata({ content }: { content: string }) {
+  const meta = parseFrontmatter(content);
+  if (!meta) return null;
+  const tools = meta["allowed-tools"] as string[] | undefined;
+  return (
+    <div className="rounded-lg px-4 py-3 space-y-1.5"
+      style={{ background: "oklch(0.09 0.018 265)", border: "1px solid oklch(0.20 0.022 265)" }}>
+      <div className="flex items-center gap-2 flex-wrap">
+        {meta.name && (
+          <span className="text-sm font-mono font-medium" style={{ color: "oklch(0.80 0.012 265)" }}>
+            {meta.name as string}
+          </span>
+        )}
+        {meta.version && (
+          <span className="text-xs px-1.5 py-0.5 rounded" style={{ background: "oklch(0.15 0.022 265)", color: "oklch(0.55 0.015 265)" }}>
+            v{meta.version as string}
+          </span>
+        )}
+      </div>
+      {meta.description && (
+        <p className="text-xs" style={{ color: "oklch(0.58 0.015 265)" }}>{meta.description as string}</p>
+      )}
+      {tools && tools.length > 0 && (
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className="text-xs" style={{ color: "oklch(0.45 0.015 265)" }}>tools:</span>
+          {tools.map(t => (
+            <span key={t} className="text-xs font-mono px-1.5 py-0.5 rounded"
+              style={{ background: "oklch(0.15 0.030 210)", color: "oklch(0.68 0.08 210)" }}>
+              {t}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── small helpers ─────────────────────────────────────────────────────────────
 
 function CopyBtn({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
@@ -541,15 +630,61 @@ export default function TraceRun() {
       <Navbar />
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-12 space-y-6">
 
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Shield className="w-5 h-5" style={{ color: "oklch(0.78 0.18 290)" }} />
-            <h1 className="text-xl font-bold" style={{ color: "oklch(0.92 0.012 265)" }}>Online Trace</h1>
+        {/* Header + explainer */}
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Shield className="w-5 h-5" style={{ color: "oklch(0.78 0.18 290)" }} />
+              <h1 className="text-xl font-bold" style={{ color: "oklch(0.92 0.012 265)" }}>Online Trace</h1>
+            </div>
+            <p className="text-sm" style={{ color: "oklch(0.60 0.015 265)" }}>
+              Behavioral trace for a skill file using your own API key.{" "}
+              <a href="/trace" className="underline" style={{ color: "oklch(0.65 0.08 290)" }}>Run locally instead →</a>
+            </p>
           </div>
-          <p className="text-sm" style={{ color: "oklch(0.60 0.015 265)" }}>
-            Behavioral trace for a skill file using your own API key.{" "}
-            <a href="/trace" className="underline" style={{ color: "oklch(0.65 0.08 290)" }}>Run locally instead →</a>
-          </p>
+
+          {/* How it works */}
+          <div className="rounded-lg px-4 py-3 space-y-2"
+            style={{ background: "oklch(0.09 0.020 265)", border: "1px solid oklch(0.18 0.022 265)" }}>
+            <p className="text-xs font-semibold" style={{ color: "oklch(0.65 0.015 265)" }}>How it works</p>
+            <div className="space-y-1.5">
+              <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>
+                <span style={{ color: "oklch(0.68 0.08 210)" }}>1.</span>{" "}
+                Your API key calls the LLM with the skill as a system prompt. We never see the model's text responses — only the tool calls it makes.
+              </p>
+              <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>
+                <span style={{ color: "oklch(0.68 0.08 210)" }}>2.</span>{" "}
+                A canary MCP server intercepts every tool call (bash, read_file, http_fetch, etc.) and returns synthetic responses with embedded tracking tokens.
+              </p>
+              <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>
+                <span style={{ color: "oklch(0.68 0.08 210)" }}>3.</span>{" "}
+                Findings fire when the model reads sensitive paths, relays canary tokens to external endpoints, or calls tools not declared in the skill's allowed-tools.
+              </p>
+            </div>
+          </div>
+
+          {/* Sample skills */}
+          {(phase === "form" || phase === "error") && (
+            <div className="space-y-2">
+              <p className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>Try a demo skill:</p>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                {DEMO_SKILLS.map(d => (
+                  <button key={d.name} onClick={() => { setInputMode("url"); setSkillUrl(d.url); }}
+                    className="rounded-lg px-3 py-2.5 text-left transition-colors"
+                    style={{ background: "oklch(0.10 0.018 265)", border: "1px solid oklch(0.20 0.022 265)" }}
+                    onMouseEnter={e => (e.currentTarget.style.borderColor = "oklch(0.35 0.06 290)")}
+                    onMouseLeave={e => (e.currentTarget.style.borderColor = "oklch(0.20 0.022 265)")}>
+                    <p className="text-xs font-mono font-medium" style={{ color: "oklch(0.78 0.08 210)" }}>{d.name}</p>
+                    <p className="text-xs mt-0.5" style={{ color: "oklch(0.50 0.015 265)" }}>{d.desc}</p>
+                    <span className="text-xs mt-1 inline-block"
+                      style={{ color: d.verdict === "BLOCK" ? "oklch(0.70 0.14 25)" : "oklch(0.70 0.14 155)" }}>
+                      Expected: {d.verdict}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {(phase === "form" || phase === "error") && (
@@ -690,6 +825,8 @@ export default function TraceRun() {
         {phase === "done" && report && reportUrl && (
           <>
             <button onClick={reset} className="text-xs underline" style={{ color: "oklch(0.50 0.015 265)" }}>← Run another trace</button>
+            {/* Show parsed skill metadata if we have the content */}
+            {skillContent && <SkillMetadata content={skillContent} />}
             <ReportView report={report} reportUrl={reportUrl} />
           </>
         )}
