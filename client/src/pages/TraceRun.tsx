@@ -80,6 +80,7 @@ function VerdictBadge({ verdict }: { verdict: string }) {
     PASS:  { bg: "oklch(0.18 0.06 155)", text: "oklch(0.78 0.18 155)", border: "oklch(0.30 0.10 155)", icon: <CheckCircle2 className="w-4 h-4" /> },
     BLOCK: { bg: "oklch(0.18 0.06 25)",  text: "oklch(0.78 0.18 25)",  border: "oklch(0.30 0.10 25)",  icon: <XCircle className="w-4 h-4" /> },
     REVIEW:{ bg: "oklch(0.18 0.06 80)",  text: "oklch(0.78 0.18 80)",  border: "oklch(0.30 0.10 80)",  icon: <AlertTriangle className="w-4 h-4" /> },
+    ERROR: { bg: "oklch(0.18 0.06 55)",  text: "oklch(0.78 0.18 55)",  border: "oklch(0.30 0.10 55)",  icon: <AlertTriangle className="w-4 h-4" /> },
   };
   const s = map[v] || map.REVIEW;
   return (
@@ -175,7 +176,7 @@ function FindingCard({ f }: { f: Record<string, unknown> }) {
 }
 
 function ReportView({ report, reportUrl }: { report: Record<string, unknown>; reportUrl: string }) {
-  const verdict = (report.verdict as string) || "REVIEW";
+  const verdict = report.error ? "ERROR" : (report.verdict as string) || "REVIEW";
   const findings = [...((report.findings as Record<string, unknown>[]) || []),
                     ...((report.trace_findings as Record<string, unknown>[]) || [])];
   const [copied, setCopied] = useState(false);
@@ -234,7 +235,17 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
         )}
       </Card>
 
-      {findings.length > 0 ? (
+      {report.error ? (
+        <Card>
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.78 0.18 55)" }} />
+            <div className="space-y-1 min-w-0">
+              <p className="text-sm font-medium" style={{ color: "oklch(0.80 0.12 55)" }}>Trace error</p>
+              <p className="text-sm font-mono break-all" style={{ color: "oklch(0.70 0.012 265)" }}>{report.error as string}</p>
+            </div>
+          </div>
+        </Card>
+      ) : findings.length > 0 ? (
         <div className="space-y-2">
           <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>Findings ({findings.length})</h3>
           {findings.map((f, i) => <FindingCard key={i} f={f} />)}
