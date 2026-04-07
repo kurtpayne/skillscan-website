@@ -343,7 +343,12 @@ function UserMessagesSection({ messages }: { messages: string[] }) {
 }
 
 function ToolSurfaceSummary({ events }: { events: Record<string, unknown>[] }) {
-  const CANARY_TOOLS = ["bash", "read_file", "write_file", "http_fetch", "list_directory"];
+  const CANARY_TOOLS = [
+    "bash", "read_file", "write_file", "http_fetch", "list_directory",
+    "email_send", "gmail_send", "calendar_create", "calendar_list",
+    "github_create_issue", "github_push_file", "slack_post_message",
+    "notion_create_page", "notion_append_block",
+  ];
   const calledTools = new Set(events.map(ev => ev.tool as string));
   if (!events.length) return null;
   return (
