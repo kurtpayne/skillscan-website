@@ -342,6 +342,96 @@ function UserMessagesSection({ messages }: { messages: string[] }) {
   );
 }
 
+function ToolSurfaceSummary({ events }: { events: Record<string, unknown>[] }) {
+  const CANARY_TOOLS = ["bash", "read_file", "write_file", "http_fetch", "list_directory"];
+  const calledTools = new Set(events.map(ev => ev.tool as string));
+  if (!events.length) return null;
+  return (
+    <div className="space-y-2">
+      <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
+        Tool surface
+      </h3>
+      <div className="rounded-lg px-4 py-3" style={{ background: "oklch(0.09 0.018 265)", border: "1px solid oklch(0.20 0.022 265)" }}>
+        <div className="flex flex-wrap gap-2">
+          {CANARY_TOOLS.map(t => {
+            const used = calledTools.has(t);
+            return (
+              <span key={t} className="text-xs font-mono px-2 py-1 rounded"
+                style={{
+                  background: used ? "oklch(0.18 0.06 155)" : "oklch(0.12 0.018 265)",
+                  color: used ? "oklch(0.78 0.18 155)" : "oklch(0.45 0.015 265)",
+                  border: `1px solid ${used ? "oklch(0.30 0.10 155)" : "oklch(0.20 0.022 265)"}`,
+                }}>
+                {used ? "\u2713 " : ""}{t}
+              </span>
+            );
+          })}
+        </div>
+        <p className="text-xs mt-2" style={{ color: "oklch(0.45 0.015 265)" }}>
+          {calledTools.size} of {CANARY_TOOLS.length} canary tools used
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function AuthorDeclarations({ report }: { report: Record<string, unknown> }) {
+  const domains = (report.allow_domains as string[]) || [];
+  const commands = (report.allow_commands as string[]) || [];
+  if (!domains.length && !commands.length) return null;
+  return (
+    <div className="space-y-2">
+      <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
+        Author declarations
+      </h3>
+      <div className="rounded-lg px-4 py-3 space-y-2" style={{ background: "oklch(0.09 0.018 265)", border: "1px solid oklch(0.20 0.022 265)" }}>
+        {domains.length > 0 && (
+          <div>
+            <span className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>Allowed domains: </span>
+            {domains.map(d => (
+              <span key={d} className="text-xs font-mono px-1.5 py-0.5 rounded mr-1"
+                style={{ background: "oklch(0.15 0.022 265)", color: "oklch(0.68 0.08 210)" }}>{d}</span>
+            ))}
+          </div>
+        )}
+        {commands.length > 0 && (
+          <div>
+            <span className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>Allowed commands: </span>
+            {commands.map(c => (
+              <span key={c} className="text-xs font-mono px-1.5 py-0.5 rounded mr-1"
+                style={{ background: "oklch(0.15 0.022 265)", color: "oklch(0.68 0.08 210)" }}>{c}</span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ProvenanceSection({ provenance }: { provenance: Record<string, unknown> | undefined }) {
+  const [open, setOpen] = useState(false);
+  if (!provenance) return null;
+  return (
+    <div className="rounded-lg overflow-hidden" style={{ border: "1px solid oklch(0.20 0.022 265)" }}>
+      <button className="w-full flex items-center justify-between px-4 py-2.5 text-left"
+        style={{ background: "oklch(0.09 0.018 265)" }} onClick={() => setOpen(!open)}>
+        <span className="text-xs font-semibold" style={{ color: "oklch(0.55 0.015 265)" }}>Provenance</span>
+        {open ? <ChevronUp className="w-3.5 h-3.5" style={{ color: "oklch(0.45 0.015 265)" }} />
+               : <ChevronDown className="w-3.5 h-3.5" style={{ color: "oklch(0.45 0.015 265)" }} />}
+      </button>
+      {open && (
+        <div className="px-4 py-3 space-y-1" style={{ borderTop: "1px solid oklch(0.18 0.022 265)" }}>
+          {Object.entries(provenance).map(([k, v]) => (
+            <p key={k} className="text-xs font-mono" style={{ color: "oklch(0.55 0.015 265)" }}>
+              <span style={{ color: "oklch(0.45 0.015 265)" }}>{k}:</span> {String(v)}
+            </p>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ReportView({ report, reportUrl }: { report: Record<string, unknown>; reportUrl: string }) {
   const findings = [...((report.findings as Record<string, unknown>[]) || []),
                     ...((report.trace_findings as Record<string, unknown>[]) || [])];
@@ -449,6 +539,9 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
       {/* Tool call timeline */}
       {!report.error && <EventTimeline events={events} />}
 
+      {/* Tool surface summary */}
+      {!report.error && <ToolSurfaceSummary events={events} />}
+
       {/* No tool calls message */}
       {!report.error && toolCalls === 0 && (
         <Card>
@@ -502,6 +595,12 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
       {/* User messages */}
       <UserMessagesSection messages={userMessages} />
 
+      {/* Author declarations */}
+      <AuthorDeclarations report={report} />
+
+      {/* Provenance */}
+      <ProvenanceSection provenance={report.provenance as Record<string, unknown> | undefined} />
+
       {/* Permalink */}
       <div className="flex items-center justify-between rounded-lg px-4 py-3"
         style={{ background: "oklch(0.09 0.018 265)", border: "1px solid oklch(0.20 0.022 265)" }}>
@@ -535,6 +634,8 @@ export default function TraceRun() {
   const [maxTurns, setMaxTurns] = useState(saved.maxTurns || 10);
   const [includeScan, setIncludeScan] = useState(true);
   const [includeLint, setIncludeLint] = useState(true);
+  const [allowDomains, setAllowDomains] = useState("");
+  const [allowCommands, setAllowCommands] = useState("");
 
   // Persist choices to localStorage
   useEffect(() => {
@@ -614,11 +715,15 @@ export default function TraceRun() {
 
     setPhase("submitting"); setErrorMsg(null);
     try {
+      const parsedDomains = allowDomains.split(",").map(s => s.trim()).filter(Boolean);
+      const parsedCommands = allowCommands.split(",").map(s => s.trim()).filter(Boolean);
       const body: Record<string, unknown> = {
         skill_content: content, provider: providerId, api_key: apiKey,
         model, variants, max_turns: maxTurns,
         include_scan: includeScan, include_lint: includeLint,
         ...(inputMode === "url" ? { source_url: skillUrl } : {}),
+        ...(parsedDomains.length ? { allow_domains: parsedDomains } : {}),
+        ...(parsedCommands.length ? { allow_commands: parsedCommands } : {}),
       };
       if (judgeModel.trim()) { body.judge = true; body.judge_model = judgeModel.trim(); }
 
@@ -807,24 +912,42 @@ export default function TraceRun() {
                 Advanced options
               </button>
               {showAdvanced && (
-                <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  <div className="space-y-1">
-                    <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>
-                      Fuzz variants <span style={{ color: "oklch(0.45 0.015 265)" }}>(1–10)</span>
-                    </label>
-                    <Input type="number" min={1} max={10} value={variants} onChange={e => setVariants(Number(e.target.value))} />
+                <div className="mt-3 space-y-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    <div className="space-y-1">
+                      <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>
+                        Fuzz variants <span style={{ color: "oklch(0.45 0.015 265)" }}>(1–10)</span>
+                      </label>
+                      <Input type="number" min={1} max={10} value={variants} onChange={e => setVariants(Number(e.target.value))} />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>
+                        Max turns <span style={{ color: "oklch(0.45 0.015 265)" }}>(1–20)</span>
+                      </label>
+                      <Input type="number" min={1} max={20} value={maxTurns} onChange={e => setMaxTurns(Number(e.target.value))} />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>
+                        Judge model <span style={{ color: "oklch(0.45 0.015 265)" }}>— smarter interpreter</span>
+                      </label>
+                      <ModelSelect value={judgeModel} onChange={setJudgeModel} options={provider.judgeModels} />
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>
-                      Max turns <span style={{ color: "oklch(0.45 0.015 265)" }}>(1–20)</span>
-                    </label>
-                    <Input type="number" min={1} max={20} value={maxTurns} onChange={e => setMaxTurns(Number(e.target.value))} />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>
-                      Judge model <span style={{ color: "oklch(0.45 0.015 265)" }}>— smarter interpreter</span>
-                    </label>
-                    <ModelSelect value={judgeModel} onChange={setJudgeModel} options={provider.judgeModels} />
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <div className="space-y-1">
+                      <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>
+                        Allow domains <span style={{ color: "oklch(0.45 0.015 265)" }}>— comma-separated</span>
+                      </label>
+                      <Input type="text" placeholder="api.example.com, cdn.example.com"
+                        value={allowDomains} onChange={e => setAllowDomains(e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>
+                        Allow commands <span style={{ color: "oklch(0.45 0.015 265)" }}>— comma-separated</span>
+                      </label>
+                      <Input type="text" placeholder="git, npm, pip"
+                        value={allowCommands} onChange={e => setAllowCommands(e.target.value)} />
+                    </div>
                   </div>
                 </div>
               )}
