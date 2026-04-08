@@ -238,27 +238,43 @@ function ModelSelect({ value, onChange, options }: { value: string; onChange: (v
 
 function FindingCard({ f }: { f: Record<string, unknown> }) {
   const [open, setOpen] = useState(false);
+  // Normalize field names across trace findings, scan findings, and lint findings
+  const ruleId = (f.rule_id || f.id) as string;
+  const title = (f.message || f.title) as string;
+  const detail = (f.detail || f.mitigation) as string | undefined;
+  const snippet = (f.snippet || f.matched_text || f.evidence) as string | undefined;
+  const line = (f.line_number || f.line) as number | undefined;
+  const hasDetail = Boolean(detail || snippet || line || f.technique || f.section_context);
+
   return (
     <div className="rounded-lg overflow-hidden" style={{ border: "1px solid oklch(0.20 0.022 265)" }}>
       <button className="w-full flex items-center justify-between px-4 py-3 text-left"
-        style={{ background: "oklch(0.09 0.018 265)" }} onClick={() => setOpen(!open)}>
+        style={{ background: "oklch(0.09 0.018 265)" }} onClick={() => hasDetail && setOpen(!open)}>
         <div className="flex items-center gap-3 min-w-0">
           <SeverityPill sev={f.severity as string} />
-          <span className="text-xs font-mono" style={{ color: "oklch(0.65 0.015 265)" }}>{f.rule_id as string}</span>
-          <span className="text-sm truncate" style={{ color: "oklch(0.85 0.012 265)" }}>{(f.message || f.title) as string}</span>
+          <span className="text-xs font-mono" style={{ color: "oklch(0.65 0.015 265)" }}>{ruleId}</span>
+          <span className="text-sm truncate" style={{ color: "oklch(0.85 0.012 265)" }}>{title}</span>
         </div>
-        {open ? <ChevronUp className="w-4 h-4 flex-shrink-0" style={{ color: "oklch(0.55 0.015 265)" }} />
-               : <ChevronDown className="w-4 h-4 flex-shrink-0" style={{ color: "oklch(0.55 0.015 265)" }} />}
+        {hasDetail && (open
+          ? <ChevronUp className="w-4 h-4 flex-shrink-0" style={{ color: "oklch(0.55 0.015 265)" }} />
+          : <ChevronDown className="w-4 h-4 flex-shrink-0" style={{ color: "oklch(0.55 0.015 265)" }} />)}
       </button>
       {open && (
         <div className="px-4 py-3 space-y-2" style={{ borderTop: "1px solid oklch(0.18 0.022 265)" }}>
-          {f.detail && <p className="text-sm" style={{ color: "oklch(0.75 0.012 265)" }}>{f.detail as string}</p>}
-          {f.line_number && (
+          {snippet && (
+            <pre className="text-xs font-mono p-2 rounded overflow-x-auto"
+              style={{ background: "oklch(0.08 0.015 265)", color: "oklch(0.65 0.015 265)" }}>
+              {snippet}
+            </pre>
+          )}
+          {line && (
             <p className="text-xs font-mono" style={{ color: "oklch(0.55 0.015 265)" }}>
-              Line {f.line_number as number}{f.matched_text ? `: ${f.matched_text}` : ""}
+              Line {line}{f.section_context ? ` (${f.section_context})` : ""}
             </p>
           )}
+          {detail && <p className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>{detail}</p>}
           {f.technique && <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>MITRE: {f.technique as string}</p>}
+          {f.confidence && <p className="text-xs" style={{ color: "oklch(0.45 0.015 265)" }}>Confidence: {f.confidence as number}</p>}
         </div>
       )}
     </div>
@@ -818,8 +834,8 @@ export default function TraceRun() {
       const resp = await fetch(`${API_BASE}/v1/status/${id}`);
       const data = await resp.json() as Record<string, unknown>;
       const status = data.status as string;
-      if (status === "pending") { setPollStatus("Queued..."); pollRef.current = setTimeout(() => poll(id), 3000); }
-      else if (status === "running") { setPollStatus("Tracing..."); pollRef.current = setTimeout(() => poll(id), 3000); }
+      if (status === "pending") { setPollStatus((data.progress as string) || "Queued..."); pollRef.current = setTimeout(() => poll(id), 3000); }
+      else if (status === "running") { setPollStatus((data.progress as string) || "Tracing..."); pollRef.current = setTimeout(() => poll(id), 3000); }
       else if (status === "error") {
         setErrorMsg(`Trace failed: ${(data.error as string) || "Unknown error"}`);
         setPhase("error");
