@@ -896,7 +896,7 @@ export default function TraceRun() {
           const d = await r.json() as Record<string, unknown>;
           const status = d.status as string;
           if (status === "pending" || status === "running") {
-            setPollStatus(status === "running" ? "Tracing..." : "Queued...");
+            setPollStatus((d.progress as string) || (status === "running" ? "Tracing..." : "Queued..."));
             setTimeout(doPoll, 3000);
           } else if (status === "error") {
             reject(new Error((d.error as string) || "Trace failed"));
