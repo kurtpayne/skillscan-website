@@ -748,6 +748,7 @@ export default function TraceRun() {
   const [maxTurns, setMaxTurns] = useState(saved.maxTurns || 10);
   const [includeScan, setIncludeScan] = useState(true);
   const [includeLint, setIncludeLint] = useState(true);
+  const [forceFresh, setForceFresh] = useState(false);
   const [allowDomains, setAllowDomains] = useState("");
   const [allowCommands, setAllowCommands] = useState("");
   const [multiModel, setMultiModel] = useState(false);
@@ -848,7 +849,7 @@ export default function TraceRun() {
     const body: Record<string, unknown> = {
       skill_content: content, provider: providerId, api_key: apiKey,
       model: modelOverride || model, variants, max_turns: maxTurns,
-      include_scan: includeScan, include_lint: includeLint,
+      include_scan: includeScan, include_lint: includeLint, force_fresh: forceFresh,
       ...(inputMode === "url" ? { source_url: skillUrl } : {}),
       ...(isZip ? { skill_zip_b64: skillZipB64 } : {}),
       ...(parsedDomains.length ? { allow_domains: parsedDomains } : {}),
@@ -1082,20 +1083,27 @@ export default function TraceRun() {
               </div>
             </div>
 
-            {/* Scan + lint toggles */}
-            <div className="flex items-center gap-5">
+            {/* Scan + lint + fresh toggles */}
+            <div className="flex items-center gap-5 flex-wrap">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={includeScan} onChange={e => setIncludeScan(e.target.checked)}
                   className="rounded" style={{ accentColor: "oklch(0.55 0.18 290)" }} />
                 <span className="text-xs" style={{ color: "oklch(0.65 0.015 265)" }}>
-                  Static scan <span style={{ color: "oklch(0.45 0.015 265)" }}>— no key needed</span>
+                  Static scan
                 </span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={includeLint} onChange={e => setIncludeLint(e.target.checked)}
                   className="rounded" style={{ accentColor: "oklch(0.55 0.18 290)" }} />
                 <span className="text-xs" style={{ color: "oklch(0.65 0.015 265)" }}>
-                  Lint <span style={{ color: "oklch(0.45 0.015 265)" }}>— quality checks</span>
+                  Lint
+                </span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={forceFresh} onChange={e => setForceFresh(e.target.checked)}
+                  className="rounded" style={{ accentColor: "oklch(0.55 0.18 290)" }} />
+                <span className="text-xs" style={{ color: "oklch(0.65 0.015 265)" }}>
+                  Force fresh <span style={{ color: "oklch(0.45 0.015 265)" }}>— skip cache</span>
                 </span>
               </label>
             </div>
