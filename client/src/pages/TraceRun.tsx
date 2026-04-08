@@ -372,8 +372,19 @@ function ToolSurfaceSummary({ events }: { events: Record<string, unknown>[] }) {
     "python", "computer",
     // Agent memory
     "memory_write", "memory_read", "context_write",
+    "search_long_term_memory", "delete_long_term_memory",
     // Browser automation
     "browser_navigate", "browser_screenshot", "browser_click", "browser_fill", "browser_evaluate",
+    // SMS
+    "send_sms", "list_sms",
+    // Jira & Confluence
+    "jira_search", "jira_create_issue", "confluence_search",
+    // DNS
+    "dns_create_record", "dns_list_records",
+    // Monitoring
+    "search_logs", "list_alerts",
+    // Container
+    "docker_exec",
   ];
   const calledTools = new Set(events.map(ev => ev.tool as string));
   if (!events.length) return null;
