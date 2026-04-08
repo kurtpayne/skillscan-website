@@ -889,7 +889,7 @@ export default function TraceRun() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "oklch(0.07 0.018 265)" }}>
       <Navbar />
-      <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-12 space-y-6">
+      <main className="flex-1 max-w-3xl mx-auto w-full px-4 pt-24 pb-12 space-y-6">
 
         {/* Header + explainer */}
         <div className="space-y-4">
