@@ -1072,7 +1072,7 @@ export default function TraceRun() {
                     </div>
                     <div className="space-y-1">
                       <label className="text-xs" style={{ color: "oklch(0.60 0.015 265)" }}>
-                        Judge model <span style={{ color: "oklch(0.45 0.015 265)" }}>— smarter interpreter</span>
+                        Smart model <span style={{ color: "oklch(0.45 0.015 265)" }}>— generates inputs + judges results</span>
                       </label>
                       <ModelSelect value={judgeModel} onChange={setJudgeModel} options={provider.judgeModels} />
                     </div>
