@@ -487,8 +487,27 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
     a.download = "skillscan-trace-report.json"; a.click();
   };
 
+  const isCached = Boolean(report.cached);
+  const reportTime = (report.provenance as Record<string, unknown> | undefined)?.timestamp_utc as string
+    || (report.started_at ? new Date((report.started_at as number) * 1000).toISOString().replace("T", " ").slice(0, 19) + " UTC" : null);
+
   return (
     <div className="space-y-6">
+      {/* Cache banner */}
+      {isCached && (
+        <div className="flex items-center gap-2 rounded-lg px-4 py-2.5"
+          style={{ background: "oklch(0.18 0.06 80)", border: "1px solid oklch(0.30 0.10 80)", color: "oklch(0.78 0.12 80)" }}>
+          <span className="text-sm font-medium">Cached result</span>
+          {reportTime && <span className="text-xs" style={{ color: "oklch(0.65 0.08 80)" }}>from {reportTime}</span>}
+          <span className="text-xs" style={{ color: "oklch(0.55 0.06 80)" }}>— change options to get a fresh trace</span>
+        </div>
+      )}
+
+      {/* Timestamp (non-cached) */}
+      {!isCached && reportTime && (
+        <p className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>Traced {reportTime}</p>
+      )}
+
       {/* Header */}
       <Card>
         <div className="flex flex-wrap items-start justify-between gap-4">
