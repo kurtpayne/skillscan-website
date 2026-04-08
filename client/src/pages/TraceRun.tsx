@@ -580,7 +580,10 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => { navigator.clipboard.writeText(reportUrl); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+            <button onClick={() => {
+                const htmlUrl = reportUrl.endsWith(".json") ? reportUrl.replace(".json", ".html") : reportUrl + ".html";
+                navigator.clipboard.writeText(htmlUrl); setCopied(true); setTimeout(() => setCopied(false), 2000);
+              }}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
               style={{ background: "oklch(0.16 0.022 265)", border: "1px solid oklch(0.25 0.025 265)", color: "oklch(0.75 0.012 265)" }}>
               {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
