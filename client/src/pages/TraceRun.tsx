@@ -474,19 +474,44 @@ function ProvenanceSection({ provenance }: { provenance: Record<string, unknown>
   );
 }
 
+type ReportTab = "trace" | "analysis" | "inputs" | "details";
+
+function TabButton({ active, label, badge, onClick }: { active: boolean; label: string; badge?: number; onClick: () => void }) {
+  return (
+    <button onClick={onClick}
+      className="px-4 py-2 text-sm font-medium transition-colors relative"
+      style={{
+        color: active ? "oklch(0.90 0.012 265)" : "oklch(0.55 0.015 265)",
+        borderBottom: active ? "2px solid oklch(0.65 0.15 290)" : "2px solid transparent",
+      }}>
+      {label}
+      {badge !== undefined && badge > 0 && (
+        <span className="ml-1.5 text-xs px-1.5 py-0.5 rounded-full"
+          style={{ background: "oklch(0.18 0.04 265)", color: "oklch(0.65 0.015 265)" }}>
+          {badge}
+        </span>
+      )}
+    </button>
+  );
+}
+
 function ReportView({ report, reportUrl }: { report: Record<string, unknown>; reportUrl: string }) {
   const findings = [...((report.findings as Record<string, unknown>[]) || []),
                     ...((report.trace_findings as Record<string, unknown>[]) || [])];
   const events = (report.events as Record<string, unknown>[]) || [];
   const toolCalls = (report.total_tool_calls as number) ?? 0;
   const userMessages = (report.user_messages as string[]) || [];
+  const staticFindings = (report.static_findings as Record<string, unknown>[]) || [];
+  const lintFindings = (report.lint_findings as Record<string, unknown>[]) || [];
+  const analysisCount = staticFindings.length + lintFindings.length;
 
-  // Only show a verdict when the judge model actually ran
   const judgeVerdict = report.judge_verdict ? (report.judge_verdict as string).toUpperCase() : null;
   const hasError = Boolean(report.error);
 
+  // Default tab: trace if we have events, analysis if we only have scan/lint
+  const defaultTab: ReportTab = (events.length > 0 || hasError) ? "trace" : (analysisCount > 0 ? "analysis" : "trace");
+  const [activeTab, setActiveTab] = useState<ReportTab>(defaultTab);
   const [copied, setCopied] = useState(false);
-  const bySev = (s: string) => findings.filter(f => ((f.severity as string) || "").toUpperCase() === s);
 
   const downloadJson = () => {
     const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
@@ -499,7 +524,7 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
     || (report.started_at ? new Date((report.started_at as number) * 1000).toISOString().replace("T", " ").slice(0, 19) + " UTC" : null);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Cache banner */}
       {isCached && (
         <div className="flex items-center gap-2 rounded-lg px-4 py-2.5"
@@ -510,160 +535,190 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
         </div>
       )}
 
-      {/* Timestamp (non-cached) */}
-      {!isCached && reportTime && (
-        <p className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>Traced {reportTime}</p>
-      )}
-
-      {/* Header */}
+      {/* Fixed header */}
       <Card>
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="space-y-2">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="space-y-1.5">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold" style={{ color: "oklch(0.80 0.012 265)" }}>Trace Report</span>
+              <span className="text-sm font-semibold" style={{ color: "oklch(0.85 0.012 265)" }}>Trace Report</span>
               {hasError && <VerdictBadge verdict="ERROR" />}
               {judgeVerdict && <VerdictBadge verdict={judgeVerdict} />}
             </div>
-            {(report.skill_name || report.skill_path) && (
-              <p className="text-sm font-mono" style={{ color: "oklch(0.65 0.015 265)" }}>
-                {(report.skill_name || report.skill_path) as string}
-              </p>
-            )}
-            {report.model && <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>Model: {report.model as string}</p>}
+            <div className="flex items-center gap-2 flex-wrap">
+              {(report.skill_name || report.skill_path) && (
+                <span className="text-sm font-mono" style={{ color: "oklch(0.65 0.015 265)" }}>
+                  {(report.skill_name || report.skill_path) as string}
+                </span>
+              )}
+              {report.model && (
+                <span className="text-xs px-1.5 py-0.5 rounded" style={{ background: "oklch(0.15 0.022 265)", color: "oklch(0.55 0.015 265)" }}>
+                  {report.model as string}
+                </span>
+              )}
+            </div>
             <p className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
               {toolCalls} tool call{toolCalls !== 1 ? "s" : ""}
               {findings.length > 0 ? ` · ${findings.length} observation${findings.length !== 1 ? "s" : ""}` : ""}
               {report.duration_seconds ? ` · ${(report.duration_seconds as number).toFixed(1)}s` : ""}
-              {userMessages.length ? ` · ${userMessages.length} input${userMessages.length !== 1 ? "s" : ""}` : ""}
+              {!isCached && reportTime ? ` · ${reportTime}` : ""}
             </p>
-            {report.skill_sha256 && (
-              <p className="text-xs font-mono" style={{ color: "oklch(0.40 0.015 265)" }}>
-                sha256:{(report.skill_sha256 as string).slice(0, 16)}…
-              </p>
-            )}
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2">
             <button onClick={() => { navigator.clipboard.writeText(reportUrl); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
               style={{ background: "oklch(0.16 0.022 265)", border: "1px solid oklch(0.25 0.025 265)", color: "oklch(0.75 0.012 265)" }}>
               {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-              {copied ? "Copied!" : "Copy link"}
+              {copied ? "Copied!" : "Share"}
             </button>
             <button onClick={downloadJson}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
               style={{ background: "oklch(0.16 0.022 265)", border: "1px solid oklch(0.25 0.025 265)", color: "oklch(0.75 0.012 265)" }}>
               <Download className="w-3 h-3" /> JSON
             </button>
-            <a href={reportUrl} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
-              style={{ background: "oklch(0.16 0.022 265)", border: "1px solid oklch(0.25 0.025 265)", color: "oklch(0.75 0.012 265)" }}>
-              <ExternalLink className="w-3 h-3" /> Permalink
-            </a>
           </div>
         </div>
-        {findings.length > 0 && (
-          <div className="flex flex-wrap gap-3 mt-4 pt-4" style={{ borderTop: "1px solid oklch(0.18 0.022 265)" }}>
-            {["CRITICAL","HIGH","MEDIUM","LOW"].map(s => {
-              const n = bySev(s).length; if (!n) return null;
-              return <span key={s} className="text-xs font-mono"><SeverityPill sev={s} />{" "}<span style={{ color: "oklch(0.75 0.012 265)" }}>{n}</span></span>;
-            })}
-          </div>
-        )}
       </Card>
 
-      {/* Error */}
-      {hasError && (
-        <Card>
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.78 0.18 55)" }} />
-            <div className="space-y-1 min-w-0">
-              <p className="text-sm font-medium" style={{ color: "oklch(0.80 0.12 55)" }}>Trace error</p>
-              <p className="text-sm font-mono break-all" style={{ color: "oklch(0.70 0.012 265)" }}>{report.error as string}</p>
-            </div>
-          </div>
-        </Card>
-      )}
+      {/* Tabs */}
+      <div className="flex" style={{ borderBottom: "1px solid oklch(0.20 0.022 265)" }}>
+        <TabButton active={activeTab === "trace"} label="Trace" badge={toolCalls} onClick={() => setActiveTab("trace")} />
+        <TabButton active={activeTab === "analysis"} label="Analysis" badge={analysisCount || undefined} onClick={() => setActiveTab("analysis")} />
+        <TabButton active={activeTab === "inputs"} label="Inputs" badge={userMessages.length || undefined} onClick={() => setActiveTab("inputs")} />
+        <TabButton active={activeTab === "details"} label="Details" onClick={() => setActiveTab("details")} />
+      </div>
 
-      {/* Findings */}
-      {!hasError && findings.length > 0 && (
-        <div className="space-y-2">
-          <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>Observations ({findings.length})</h3>
-          <p className="text-xs" style={{ color: "oklch(0.45 0.015 265)" }}>
-            Notable behaviors detected during the trace. These are observations, not judgments — context matters.
-          </p>
-          {findings.map((f, i) => <FindingCard key={i} f={f} />)}
-        </div>
-      )}
+      {/* Tab content */}
+      <div className="space-y-4">
+        {/* ── TRACE TAB ── */}
+        {activeTab === "trace" && (
+          <>
+            {hasError && (
+              <Card>
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.78 0.18 55)" }} />
+                  <div className="space-y-1 min-w-0">
+                    <p className="text-sm font-medium" style={{ color: "oklch(0.80 0.12 55)" }}>Trace error</p>
+                    <p className="text-sm font-mono break-all" style={{ color: "oklch(0.70 0.012 265)" }}>{report.error as string}</p>
+                  </div>
+                </div>
+              </Card>
+            )}
 
-      {/* Tool call timeline */}
-      {!hasError && <EventTimeline events={events} />}
+            {!hasError && toolCalls === 0 && (
+              <Card>
+                <div className="flex items-start gap-3">
+                  <Shield className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.65 0.08 265)" }} />
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium" style={{ color: "oklch(0.75 0.012 265)" }}>No tool calls observed</p>
+                    <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>
+                      The model responded with text only and did not invoke any tools.
+                      This can happen when the skill references tools not in the canary server's surface,
+                      or when the fuzz inputs didn't trigger tool use.
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            )}
 
-      {/* Tool surface summary */}
-      {!hasError && <ToolSurfaceSummary events={events} />}
-
-      {/* No tool calls message */}
-      {!hasError && toolCalls === 0 && (
-        <Card>
-          <div className="flex items-start gap-3">
-            <Shield className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.65 0.08 265)" }} />
-            <div className="space-y-1">
-              <p className="text-sm font-medium" style={{ color: "oklch(0.75 0.012 265)" }}>No tool calls observed</p>
+            {!hasError && toolCalls > 0 && findings.length === 0 && (
               <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>
-                The model responded with text only and did not invoke any tools during the trace.
-                This can happen when the skill references tools not in the canary server's surface,
-                or when the model decides no tool use is needed for the generated inputs.
+                {toolCalls} tool call{toolCalls !== 1 ? "s" : ""} observed, nothing flagged.
               </p>
+            )}
+
+            {!hasError && findings.length > 0 && (
+              <p className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
+                Notable behaviors detected — these are observations, not judgments.
+              </p>
+            )}
+
+            {!hasError && <EventTimeline events={events} />}
+          </>
+        )}
+
+        {/* ── ANALYSIS TAB ── */}
+        {activeTab === "analysis" && (
+          <>
+            {staticFindings.length > 0 && (
+              <div className="space-y-2">
+                <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
+                  Static scan ({staticFindings.length})
+                </h3>
+                <p className="text-xs" style={{ color: "oklch(0.45 0.015 265)" }}>
+                  Pattern-based analysis of the skill file content. No LLM involved.
+                </p>
+                {staticFindings.map((f, i) => <FindingCard key={`s${i}`} f={f} />)}
+              </div>
+            )}
+
+            {lintFindings.length > 0 && (
+              <div className="space-y-2">
+                <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
+                  Quality lint ({lintFindings.length})
+                </h3>
+                <p className="text-xs" style={{ color: "oklch(0.45 0.015 265)" }}>
+                  Readability, structure, and best-practice checks.
+                </p>
+                {lintFindings.map((f, i) => <FindingCard key={`l${i}`} f={f} />)}
+              </div>
+            )}
+
+            {analysisCount === 0 && (
+              <Card>
+                <p className="text-sm" style={{ color: "oklch(0.55 0.015 265)" }}>
+                  No static scan or lint results. Enable "Static scan" or "Lint" before running the trace to see analysis here.
+                </p>
+              </Card>
+            )}
+          </>
+        )}
+
+        {/* ── INPUTS TAB ── */}
+        {activeTab === "inputs" && (
+          <>
+            {/* Skill metadata */}
+            {(report.skill_name || report.skill_sha256) && (
+              <div className="rounded-lg px-4 py-3 space-y-1.5"
+                style={{ background: "oklch(0.09 0.018 265)", border: "1px solid oklch(0.20 0.022 265)" }}>
+                <p className="text-xs font-semibold" style={{ color: "oklch(0.65 0.015 265)" }}>Skill</p>
+                {report.skill_sha256 && (
+                  <p className="text-xs font-mono" style={{ color: "oklch(0.50 0.015 265)" }}>
+                    sha256: {report.skill_sha256 as string}
+                  </p>
+                )}
+              </div>
+            )}
+
+            <UserMessagesSection messages={userMessages} />
+
+            {userMessages.length === 0 && (
+              <Card>
+                <p className="text-sm" style={{ color: "oklch(0.55 0.015 265)" }}>
+                  No input messages recorded.
+                </p>
+              </Card>
+            )}
+          </>
+        )}
+
+        {/* ── DETAILS TAB ── */}
+        {activeTab === "details" && (
+          <>
+            <ToolSurfaceSummary events={events} />
+            <AuthorDeclarations report={report} />
+            <ProvenanceSection provenance={report.provenance as Record<string, unknown> | undefined} />
+
+            {/* Permalink */}
+            <div className="space-y-1.5">
+              <p className="text-xs font-semibold" style={{ color: "oklch(0.65 0.015 265)" }}>Report URL</p>
+              <div className="flex items-center justify-between rounded-lg px-4 py-2.5"
+                style={{ background: "oklch(0.09 0.018 265)", border: "1px solid oklch(0.20 0.022 265)" }}>
+                <span className="text-xs font-mono truncate" style={{ color: "oklch(0.55 0.015 265)" }}>{reportUrl}</span>
+                <CopyBtn text={reportUrl} />
+              </div>
             </div>
-          </div>
-        </Card>
-      )}
-
-      {/* No observations */}
-      {!hasError && toolCalls > 0 && findings.length === 0 && (
-        <Card>
-          <div className="flex items-center gap-3">
-            <CheckCircle2 className="w-5 h-5" style={{ color: "oklch(0.78 0.18 155)" }} />
-            <p className="text-sm" style={{ color: "oklch(0.75 0.012 265)" }}>
-              No observations — {toolCalls} tool call{toolCalls !== 1 ? "s were" : " was"} made, nothing flagged.
-            </p>
-          </div>
-        </Card>
-      )}
-
-      {/* Static scan findings */}
-      {((report.static_findings as Record<string, unknown>[]) || []).length > 0 && (
-        <div className="space-y-2">
-          <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
-            Static scan ({(report.static_findings as Record<string, unknown>[]).length})
-          </h3>
-          {(report.static_findings as Record<string, unknown>[]).map((f, i) => <FindingCard key={`s${i}`} f={f} />)}
-        </div>
-      )}
-
-      {/* Lint findings */}
-      {((report.lint_findings as Record<string, unknown>[]) || []).length > 0 && (
-        <div className="space-y-2">
-          <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
-            Quality lint ({(report.lint_findings as Record<string, unknown>[]).length})
-          </h3>
-          {(report.lint_findings as Record<string, unknown>[]).map((f, i) => <FindingCard key={`l${i}`} f={f} />)}
-        </div>
-      )}
-
-      {/* User messages */}
-      <UserMessagesSection messages={userMessages} />
-
-      {/* Author declarations */}
-      <AuthorDeclarations report={report} />
-
-      {/* Provenance */}
-      <ProvenanceSection provenance={report.provenance as Record<string, unknown> | undefined} />
-
-      {/* Permalink */}
-      <div className="flex items-center justify-between rounded-lg px-4 py-3"
-        style={{ background: "oklch(0.09 0.018 265)", border: "1px solid oklch(0.20 0.022 265)" }}>
-        <span className="text-xs font-mono truncate" style={{ color: "oklch(0.55 0.015 265)" }}>{reportUrl}</span>
-        <CopyBtn text={reportUrl} />
+          </>
+        )}
       </div>
     </div>
   );
