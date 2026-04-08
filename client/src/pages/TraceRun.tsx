@@ -481,13 +481,9 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
   const toolCalls = (report.total_tool_calls as number) ?? 0;
   const userMessages = (report.user_messages as string[]) || [];
 
-  // Derive verdict: judge_verdict if judge ran, otherwise infer from results
-  let verdict: string;
-  if (report.error) verdict = "ERROR";
-  else if (report.judge_verdict) verdict = (report.judge_verdict as string).toUpperCase();
-  else if (findings.length > 0) verdict = "BLOCK";
-  else if (toolCalls === 0) verdict = "INCONCLUSIVE";
-  else verdict = "PASS";
+  // Only show a verdict when the judge model actually ran
+  const judgeVerdict = report.judge_verdict ? (report.judge_verdict as string).toUpperCase() : null;
+  const hasError = Boolean(report.error);
 
   const [copied, setCopied] = useState(false);
   const bySev = (s: string) => findings.filter(f => ((f.severity as string) || "").toUpperCase() === s);
@@ -524,10 +520,9 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <VerdictBadge verdict={verdict} />
-              {report.risk_score !== undefined && (
-                <span className="text-sm" style={{ color: "oklch(0.60 0.015 265)" }}>Risk: {report.risk_score as number}</span>
-              )}
+              <span className="text-sm font-semibold" style={{ color: "oklch(0.80 0.012 265)" }}>Trace Report</span>
+              {hasError && <VerdictBadge verdict="ERROR" />}
+              {judgeVerdict && <VerdictBadge verdict={judgeVerdict} />}
             </div>
             {(report.skill_name || report.skill_path) && (
               <p className="text-sm font-mono" style={{ color: "oklch(0.65 0.015 265)" }}>
@@ -537,7 +532,7 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
             {report.model && <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>Model: {report.model as string}</p>}
             <p className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
               {toolCalls} tool call{toolCalls !== 1 ? "s" : ""}
-              {` · ${findings.length} finding${findings.length !== 1 ? "s" : ""}`}
+              {findings.length > 0 ? ` · ${findings.length} observation${findings.length !== 1 ? "s" : ""}` : ""}
               {report.duration_seconds ? ` · ${(report.duration_seconds as number).toFixed(1)}s` : ""}
               {userMessages.length ? ` · ${userMessages.length} input${userMessages.length !== 1 ? "s" : ""}` : ""}
             </p>
@@ -577,7 +572,7 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
       </Card>
 
       {/* Error */}
-      {report.error && (
+      {hasError && (
         <Card>
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.78 0.18 55)" }} />
@@ -590,21 +585,24 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
       )}
 
       {/* Findings */}
-      {!report.error && findings.length > 0 && (
+      {!hasError && findings.length > 0 && (
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>Findings ({findings.length})</h3>
+          <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>Observations ({findings.length})</h3>
+          <p className="text-xs" style={{ color: "oklch(0.45 0.015 265)" }}>
+            Notable behaviors detected during the trace. These are observations, not judgments — context matters.
+          </p>
           {findings.map((f, i) => <FindingCard key={i} f={f} />)}
         </div>
       )}
 
       {/* Tool call timeline */}
-      {!report.error && <EventTimeline events={events} />}
+      {!hasError && <EventTimeline events={events} />}
 
       {/* Tool surface summary */}
-      {!report.error && <ToolSurfaceSummary events={events} />}
+      {!hasError && <ToolSurfaceSummary events={events} />}
 
       {/* No tool calls message */}
-      {!report.error && toolCalls === 0 && (
+      {!hasError && toolCalls === 0 && (
         <Card>
           <div className="flex items-start gap-3">
             <Shield className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.65 0.08 265)" }} />
@@ -614,20 +612,19 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
                 The model responded with text only and did not invoke any tools during the trace.
                 This can happen when the skill references tools not in the canary server's surface,
                 or when the model decides no tool use is needed for the generated inputs.
-                This is an inconclusive result — not a pass.
               </p>
             </div>
           </div>
         </Card>
       )}
 
-      {/* Clean pass */}
-      {!report.error && toolCalls > 0 && findings.length === 0 && (
+      {/* No observations */}
+      {!hasError && toolCalls > 0 && findings.length === 0 && (
         <Card>
           <div className="flex items-center gap-3">
             <CheckCircle2 className="w-5 h-5" style={{ color: "oklch(0.78 0.18 155)" }} />
             <p className="text-sm" style={{ color: "oklch(0.75 0.012 265)" }}>
-              No findings — {toolCalls} tool call{toolCalls !== 1 ? "s" : ""} observed, none flagged.
+              No observations — {toolCalls} tool call{toolCalls !== 1 ? "s were" : " was"} made, nothing flagged.
             </p>
           </div>
         </Card>
