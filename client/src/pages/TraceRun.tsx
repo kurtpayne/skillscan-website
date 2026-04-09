@@ -1267,29 +1267,12 @@ export default function TraceRun() {
             {/* Show parsed skill metadata if we have the content */}
             {skillContent && <SkillMetadata content={skillContent} />}
 
-            {/* Multi-model comparison banner */}
-            {report2 && reportUrl2 && (() => {
-              const v1 = report.judge_verdict
-                ? (report.judge_verdict as string).toUpperCase()
-                : ((report.findings as unknown[])?.length ? "BLOCK" : (report.total_tool_calls as number) > 0 ? "PASS" : "INCONCLUSIVE");
-              const v2 = report2.judge_verdict
-                ? (report2.judge_verdict as string).toUpperCase()
-                : ((report2.findings as unknown[])?.length ? "BLOCK" : (report2.total_tool_calls as number) > 0 ? "PASS" : "INCONCLUSIVE");
-              const agree = v1 === v2;
-              return (
-                <div className="rounded-xl p-4 space-y-1"
-                  style={{
-                    background: agree ? "oklch(0.14 0.04 155)" : "oklch(0.14 0.04 55)",
-                    border: `1px solid ${agree ? "oklch(0.30 0.10 155)" : "oklch(0.30 0.10 55)"}`,
-                  }}>
-                  <p className="text-sm font-semibold" style={{ color: agree ? "oklch(0.80 0.14 155)" : "oklch(0.80 0.14 55)" }}>
-                    {agree
-                      ? `Agreement: both ${v1}`
-                      : `Disagreement: ${report.model as string} = ${v1}, ${report2.model as string} = ${v2}`}
-                  </p>
-                </div>
-              );
-            })()}
+            {/* Multi-model: just label which model each report used */}
+            {report2 && reportUrl2 && (
+              <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>
+                Two models traced — compare the results below.
+              </p>
+            )}
 
             <ReportView report={report} reportUrl={reportUrl} />
 
