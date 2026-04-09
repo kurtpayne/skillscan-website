@@ -1,6 +1,7 @@
 /* ============================================================
    TRACE RUN PAGE — interactive hosted trace form
    Route: /trace/run
+   Build: 2026-04-09-v2
    ============================================================ */
 import { useState, useRef, useCallback, useEffect } from "react";
 import {
