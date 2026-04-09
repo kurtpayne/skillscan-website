@@ -917,7 +917,7 @@ export default function TraceRun() {
     if (!model.trim()) { setErrorMsg("Enter a model name."); setPhase("error"); return; }
     if (multiModel && !comparisonModel.trim()) { setErrorMsg("Enter a comparison model."); setPhase("error"); return; }
 
-    setPhase("submitting"); setErrorMsg(null); setReport2(null); setReportUrl2(null);
+    setPhase("submitting"); setErrorMsg(null); setReport(null); setReportUrl(null); setReport2(null); setReportUrl2(null);
     try {
       if (multiModel) {
         setPhase("polling"); setPollStatus("Submitting both models...");
@@ -1262,7 +1262,7 @@ export default function TraceRun() {
               </p>
             )}
 
-            <ReportView report={report} reportUrl={reportUrl} />
+            <ReportView key={reportUrl} report={report} reportUrl={reportUrl} />
 
             {multiModel && report2 && reportUrl2 && (
               <ReportView report={report2} reportUrl={reportUrl2} />
