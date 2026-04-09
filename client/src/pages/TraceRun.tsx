@@ -17,19 +17,19 @@ const DEMO_SKILLS = [
   {
     name: "git-secret-scanner",
     desc: "Reads credentials, attempts exfiltration",
-    verdict: "BLOCK",
+    expected: "flagged",
     url: "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/examples/trace-demos/git-secret-scanner/SKILL.md",
   },
   {
     name: "dependency-updater",
     desc: "curl|bash bootstrap + telemetry exfil",
-    verdict: "BLOCK",
+    expected: "flagged",
     url: "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/examples/trace-demos/dependency-updater/SKILL.md",
   },
   {
     name: "meeting-summarizer",
-    desc: "Benign read/write — should pass clean",
-    verdict: "PASS",
+    desc: "Benign read/write — clean trace",
+    expected: "clean",
     url: "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/examples/trace-demos/meeting-summarizer/SKILL.md",
   },
 ];
@@ -481,7 +481,8 @@ function ProvenanceSection({ provenance }: { provenance: Record<string, unknown>
         <div className="px-4 py-3 space-y-1" style={{ borderTop: "1px solid oklch(0.18 0.022 265)" }}>
           {Object.entries(provenance).map(([k, v]) => (
             <p key={k} className="text-xs font-mono" style={{ color: "oklch(0.55 0.015 265)" }}>
-              <span style={{ color: "oklch(0.45 0.015 265)" }}>{k}:</span> {String(v)}
+              <span style={{ color: "oklch(0.45 0.015 265)" }}>{k}:</span>{" "}
+              {typeof v === "object" && v !== null ? JSON.stringify(v, null, 0) : String(v)}
             </p>
           ))}
         </div>
@@ -695,19 +696,6 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
         {/* ── INPUTS TAB ── */}
         {activeTab === "inputs" && (
           <>
-            {/* Skill metadata */}
-            {(report.skill_name || report.skill_sha256) && (
-              <div className="rounded-lg px-4 py-3 space-y-1.5"
-                style={{ background: "oklch(0.09 0.018 265)", border: "1px solid oklch(0.20 0.022 265)" }}>
-                <p className="text-xs font-semibold" style={{ color: "oklch(0.65 0.015 265)" }}>Skill</p>
-                {report.skill_sha256 && (
-                  <p className="text-xs font-mono" style={{ color: "oklch(0.50 0.015 265)" }}>
-                    sha256: {report.skill_sha256 as string}
-                  </p>
-                )}
-              </div>
-            )}
-
             <UserMessagesSection messages={userMessages} />
 
             {userMessages.length === 0 && (
@@ -929,7 +917,7 @@ export default function TraceRun() {
     if (!model.trim()) { setErrorMsg("Enter a model name."); setPhase("error"); return; }
     if (multiModel && !comparisonModel.trim()) { setErrorMsg("Enter a comparison model."); setPhase("error"); return; }
 
-    setPhase("submitting"); setErrorMsg(null);
+    setPhase("submitting"); setErrorMsg(null); setReport2(null); setReportUrl2(null);
     try {
       if (multiModel) {
         setPhase("polling"); setPollStatus("Submitting both models...");
@@ -1021,8 +1009,8 @@ export default function TraceRun() {
                     <p className="text-xs font-mono font-medium" style={{ color: "oklch(0.78 0.08 210)" }}>{d.name}</p>
                     <p className="text-xs mt-0.5" style={{ color: "oklch(0.50 0.015 265)" }}>{d.desc}</p>
                     <span className="text-xs mt-1 inline-block"
-                      style={{ color: d.verdict === "BLOCK" ? "oklch(0.70 0.14 25)" : "oklch(0.70 0.14 155)" }}>
-                      Expected: {d.verdict}
+                      style={{ color: d.expected === "flagged" ? "oklch(0.70 0.10 55)" : "oklch(0.70 0.10 155)" }}>
+                      Expected: {d.expected}
                     </span>
                   </button>
                 ))}
@@ -1267,8 +1255,8 @@ export default function TraceRun() {
             {/* Show parsed skill metadata if we have the content */}
             {skillContent && <SkillMetadata content={skillContent} />}
 
-            {/* Multi-model: just label which model each report used */}
-            {report2 && reportUrl2 && (
+            {/* Multi-model: show both reports */}
+            {multiModel && report2 && reportUrl2 && (
               <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>
                 Two models traced — compare the results below.
               </p>
@@ -1276,7 +1264,7 @@ export default function TraceRun() {
 
             <ReportView report={report} reportUrl={reportUrl} />
 
-            {report2 && reportUrl2 && (
+            {multiModel && report2 && reportUrl2 && (
               <ReportView report={report2} reportUrl={reportUrl2} />
             )}
           </>
