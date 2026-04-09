@@ -660,34 +660,49 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
         {/* ── ANALYSIS TAB ── */}
         {activeTab === "analysis" && (
           <>
-            {staticFindings.length > 0 && (
+            {/* Static scan — key exists = ran it */}
+            {"static_findings" in report && (
               <div className="space-y-2">
                 <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
                   Static scan ({staticFindings.length})
                 </h3>
-                <p className="text-xs" style={{ color: "oklch(0.45 0.015 265)" }}>
-                  Pattern-based analysis of the skill file content. No LLM involved.
-                </p>
-                {staticFindings.map((f, i) => <FindingCard key={`s${i}`} f={f} />)}
+                {staticFindings.length > 0 ? (
+                  <>
+                    <p className="text-xs" style={{ color: "oklch(0.45 0.015 265)" }}>
+                      Pattern-based analysis of the skill file content. No LLM involved.
+                    </p>
+                    {staticFindings.map((f, i) => <FindingCard key={`s${i}`} f={f} />)}
+                  </>
+                ) : (
+                  <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>No static findings — skill content looks clean.</p>
+                )}
               </div>
             )}
 
-            {lintFindings.length > 0 && (
+            {/* Lint — key exists = ran it */}
+            {"lint_findings" in report && (
               <div className="space-y-2">
                 <h3 className="text-sm font-semibold" style={{ color: "oklch(0.75 0.012 265)" }}>
                   Quality lint ({lintFindings.length})
                 </h3>
-                <p className="text-xs" style={{ color: "oklch(0.45 0.015 265)" }}>
-                  Readability, structure, and best-practice checks.
-                </p>
-                {lintFindings.map((f, i) => <FindingCard key={`l${i}`} f={f} />)}
+                {lintFindings.length > 0 ? (
+                  <>
+                    <p className="text-xs" style={{ color: "oklch(0.45 0.015 265)" }}>
+                      Readability, structure, and best-practice checks.
+                    </p>
+                    {lintFindings.map((f, i) => <FindingCard key={`l${i}`} f={f} />)}
+                  </>
+                ) : (
+                  <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>No lint issues found.</p>
+                )}
               </div>
             )}
 
-            {analysisCount === 0 && (
+            {/* Neither was requested */}
+            {!("static_findings" in report) && !("lint_findings" in report) && (
               <Card>
                 <p className="text-sm" style={{ color: "oklch(0.55 0.015 265)" }}>
-                  No static scan or lint results. Enable "Static scan" or "Lint" before running the trace to see analysis here.
+                  Enable "Static scan" or "Lint" before running the trace to see analysis here.
                 </p>
               </Card>
             )}
