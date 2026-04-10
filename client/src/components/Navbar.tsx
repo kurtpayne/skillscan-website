@@ -12,7 +12,7 @@ const tools = [
     href: "/",
     label: "Scan",
     icon: ScanSearch,
-    desc: "Static analysis — 140+ rules",
+    desc: "Static analysis — 160+ rules",
     color: "oklch(0.58 0.22 290)",
   },
   {
@@ -112,6 +112,8 @@ export default function Navbar() {
                   background: isToolActive ? "oklch(0.58 0.22 290 / 0.12)" : "transparent",
                   fontFamily: "'Inter', sans-serif",
                 }}
+                aria-expanded={toolsOpen}
+                aria-label="Toggle tools menu"
                 onMouseEnter={(e) => {
                   if (!isToolActive) (e.currentTarget as HTMLElement).style.color = "oklch(0.95 0.005 265)";
                 }}

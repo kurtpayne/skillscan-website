@@ -392,6 +392,8 @@ export default function Feed() {
                     border: `1px solid ${filter === f ? "oklch(0.58 0.22 290 / 0.35)" : "oklch(0.22 0.025 265)"}`,
                     color: filter === f ? "oklch(0.82 0.18 290)" : "oklch(0.60 0.012 265)",
                   }}
+                  aria-label={`Filter by ${f === "all" ? "all verdicts" : f}`}
+                  aria-pressed={filter === f}
                 >
                   {f === "all" ? `All (${data.entry_count})` : f === "BLOCK" ? `BLOCK (${data.block_count})` : `ALLOW (${data.allow_count})`}
                 </button>
@@ -399,7 +401,8 @@ export default function Feed() {
             </div>
           )}
 
-          {/* Loading */}
+          {/* Loading/error/content — announce state changes to screen readers */}
+          <div aria-live="polite">
           {loading && (
             <div className="flex items-center justify-center py-20 gap-3" style={{ color: "oklch(0.58 0.015 265)" }}>
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -450,6 +453,7 @@ export default function Feed() {
               )}
             </div>
           )}
+          </div>{/* end aria-live */}
         </div>
       </section>
 

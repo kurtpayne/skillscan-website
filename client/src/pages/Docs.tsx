@@ -36,6 +36,7 @@ function CodeBlock({ code, lang = "bash" }: { code: string; lang?: string }) {
           onClick={copy}
           className="flex items-center gap-1.5 text-xs transition-colors duration-200"
           style={{ color: copied ? "oklch(0.70 0.15 160)" : "oklch(0.50 0.015 265)" }}
+          aria-label="Copy to clipboard"
         >
           {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
           {copied ? "Copied" : "Copy"}
