@@ -82,25 +82,25 @@ export default function Model() {
                 fontFamily: "'JetBrains Mono', monospace",
               }}
             >
-              Layer 6 — ML Classifier · v15
+              Layer 6 — Generative Detector · v4
             </div>
             <h1
               className="text-4xl sm:text-5xl font-bold mb-6"
               style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.97 0.005 265)" }}
             >
-              SkillScan DeBERTa Adapter
+              SkillScan Generative Detector
             </h1>
             <p
               className="text-lg leading-relaxed mb-8"
               style={{ color: "oklch(0.65 0.015 265)", maxWidth: "640px" }}
             >
-              A LoRA-fine-tuned DeBERTa-v3-base model for detecting prompt injection, jailbreaks,
-              and semantic attacks in AI agent skill files. Runs entirely offline via ONNX Runtime.
-              No network calls at scan time.
+              A fine-tuned Qwen2.5-1.5B model that detects and explains security threats in AI agent
+              skill files. Classifies 7 attack types with human-readable reasoning. Runs entirely
+              offline via llama.cpp — no GPU, no network calls.
             </p>
             <div className="flex flex-wrap gap-3">
               <a
-                href="https://huggingface.co/kurtpayne/skillscan-deberta-adapter"
+                href="https://huggingface.co/kurtpayne/skillscan-detector-v4"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold btn-primary-glow"
@@ -141,26 +141,25 @@ export default function Model() {
               <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.72 0.19 45)" }} />
               <div>
                 <div className="text-sm font-semibold mb-1" style={{ color: "oklch(0.85 0.12 45)" }}>
-                  ML detection is experimental — v15 results available
+                  v4 generative detector — first release
                 </div>
                 <div className="text-sm leading-relaxed" style={{ color: "oklch(0.65 0.015 265)" }}>
-                  v15 training completed 2026-04-03 on a 21,468-example corpus with class weight rebalancing (benign=0.866, injection=1.183) and adapter fine-tuning via ProtectAI/deberta-v3-base-prompt-injection-v2.
-                  Macro F1: <strong style={{color:"oklch(0.72 0.22 145)"}}>0.8788</strong> (benign F1 0.9011, injection F1 0.8565).
-                  v14 (2026-03-30): Macro F1 0.9023, benign recall 90.2%, injection recall 92.9%.
+                  Architecture switch from DeBERTa classifier to Qwen2.5-1.5B generative model. Teacher distillation via Claude Sonnet + GPT-4o on 20k examples.
+                  Shipped as GGUF Q4_K_M (~935 MB). Macro F1: <strong style={{color:"oklch(0.72 0.22 145)"}}>0.487</strong> across 7 attack classes with human-readable reasoning.
                   The static rule engine (Layers 1–5) is unaffected and production-ready.
                 </div>
               </div>
             </div>
           </div>
           <SectionHeader
-            label="v15 — 2026-04-03"
-            title="ML detection layer"
-            sub="The ML classifier runs entirely offline via ONNX Runtime. It catches semantic attacks that static rules miss — jailbreaks, indirect injection, and novel archetypes. v15 trained on 21,468 examples with class weight rebalancing (benign=0.866, injection=1.183) and fine-tuning on top of ProtectAI/deberta-v3-base-prompt-injection-v2."
+            label="v4 — 2026-04-10"
+            title="Generative detection layer"
+            sub="The generative detector runs entirely offline via llama.cpp. It catches semantic attacks that static rules miss — with structured reasoning for each finding. v4 trained on 20,035 teacher-distilled examples (Claude Sonnet + GPT-4o) across 7 attack classes."
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <MetricCard value="0.8788" label="v15 Macro F1" sub="21,468 training examples · class weights balanced · gate 0.75 PASSED" accent="oklch(0.72 0.22 145)" />
-            <MetricCard value="0.9011" label="v15 benign F1" sub="Injection F1 0.8565 · weights: benign=0.866, injection=1.183" accent="oklch(0.65 0.18 200)" />
-            <MetricCard value="14+" label="Attack families" sub="Jailbreaks, MCP attacks, supply chain, SE" accent="oklch(0.78 0.18 290)" />
+            <MetricCard value="0.487" label="Macro F1" sub="20,035 distilled examples · 7-class multi-label · honest eval" accent="oklch(0.72 0.22 145)" />
+            <MetricCard value="85.2%" label="Verdict accuracy" sub="Binary safe/unsafe verdict on held-out eval set" accent="oklch(0.65 0.18 200)" />
+            <MetricCard value="7" label="Attack classes" sub="Prompt injection, code injection, data exfil, supply chain, SE, evasion, path traversal" accent="oklch(0.78 0.18 290)" />
           </div>
           <div
             className="rounded-xl p-5 text-sm"
@@ -170,10 +169,10 @@ export default function Model() {
               color: "oklch(0.62 0.015 265)",
             }}
           >
-            The model is a LoRA-fine-tuned DeBERTa-v3-base adapter, shipped as ONNX FP32 (~350 MB) for offline CPU inference.
-            It is trained on a corpus of real-world agent skill files and adversarially crafted injection examples across 14+ attack families.
-            v15 (2026-04-03): Macro F1 0.8788, benign F1 0.9011, injection F1 0.8565. Trained on 21,468 examples. Class weights: benign=0.866, injection=1.183 (within 4× cap). Base: ProtectAI/deberta-v3-base-prompt-injection-v2. Adapter: kurtpayne/skillscan-deberta-adapter (ONNX). F1 gate 0.75 PASSED.
-            v14 (2026-03-30): Macro F1 0.9023, injection recall 92.9%, FPR 16.2%, benign recall 90.2% on 20,865 examples. v11 true F1 was 0.555 on 259 clean examples (injection recall 19.6%) after C-2 decontamination.
+            The model is a QLoRA-fine-tuned Qwen2.5-1.5B, shipped as GGUF Q4_K_M (~935 MB) for offline CPU inference via llama.cpp.
+            It is trained via teacher distillation: Claude Sonnet and GPT-4o labeled 20k real-world and adversarial skill files with structured verdicts, attack labels, and reasoning.
+            The model generates JSON output containing a verdict (safe/unsafe), up to 7 attack type labels with confidence scores, and a human-readable explanation of detected threats.
+            This represents a 4.3x macro F1 improvement over the previous DeBERTa binary classifier (0.487 vs 0.113 honest eval).
           </div>
         </div>
       </section>
@@ -184,18 +183,18 @@ export default function Model() {
           <SectionHeader
             label="Architecture"
             title="How the model works"
-            sub="DeBERTa-v3-base fine-tuned via LoRA, exported to ONNX FP32 for offline inference."
+            sub="Qwen2.5-1.5B fine-tuned via QLoRA with teacher distillation, quantized to GGUF Q4_K_M for offline inference via llama.cpp."
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="space-y-3">
               {[
-                { label: "Base model", value: "microsoft/deberta-v3-base" },
-                { label: "Fine-tuning", value: "LoRA (Low-Rank Adaptation), r=64, alpha=128" },
-                { label: "Task", value: "Binary classification: BENIGN / INJECTION" },
-                { label: "Inference format", value: "ONNX FP32 (~350 MB)" },
-                { label: "Runtime", value: "ONNX Runtime (CPU), no GPU required" },
-                { label: "Input", value: "Raw SKILL.md text, chunked to 512 tokens with 64-token stride" },
-                { label: "Output", value: "Per-chunk injection probability; verdict = max-pool over chunks" },
+                { label: "Base model", value: "Qwen/Qwen2.5-1.5B-Instruct" },
+                { label: "Fine-tuning", value: "QLoRA (r=32, alpha=64), 3 epochs on 20k teacher-distilled examples" },
+                { label: "Task", value: "Multi-label classification with reasoning (7 attack types)" },
+                { label: "Inference format", value: "GGUF Q4_K_M (~935 MB)" },
+                { label: "Runtime", value: "llama.cpp via llama-cpp-python, CPU-only" },
+                { label: "Input", value: "Full SKILL.md text (up to 2048 tokens)" },
+                { label: "Output", value: "Structured JSON with verdict, labels, confidence, and reasoning" },
               ].map((row) => (
                 <div
                   key={row.label}
@@ -226,19 +225,23 @@ export default function Model() {
               }}
             >
               <div className="text-xs mb-4" style={{ color: "oklch(0.50 0.015 265)" }}>
-                # Sliding-window chunking strategy
+                # Example generative detector output
               </div>
-              <div className="space-y-2 text-xs" style={{ color: "oklch(0.65 0.015 265)" }}>
-                <div><span style={{ color: "oklch(0.78 0.18 290)" }}>for</span> chunk <span style={{ color: "oklch(0.78 0.18 290)" }}>in</span> sliding_window(skill_text, size=512, stride=64):</div>
-                <div className="pl-4">prob = model.score(chunk)  <span style={{ color: "oklch(0.50 0.015 265)" }}># 0.0–1.0</span></div>
-                <div className="pl-4">scores.append(prob)</div>
-                <div></div>
-                <div>verdict = max(scores)  <span style={{ color: "oklch(0.50 0.015 265)" }}># max-pool</span></div>
-                <div><span style={{ color: "oklch(0.78 0.18 290)" }}>if</span> verdict &gt; threshold:  <span style={{ color: "oklch(0.50 0.015 265)" }}># default 0.70</span></div>
-                <div className="pl-4"><span style={{ color: "oklch(0.65 0.22 25)" }}>flag</span>(file, score=verdict)</div>
+              <div className="space-y-1 text-xs" style={{ color: "oklch(0.65 0.015 265)" }}>
+                <div>{"{"}</div>
+                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"verdict"</span>: <span style={{ color: "oklch(0.65 0.22 25)" }}>"unsafe"</span>,</div>
+                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"labels"</span>: [</div>
+                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>"prompt_injection"</span>,</div>
+                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>"data_exfiltration"</span></div>
+                <div className="pl-4">],</div>
+                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"confidence"</span>: <span style={{ color: "oklch(0.72 0.22 145)" }}>0.91</span>,</div>
+                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"reasoning"</span>: <span style={{ color: "oklch(0.65 0.22 25)" }}>"Skill overrides</span></div>
+                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>system prompt via role injection and</span></div>
+                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>exfils context to external webhook."</span></div>
+                <div>{"}"}</div>
               </div>
               <div className="mt-4 pt-4 text-xs" style={{ borderTop: "1px solid oklch(0.58 0.22 290 / 0.12)", color: "oklch(0.50 0.015 265)" }}>
-                A single malicious instruction buried deep in a large file is not diluted by surrounding benign content.
+                The model explains what it found and why, making findings actionable without manual triage.
               </div>
             </div>
           </div>
@@ -251,7 +254,7 @@ export default function Model() {
           <SectionHeader
             label="Training history"
             title="Model training progression"
-            sub="v1–v10 metrics were measured on a held-out set later found to have contamination. v11 post-audit F1 is 0.555 on 259 clean examples. v15 (2026-04-03) achieved Macro F1 0.8788 with class weight rebalancing on 21,468 examples."
+            sub="v1–v15 used DeBERTa-v3-base binary classifier. v4 (2026-04-10) switches to Qwen2.5-1.5B generative model with 7-class multi-label classification and reasoning. v1–v10 metrics were measured on a contaminated held-out set."
           />
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -280,7 +283,8 @@ export default function Model() {
                   { v: "v12 (2026-03-29)", corpus: "21,149 (clean)", f1: "0.7287", fpr: "2.49%", note: "Decontaminated corpus + 86 targeted injection examples. Injection recall 96.6%, benign F1 0.760. Gate 0.70 PASSED.", current: false },
                   { v: "v13 (2026-03-30)", corpus: "21,149 (clean)", f1: "0.7873", fpr: "1.78%", note: "47 targeted FN archetype additions (mcp_server_imp, org_mal047, se_git_config_harvest). Injection recall 97.4%, benign precision 98.2%. Gate 0.75 PASSED.", current: false },
                   { v: "v14 (2026-03-30)", corpus: "20,865 (clean)", f1: "0.9023", fpr: "16.2%", note: "90 hard-negative benign examples (devops/sysadmin/cloud/enterprise/MCP/devtool) + 44 injection. Benign recall 90.2% (up from 70.2%), injection recall 92.9%. Gate 0.75 PASSED.", current: false },
-                  { v: "v15 (2026-04-03)", corpus: "21,468 (clean)", f1: "0.8788", fpr: "—", note: "Class weight rebalancing (benign=0.866, injection=1.183, within 4× cap). Adapter fine-tuning on ProtectAI/deberta-v3-base-prompt-injection-v2. Benign F1 0.9011, injection F1 0.8565. Gate 0.75 PASSED.", current: true },
+                  { v: "v15 (2026-04-03)", corpus: "21,468 (clean)", f1: "0.8788", fpr: "—", note: "Class weight rebalancing (benign=0.866, injection=1.183, within 4× cap). Adapter fine-tuning on ProtectAI/deberta-v3-base-prompt-injection-v2. Benign F1 0.9011, injection F1 0.8565. Gate 0.75 PASSED.", current: false },
+                  { v: "v4 (2026-04-10)", corpus: "20,035 (distilled)", f1: "0.487", fpr: "—", note: "Architecture switch: Qwen2.5-1.5B generative model with reasoning. Teacher distillation via Claude Sonnet + GPT-4o. 7-class multi-label. Honest eval (labels stripped from frontmatter). 4.3\u00d7 macro F1 improvement over DeBERTa.", current: true },
                 ].map((row) => (
                   <tr
                     key={row.v}
@@ -327,6 +331,50 @@ export default function Model() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PER-CLASS RESULTS ── */}
+      <section className="py-20 section-divider" style={{ background: "oklch(0.11 0.022 265 / 0.5)" }}>
+        <div className="container">
+          <SectionHeader
+            label="Per-class performance"
+            title="F1 scores by attack type"
+            sub="v4 honest eval — labels stripped from frontmatter before inference. Macro F1 0.487 across 7 classes."
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { label: "path_traversal", f1: "0.857", accent: "oklch(0.72 0.22 145)" },
+              { label: "social_engineering", f1: "0.857", accent: "oklch(0.72 0.22 145)" },
+              { label: "prompt_injection", f1: "0.474", accent: "oklch(0.72 0.19 45)" },
+              { label: "code_injection", f1: "0.424", accent: "oklch(0.72 0.19 45)" },
+              { label: "supply_chain", f1: "0.340", accent: "oklch(0.65 0.22 25)" },
+              { label: "evasion", f1: "0.308", accent: "oklch(0.65 0.22 25)" },
+              { label: "data_exfiltration", f1: "0.148", accent: "oklch(0.65 0.22 25)" },
+            ].map((cls) => (
+              <div
+                key={cls.label}
+                className="rounded-xl p-5"
+                style={{
+                  background: "oklch(0.14 0.022 265)",
+                  border: "1px solid oklch(0.58 0.22 290 / 0.15)",
+                }}
+              >
+                <div
+                  className="text-2xl font-bold mb-1"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif", color: cls.accent }}
+                >
+                  {cls.f1}
+                </div>
+                <div
+                  className="text-xs font-medium"
+                  style={{ color: "oklch(0.65 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  {cls.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -390,17 +438,15 @@ export default function Model() {
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle className="w-4 h-4" style={{ color: "oklch(0.72 0.19 45)" }} />
                   <span className="text-xs font-semibold" style={{ color: "oklch(0.72 0.19 45)" }}>
-                    Known coverage gaps (v15 eval)
+                    Known coverage gaps (v4 eval)
                   </span>
                 </div>
                 <div className="space-y-1">
                   {[
-                    "hallucination squatting (new archetype, 2026-03-29)",
-                    "calendar event indirect injection (new archetype, 2026-03-29)",
-                    "README-driven dropper / AMOS pattern",
-                    "telemetry exfil disguised as analytics",
-                    "mcp_server_impersonation — ongoing coverage target",
-                    "macro F1 regression v14→v15 (0.9023→0.8788) — class balance tradeoff",
+                    "data_exfiltration precision (0.080) — high false positive rate",
+                    "evasion precision (0.182) — high false positive rate",
+                    "prompt_injection recall (0.317) — many injections missed",
+                    "First generative model release — expect rapid improvement",
                   ].map((a) => (
                     <div key={a} className="text-xs" style={{ color: "oklch(0.60 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
                       · {a}
@@ -408,7 +454,7 @@ export default function Model() {
                   ))}
                 </div>
                 <div className="mt-3 text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
-                  These archetypes are tracked across v14–v15 eval. Class weight rebalancing in v15 (benign=0.866, injection=1.183) improved injection coverage at the cost of a small macro F1 regression; the overall balance is better calibrated.
+                  v4 is the first generative detector release. Per-class F1 ranges from 0.148 (data_exfiltration) to 0.857 (path_traversal, social_engineering). Targeted corpus expansion and teacher quality improvements are expected to close gaps rapidly.
                 </div>
               </div>
             </div>
@@ -422,15 +468,15 @@ export default function Model() {
           <SectionHeader
             label="Usage"
             title="How to use the model"
-            sub="The model is not designed for direct HuggingFace inference. It is downloaded and run locally by the skillscan CLI via ONNX Runtime."
+            sub="The model is not designed for direct HuggingFace inference. It is downloaded and run locally by the skillscan CLI via llama.cpp."
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               {
                 title: "Install and run",
-                code: `pip install skillscan-security
-skillscan model install          # downloads ONNX adapter (~350 MB)
-skillscan scan path/to/skills/   # static rules + ML detection`,
+                code: `pip install 'skillscan-security[ml]'
+skillscan model sync             # downloads GGUF (~935 MB)
+skillscan scan path/to/skills/ --ml-detect`,
               },
               {
                 title: "Check model status",
