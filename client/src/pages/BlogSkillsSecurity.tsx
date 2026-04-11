@@ -127,6 +127,7 @@ function CopyLinkButton({ className, style }: { className?: string; style?: Reac
         color: copied ? "oklch(0.70 0.18 160)" : "oklch(0.75 0.01 265)",
         ...style,
       }}
+      aria-label="Copy link to clipboard"
     >
       {copied ? <Check className="w-3.5 h-3.5" /> : <Link2 className="w-3.5 h-3.5" />}
       {copied ? "Copied!" : "Copy link"}

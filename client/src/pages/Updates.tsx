@@ -32,7 +32,7 @@ function parseSeverity(block: string): "high" | "medium" | "low" {
 }
 
 function extractRules(text: string): string[] {
-  const m = text.match(/\b(MAL|ABU|EXF|INJ|CHN|CAP|PINJ|SUP|EXEC|SE|DEF|OBF|PSV|GR|EVASION)-\d{3}\b/g) || [];
+  const m = text.match(/\b(MAL|ABU|EXF|INJ|CHN|CAP|PINJ|SUP|EXEC|SE|DEF|OBF|PSV|GR|EVASION)-[A-Z]*-?\d{3}\b/g) || [];
   return Array.from(new Set(m));
 }
 
@@ -201,6 +201,8 @@ function UpdateCard({ entry, index }: { entry: UpdateEntry; index: number }) {
           style={{ color: "oklch(0.58 0.22 290)" }}
           onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.70 0.18 290)")}
           onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.58 0.22 290)")}
+          aria-expanded={expanded}
+          aria-label={expanded ? "Hide update details" : "Show update details"}
         >
           {expanded ? "Hide details ↑" : "Show details ↓"}
         </button>
@@ -364,6 +366,7 @@ export default function Updates() {
                       border: "1px solid oklch(0.58 0.22 290 / 0.20)",
                       color: "oklch(0.65 0.012 265)",
                     }}
+                    aria-label="Refresh updates"
                   >
                     <RefreshCw className={`w-3 h-3 ${loading ? "animate-spin" : ""}`} />
                     Refresh
@@ -379,6 +382,9 @@ export default function Updates() {
                   </a>
                 </div>
               </div>
+
+              {/* Loading/error/content — announce changes to screen readers */}
+              <div aria-live="polite">
 
               {/* Error state */}
               {error && (
@@ -425,6 +431,7 @@ export default function Updates() {
                   )}
                 </div>
               )}
+              </div>{/* end aria-live */}
             </div>
           </div>
         </section>

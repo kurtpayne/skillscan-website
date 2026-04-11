@@ -158,6 +158,7 @@ function CopyBtn({ text }: { text: string }) {
       onMouseEnter={e => (e.currentTarget.style.color = "oklch(0.78 0.18 290)")}
       onMouseLeave={e => (e.currentTarget.style.color = "oklch(0.55 0.015 265)")}
       title="Copy"
+      aria-label="Copy to clipboard"
     >
       {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
     </button>
@@ -587,13 +588,15 @@ function ReportView({ report, reportUrl }: { report: Record<string, unknown>; re
                 navigator.clipboard.writeText(htmlUrl); setCopied(true); setTimeout(() => setCopied(false), 2000);
               }}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
-              style={{ background: "oklch(0.16 0.022 265)", border: "1px solid oklch(0.25 0.025 265)", color: "oklch(0.75 0.012 265)" }}>
+              style={{ background: "oklch(0.16 0.022 265)", border: "1px solid oklch(0.25 0.025 265)", color: "oklch(0.75 0.012 265)" }}
+              aria-label="Share report link">
               {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
               {copied ? "Copied!" : "Share"}
             </button>
             <button onClick={downloadJson}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
-              style={{ background: "oklch(0.16 0.022 265)", border: "1px solid oklch(0.25 0.025 265)", color: "oklch(0.75 0.012 265)" }}>
+              style={{ background: "oklch(0.16 0.022 265)", border: "1px solid oklch(0.25 0.025 265)", color: "oklch(0.75 0.012 265)" }}
+              aria-label="Download report as JSON">
               <Download className="w-3 h-3" /> JSON
             </button>
           </div>
@@ -1093,7 +1096,8 @@ export default function TraceRun() {
                     value={apiKey} onChange={e => setApiKey(e.target.value)}
                     style={{ ...inputStyle, paddingRight: "2.5rem" }} />
                   <button type="button" className="absolute right-2.5 top-1/2 -translate-y-1/2"
-                    style={{ color: "oklch(0.45 0.015 265)" }} onClick={() => setShowKey(!showKey)} tabIndex={-1}>
+                    style={{ color: "oklch(0.45 0.015 265)" }} onClick={() => setShowKey(!showKey)} tabIndex={-1}
+                    aria-label={showKey ? "Hide API key" : "Show API key"}>
                     {showKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   </button>
                 </div>
@@ -1134,7 +1138,9 @@ export default function TraceRun() {
             {/* Advanced */}
             <div>
               <button className="flex items-center gap-1.5 text-xs" style={{ color: "oklch(0.55 0.015 265)" }}
-                onClick={() => setShowAdvanced(!showAdvanced)}>
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                aria-expanded={showAdvanced}
+                aria-label="Toggle advanced options">
                 {showAdvanced ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 Advanced options
               </button>

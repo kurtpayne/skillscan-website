@@ -17,7 +17,8 @@ function CodeBlock({ code }: { code: string }) {
         <span className="text-xs" style={{ color: "oklch(0.45 0.012 265)", fontFamily: "'JetBrains Mono', monospace" }}>bash</span>
         <button onClick={() => { navigator.clipboard.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 1800); }}
           className="flex items-center gap-1.5 text-xs transition-colors duration-200"
-          style={{ color: copied ? "oklch(0.70 0.15 160)" : "oklch(0.50 0.015 265)" }}>
+          style={{ color: copied ? "oklch(0.70 0.15 160)" : "oklch(0.50 0.015 265)" }}
+          aria-label="Copy to clipboard">
           {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
           {copied ? "Copied" : "Copy"}
         </button>
@@ -69,7 +70,8 @@ export default function BlogV12Training() {
               <button
                 onClick={() => { navigator.clipboard.writeText(shareUrl); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
                 className="ml-auto flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-all duration-200"
-                style={{ background: copied ? "oklch(0.70 0.15 160 / 0.12)" : "oklch(0.58 0.22 290 / 0.08)", color: copied ? "oklch(0.70 0.15 160)" : "oklch(0.55 0.015 265)", border: `1px solid ${copied ? "oklch(0.70 0.15 160 / 0.30)" : "oklch(0.58 0.22 290 / 0.15)"}` }}>
+                style={{ background: copied ? "oklch(0.70 0.15 160 / 0.12)" : "oklch(0.58 0.22 290 / 0.08)", color: copied ? "oklch(0.70 0.15 160)" : "oklch(0.55 0.015 265)", border: `1px solid ${copied ? "oklch(0.70 0.15 160 / 0.30)" : "oklch(0.58 0.22 290 / 0.15)"}` }}
+                aria-label="Copy link to clipboard">
                 {copied ? <Check className="w-3 h-3" /> : <Share2 className="w-3 h-3" />}
                 {copied ? "Copied!" : "Copy link"}
               </button>
@@ -324,7 +326,8 @@ export default function BlogV12Training() {
                 <button
                   onClick={() => { navigator.clipboard.writeText(shareUrl); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
                   className="flex items-center gap-2 text-sm px-4 py-2 rounded-lg transition-all duration-200"
-                  style={{ background: copied ? "oklch(0.70 0.15 160 / 0.12)" : "oklch(0.58 0.22 290 / 0.08)", color: copied ? "oklch(0.70 0.15 160)" : "oklch(0.65 0.015 265)", border: `1px solid ${copied ? "oklch(0.70 0.15 160 / 0.30)" : "oklch(0.58 0.22 290 / 0.15)"}` }}>
+                  style={{ background: copied ? "oklch(0.70 0.15 160 / 0.12)" : "oklch(0.58 0.22 290 / 0.08)", color: copied ? "oklch(0.70 0.15 160)" : "oklch(0.65 0.015 265)", border: `1px solid ${copied ? "oklch(0.70 0.15 160 / 0.30)" : "oklch(0.58 0.22 290 / 0.15)"}` }}
+                  aria-label="Share article link">
                   {copied ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
                   {copied ? "Copied!" : "Share"}
                 </button>
