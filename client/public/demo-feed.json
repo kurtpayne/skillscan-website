@@ -1,9 +1,10 @@
 {
-  "generated_at": "2026-04-05T05:44:16.334406+00:00",
+  "generated_at": "2026-04-12T05:52:20.099770+00:00",
   "skillscan_version": "0.8.0",
-  "entry_count": 24,
+  "entry_count": 30,
   "block_count": 19,
-  "allow_count": 5,
+  "warn_count": 0,
+  "allow_count": 11,
   "error_count": 0,
   "unexpected_count": 0,
   "entries": [
@@ -22,13 +23,13 @@
       "findings_count": 1,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "MAL-045",
           "title": "StoatWaffle Node.js malware family (WaterPlum/Contagious Interview)",
           "severity": "high",
           "confidence": 0.86
         }
       ],
-      "scanned_at": "2026-04-05T05:43:16.295712+00:00"
+      "scanned_at": "2026-04-12T05:51:03.164367+00:00"
     },
     {
       "id": "organic_mal046_cursorjack_deeplink",
@@ -45,31 +46,31 @@
       "findings_count": 4,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "MAL-001",
           "title": "Download-and-execute chain",
           "severity": "critical",
           "confidence": 0.95
         },
         {
-          "rule_id": "",
+          "rule_id": "MAL-030",
           "title": "IDE deeplink MCP server install abuse",
           "severity": "high",
           "confidence": 0.88
         },
         {
-          "rule_id": "",
+          "rule_id": "MAL-046",
           "title": "CursorJack-style MCP deeplink staged payload",
           "severity": "critical",
           "confidence": 0.9
         },
         {
-          "rule_id": "",
+          "rule_id": "CHN-001",
           "title": "Download + Execute chain",
           "severity": "critical",
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-04-05T05:43:18.836151+00:00"
+      "scanned_at": "2026-04-12T05:51:05.721194+00:00"
     },
     {
       "id": "organic_mal047_claude_hooks_rce",
@@ -86,37 +87,37 @@
       "findings_count": 5,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "MAL-001",
           "title": "Download-and-execute chain",
           "severity": "critical",
           "confidence": 0.95
         },
         {
-          "rule_id": "",
+          "rule_id": "ABU-003",
           "title": "Claude Code project MCP auto-approval marker",
           "severity": "high",
           "confidence": 0.84
         },
         {
-          "rule_id": "",
+          "rule_id": "MAL-047",
           "title": "Claude Code hooks RCE via project settings",
           "severity": "critical",
           "confidence": 0.88
         },
         {
-          "rule_id": "",
+          "rule_id": "CHN-001",
           "title": "Download + Execute chain",
           "severity": "critical",
           "confidence": 0.95
         },
         {
-          "rule_id": "",
+          "rule_id": "CHN-002",
           "title": "Secret access + Network exfiltration chain",
           "severity": "critical",
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-04-05T05:43:21.374565+00:00"
+      "scanned_at": "2026-04-12T05:51:08.321206+00:00"
     },
     {
       "id": "organic_mal048_langflow_rce",
@@ -133,19 +134,19 @@
       "findings_count": 2,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "MAL-048",
           "title": "Langflow unauthenticated RCE via build_public_tmp endpoint",
           "severity": "critical",
           "confidence": 0.87
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-018",
           "title": "pip install in skill body with non-standard or suspicious package name",
           "severity": "medium",
           "confidence": 0.82
         }
       ],
-      "scanned_at": "2026-04-05T05:43:23.926854+00:00"
+      "scanned_at": "2026-04-12T05:51:10.879811+00:00"
     },
     {
       "id": "organic_mal049_litellm_pth_persistence",
@@ -162,37 +163,37 @@
       "findings_count": 5,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "MAL-039",
           "title": "GitHub Actions credential stealer with Runner.Worker memory harvesting",
           "severity": "critical",
           "confidence": 0.88
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-018",
           "title": "pip install in skill body with non-standard or suspicious package name",
           "severity": "medium",
           "confidence": 0.82
         },
         {
-          "rule_id": "",
+          "rule_id": "MAL-049",
           "title": "LiteLLM .pth file persistence and sysmon backdoor (TeamPCP)",
           "severity": "critical",
           "confidence": 0.9
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-019",
           "title": "Compromised LiteLLM package version reference",
           "severity": "critical",
           "confidence": 0.92
         },
         {
-          "rule_id": "",
+          "rule_id": "CHN-002",
           "title": "Secret access + Network exfiltration chain",
           "severity": "critical",
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-04-05T05:43:26.489329+00:00"
+      "scanned_at": "2026-04-12T05:51:13.454807+00:00"
     },
     {
       "id": "organic_mal050_ghost_campaign_npm",
@@ -209,13 +210,13 @@
       "findings_count": 1,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "MAL-050",
           "title": "Ghost Campaign malicious npm packages (sudo phishing RAT)",
           "severity": "high",
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-04-05T05:43:29.033343+00:00"
+      "scanned_at": "2026-04-12T05:51:16.014902+00:00"
     },
     {
       "id": "organic_pinj007_mcp_sampling_exfil",
@@ -232,19 +233,19 @@
       "findings_count": 2,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "PINJ-007",
           "title": "MCP sampling-based context exfiltration",
           "severity": "high",
           "confidence": 0.82
         },
         {
-          "rule_id": "",
+          "rule_id": "PINJ-SEM-001",
           "title": "Local semantic prompt-injection intent pattern",
           "severity": "medium",
           "confidence": 0.68
         }
       ],
-      "scanned_at": "2026-04-05T05:43:31.599704+00:00"
+      "scanned_at": "2026-04-12T05:51:18.587321+00:00"
     },
     {
       "id": "organic_pinj015_prompt_poaching_extension",
@@ -261,13 +262,13 @@
       "findings_count": 1,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "PINJ-015",
           "title": "Prompt poaching via malicious browser extension installation",
           "severity": "high",
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-04-05T05:43:34.151983+00:00"
+      "scanned_at": "2026-04-12T05:51:21.151109+00:00"
     },
     {
       "id": "organic_sup016_mcp_server_cmd_injection",
@@ -284,31 +285,31 @@
       "findings_count": 4,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "MAL-001",
           "title": "Download-and-execute chain",
           "severity": "critical",
           "confidence": 0.95
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-013",
           "title": "MCP server command injection via unsanitized Git parameters",
           "severity": "high",
           "confidence": 0.85
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-016",
           "title": "Vulnerable MCP server package with command injection",
           "severity": "high",
           "confidence": 0.85
         },
         {
-          "rule_id": "",
+          "rule_id": "CHN-001",
           "title": "Download + Execute chain",
           "severity": "critical",
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-04-05T05:43:36.687026+00:00"
+      "scanned_at": "2026-04-12T05:51:23.700939+00:00"
     },
     {
       "id": "organic_sup017_checkmarx_actions",
@@ -325,37 +326,37 @@
       "findings_count": 5,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "MAL-011",
           "title": "pull_request_target workflow using unpinned third-party action ref",
           "severity": "high",
           "confidence": 0.84
         },
         {
-          "rule_id": "",
+          "rule_id": "MAL-039",
           "title": "GitHub Actions credential stealer with Runner.Worker memory harvesting",
           "severity": "critical",
           "confidence": 0.88
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-015",
           "title": "GitHub Actions supply chain compromise via release tag repointing",
           "severity": "critical",
           "confidence": 0.88
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-017",
           "title": "Checkmarx GitHub Actions supply chain compromise (TeamPCP)",
           "severity": "critical",
           "confidence": 0.88
         },
         {
-          "rule_id": "",
+          "rule_id": "MAL-049",
           "title": "LiteLLM .pth file persistence and sysmon backdoor (TeamPCP)",
           "severity": "critical",
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-04-05T05:43:39.208313+00:00"
+      "scanned_at": "2026-04-12T05:51:26.261780+00:00"
     },
     {
       "id": "organic_sup019_litellm_compromised_version",
@@ -372,25 +373,25 @@
       "findings_count": 3,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "EXF-001",
           "title": "Sensitive credential file access",
           "severity": "high",
           "confidence": 0.9
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-018",
           "title": "pip install in skill body with non-standard or suspicious package name",
           "severity": "medium",
           "confidence": 0.82
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-019",
           "title": "Compromised LiteLLM package version reference",
           "severity": "critical",
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-04-05T05:43:41.747585+00:00"
+      "scanned_at": "2026-04-12T05:51:28.778689+00:00"
     },
     {
       "id": "organic_sup020_clawhavoc_typosquat",
@@ -407,25 +408,25 @@
       "findings_count": 3,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "EXF-001",
           "title": "Sensitive credential file access",
           "severity": "high",
           "confidence": 0.9
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-020",
           "title": "ClawHavoc malicious ClawHub skill typosquat names",
           "severity": "high",
           "confidence": 0.88
         },
         {
-          "rule_id": "",
+          "rule_id": "CHN-002",
           "title": "Secret access + Network exfiltration chain",
           "severity": "critical",
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-04-05T05:43:44.281291+00:00"
+      "scanned_at": "2026-04-12T05:51:31.329396+00:00"
     },
     {
       "id": "organic_sup021_teampcp_checkmarx_vscode",
@@ -442,25 +443,25 @@
       "findings_count": 3,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "MAL-039",
           "title": "GitHub Actions credential stealer with Runner.Worker memory harvesting",
           "severity": "critical",
           "confidence": 0.88
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-017",
           "title": "Checkmarx GitHub Actions supply chain compromise (TeamPCP)",
           "severity": "critical",
           "confidence": 0.88
         },
         {
-          "rule_id": "",
+          "rule_id": "SUP-021",
           "title": "TeamPCP Checkmarx VS Code extension compromise (Open VSX)",
           "severity": "critical",
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-04-05T05:43:46.824535+00:00"
+      "scanned_at": "2026-04-12T05:51:33.865913+00:00"
     },
     {
       "id": "organic_sup022_react_native_account_takeover",
@@ -477,13 +478,13 @@
       "findings_count": 1,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "SUP-022",
           "title": "React Native npm account takeover supply chain attack",
           "severity": "high",
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-04-05T05:43:49.355839+00:00"
+      "scanned_at": "2026-04-12T05:51:36.385034+00:00"
     },
     {
       "id": "organic_mal054_glassworm_chrome_rat",
@@ -500,19 +501,19 @@
       "findings_count": 2,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "MAL-029",
           "title": "Solana RPC blockchain C2 resolution marker",
           "severity": "critical",
           "confidence": 0.9
         },
         {
-          "rule_id": "",
+          "rule_id": "MAL-054",
           "title": "GlassWorm multi-stage Chrome extension RAT",
           "severity": "critical",
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-04-05T05:43:51.901240+00:00"
+      "scanned_at": "2026-04-12T05:51:38.916580+00:00"
     },
     {
       "id": "organic_pinj016_contexthub_doc_poisoning",
@@ -529,19 +530,19 @@
       "findings_count": 2,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "SUP-018",
           "title": "pip install in skill body with non-standard or suspicious package name",
           "severity": "medium",
           "confidence": 0.82
         },
         {
-          "rule_id": "",
+          "rule_id": "PINJ-016",
           "title": "AI documentation context poisoning (ContextHub)",
           "severity": "high",
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-04-05T05:43:54.432822+00:00"
+      "scanned_at": "2026-04-12T05:51:41.451570+00:00"
     },
     {
       "id": "organic_exf020_teampcp_kubernetes_lateral",
@@ -558,37 +559,37 @@
       "findings_count": 5,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "MAL-049",
           "title": "LiteLLM .pth file persistence and sysmon backdoor (TeamPCP)",
           "severity": "critical",
           "confidence": 0.9
         },
         {
-          "rule_id": "",
+          "rule_id": "EXF-020",
           "title": "TeamPCP sysmon backdoor Kubernetes lateral movement",
           "severity": "critical",
           "confidence": 0.9
         },
         {
-          "rule_id": "",
-          "title": "Local semantic prompt-injection intent pattern",
-          "severity": "medium",
-          "confidence": 0.78
-        },
-        {
-          "rule_id": "",
+          "rule_id": "SE-SEM-001",
           "title": "Local semantic social-engineering credential-harvest pattern",
           "severity": "high",
           "confidence": 0.92
         },
         {
-          "rule_id": "",
+          "rule_id": "CHN-002",
           "title": "Secret access + Network exfiltration chain",
           "severity": "critical",
           "confidence": 0.95
+        },
+        {
+          "rule_id": "PINJ-SEM-001",
+          "title": "Local semantic prompt-injection intent pattern",
+          "severity": "medium",
+          "confidence": 0.78
         }
       ],
-      "scanned_at": "2026-04-05T05:43:56.971091+00:00"
+      "scanned_at": "2026-04-12T05:51:44.009316+00:00"
     },
     {
       "id": "organic_cap001_capability_laundering",
@@ -605,19 +606,19 @@
       "findings_count": 2,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "EXF-001",
           "title": "Sensitive credential file access",
           "severity": "high",
           "confidence": 0.9
         },
         {
-          "rule_id": "",
+          "rule_id": "CAP-001",
           "title": "Capability laundering \u2014 disproportionate credential or file access for stated purpose",
           "severity": "high",
           "confidence": 0.78
         }
       ],
-      "scanned_at": "2026-04-05T05:43:59.490991+00:00"
+      "scanned_at": "2026-04-12T05:51:46.561789+00:00"
     },
     {
       "id": "organic_obf005_dns_covert_channel",
@@ -634,19 +635,19 @@
       "findings_count": 2,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "OBF-005",
           "title": "Covert-channel exfiltration via DNS, whitespace encoding, or HTML comments",
           "severity": "high",
           "confidence": 0.85
         },
         {
-          "rule_id": "",
+          "rule_id": "PINJ-SEM-001",
           "title": "Local semantic prompt-injection intent pattern",
           "severity": "medium",
           "confidence": 0.73
         }
       ],
-      "scanned_at": "2026-04-05T05:44:02.050440+00:00"
+      "scanned_at": "2026-04-12T05:51:49.166355+00:00"
     },
     {
       "id": "demo_benign_commonpaper",
@@ -654,7 +655,7 @@
       "demo_description": "Real-world contract management skill from CommonPaper. Uses permissive policy. MAL-001 and CHN-002 tightened (PR #138) removed the findings that previously generated a WARN score; skill now correctly scores ALLOW under permissive.",
       "label": "benign",
       "archetype": "",
-      "rule_id": "",
+      "rule_id": "CHN-002",
       "reference": "https://github.com/CommonPaper/claude-skill",
       "verdict": "ALLOW",
       "expected_verdict": "ALLOW",
@@ -663,13 +664,13 @@
       "findings_count": 1,
       "top_findings": [
         {
-          "rule_id": "",
+          "rule_id": "CHN-002",
           "title": "Secret access + Network exfiltration chain",
           "severity": "critical",
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-04-05T05:44:05.171397+00:00"
+      "scanned_at": "2026-04-12T05:51:52.311103+00:00"
     },
     {
       "id": "demo_benign_zendesk",
@@ -677,7 +678,7 @@
       "demo_description": "Community Zendesk skill. Uses permissive policy. After MAL-001/CHN-002 tightening (PR #138) the remaining PINJ-SEM-001/SE-SEM-001 semantic findings score below the permissive WARN threshold; skill correctly scores ALLOW.",
       "label": "benign",
       "archetype": "",
-      "rule_id": "",
+      "rule_id": "SE-SEM-001",
       "reference": "https://github.com/andmarios/zendesk-skill",
       "verdict": "ALLOW",
       "expected_verdict": "ALLOW",
@@ -686,19 +687,19 @@
       "findings_count": 2,
       "top_findings": [
         {
-          "rule_id": "",
-          "title": "Local semantic prompt-injection intent pattern",
-          "severity": "high",
-          "confidence": 0.95
-        },
-        {
-          "rule_id": "",
+          "rule_id": "SE-SEM-001",
           "title": "Local semantic social-engineering credential-harvest pattern",
           "severity": "high",
           "confidence": 0.92
+        },
+        {
+          "rule_id": "PINJ-SEM-001",
+          "title": "Local semantic prompt-injection intent pattern",
+          "severity": "high",
+          "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-04-05T05:44:08.335236+00:00"
+      "scanned_at": "2026-04-12T05:51:55.521109+00:00"
     },
     {
       "id": "demo_benign_fal_generate",
@@ -714,7 +715,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-05T05:44:10.982949+00:00"
+      "scanned_at": "2026-04-12T05:51:58.193099+00:00"
     },
     {
       "id": "demo_benign_mailescrow",
@@ -730,7 +731,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-05T05:44:13.669096+00:00"
+      "scanned_at": "2026-04-12T05:52:01.022996+00:00"
     },
     {
       "id": "demo_benign_explain_code",
@@ -746,7 +747,103 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-05T05:44:16.334347+00:00"
+      "scanned_at": "2026-04-12T05:52:03.730165+00:00"
+    },
+    {
+      "id": "demo_benign_breweries",
+      "demo_title": "Brewery Finder (Open Brewery DB)",
+      "demo_description": "CLI skill that queries the Open Brewery DB API. No auth, no data persistence, single read-only API call. Calibration score: 0.",
+      "label": "benign",
+      "archetype": "",
+      "rule_id": "",
+      "reference": "https://github.com/jeffaf/breweries-skill",
+      "verdict": "ALLOW",
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-04-12T05:52:06.482381+00:00"
+    },
+    {
+      "id": "demo_benign_typos",
+      "demo_title": "Typos Spell-Checker",
+      "demo_description": "Runs the typos CLI on files and produces LLM-reviewable spelling fixes. Local file access only, no network. Calibration score: 0.",
+      "label": "benign",
+      "archetype": "",
+      "rule_id": "",
+      "reference": "https://github.com/luojiyin1987/typos-skill",
+      "verdict": "ALLOW",
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-04-12T05:52:09.164692+00:00"
+    },
+    {
+      "id": "demo_benign_pr_review",
+      "demo_title": "GitHub PR Review Workflow",
+      "demo_description": "Addresses PR review feedback, re-requests reviews, and handles GitHub PR lifecycle actions. Standard GitHub API usage, no credential access. Calibration score: 0.",
+      "label": "benign",
+      "archetype": "",
+      "rule_id": "",
+      "reference": "https://github.com/metyatech/skill-pr-review-workflow",
+      "verdict": "ALLOW",
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-04-12T05:52:11.855364+00:00"
+    },
+    {
+      "id": "demo_benign_leafer_graphics",
+      "demo_title": "LeaferJS Canvas Graphics",
+      "demo_description": "AI skill for generating LeaferJS canvas graphics and animations. Documentation-heavy, no exfiltration or network calls beyond the LeaferJS CDN. Calibration score: 0.",
+      "label": "benign",
+      "archetype": "",
+      "rule_id": "",
+      "reference": "https://github.com/leaferjs/ai-docs",
+      "verdict": "ALLOW",
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-04-12T05:52:14.569999+00:00"
+    },
+    {
+      "id": "demo_benign_wechat_formatter",
+      "demo_title": "WeChat Article Formatter",
+      "demo_description": "Converts markdown to styled HTML for WeChat articles with auto image upload. Explicit user-initiated workflow, no silent data forwarding. Calibration score: 0.",
+      "label": "benign",
+      "archetype": "",
+      "rule_id": "",
+      "reference": "https://github.com/iamzifei/wechat-article-formatter-skill",
+      "verdict": "ALLOW",
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-04-12T05:52:17.401491+00:00"
+    },
+    {
+      "id": "demo_benign_gitcli",
+      "demo_title": "Git Timeline CLI",
+      "demo_description": "Queries local git commit history across multiple repositories. Read-only git operations, no network access or credential handling. Calibration score: 0.",
+      "label": "benign",
+      "archetype": "",
+      "rule_id": "",
+      "reference": "https://github.com/junghan0611/gitcli",
+      "verdict": "ALLOW",
+      "expected_verdict": "ALLOW",
+      "verdict_match": true,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-04-12T05:52:20.099711+00:00"
     }
   ]
 }
