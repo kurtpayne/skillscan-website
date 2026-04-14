@@ -82,7 +82,7 @@ export default function Model() {
                 fontFamily: "'JetBrains Mono', monospace",
               }}
             >
-              Layer 6 — Generative Detector · v4
+              Layer 8 — Generative Detector · v4
             </div>
             <h1
               className="text-4xl sm:text-5xl font-bold mb-6"

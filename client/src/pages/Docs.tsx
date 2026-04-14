@@ -1227,7 +1227,7 @@ skillscan rule test my-rules.yaml test.md
                 <SectionTitle>Customization</SectionTitle>
                 <Prose>
                   Every detection layer except the ML classifier is configurable. The table below summarizes
-                  what you can change and how. The ML model (Layer 6) is intentionally fixed — see the
+                  what you can change and how. The ML model (Layer 8) is intentionally fixed — see the
                   callout at the bottom of this section.
                 </Prose>
 
@@ -1317,7 +1317,7 @@ EXF-003  skills/analytics.md    Intentional telemetry, reviewed 2026-03-01`} />
                 >
                   <Lock className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: "oklch(0.72 0.22 25)" }} />
                   <div>
-                    <p className="text-sm font-semibold mb-1" style={{ color: "oklch(0.88 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>Layer 6 — ML Classifier is intentionally fixed</p>
+                    <p className="text-sm font-semibold mb-1" style={{ color: "oklch(0.88 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>Layer 8 — ML Classifier is intentionally fixed</p>
                     <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
                       The Qwen2.5-1.5B model is a frozen GGUF artifact. Its weights cannot be overridden
                       by rules or policy files. This is by design: the model provides a detection signal that
