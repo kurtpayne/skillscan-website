@@ -289,9 +289,10 @@ Do not modify events that were created by the user directly.`} lang="markdown" /
               <section id="detection-architecture">
                 <SectionTitle>Detection Architecture</SectionTitle>
                 <Prose>
-                  SkillScan uses three independent detection layers. Each layer catches a different class
+                  At a high level, SkillScan uses three independent detection layers. Each layer catches a different class
                   of attack. The layers are designed to complement each other — what one misses, another
-                  catches.
+                  catches. (Within the static analysis layer alone, there are multiple sub-layers — see the{" "}
+                  <a href="/#detection-layers" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Home page</a> for the full breakdown.)
                 </Prose>
 
                 <div className="overflow-x-auto rounded-xl mb-6" style={{ border: "1px solid oklch(0.58 0.22 290 / 0.15)" }}>
@@ -377,8 +378,8 @@ Layer 1: Static rules  (<1ms, always)
 cd skillscan-security
 pip install -e ".[dev]"`} />
                 <Prose>Docker image (includes ClamAV for binary artifact scanning):</Prose>
-                <CodeBlock code={`docker pull kurtpayne/skillscan:latest
-docker run --rm -v $(pwd)/skills:/skills kurtpayne/skillscan:latest scan /skills`} />
+                <CodeBlock code={`docker pull kurtpayne/skillscan-security:latest
+docker run --rm -v $(pwd)/skills:/skills kurtpayne/skillscan-security:latest scan /skills`} />
                 <Prose>Verify installation:</Prose>
                 <CodeBlock code="skillscan version" />
               </section>
@@ -389,12 +390,12 @@ docker run --rm -v $(pwd)/skills:/skills kurtpayne/skillscan:latest scan /skills
                 <Prose>Scan a directory of skill files:</Prose>
                 <CodeBlock code="skillscan scan ./skills/" />
                 <Prose>Scan with the ML classifier enabled (downloads model on first run):</Prose>
-                <CodeBlock code={`skillscan model install          # one-time download (~350 MB)
+                <CodeBlock code={`skillscan model install          # one-time download (~935 MB)
 skillscan scan ./skills/ --ml-detect`} />
                 <Prose>Update rules, intel DB, and model in one command:</Prose>
                 <CodeBlock code="skillscan update" />
                 <Prose>Output SARIF for GitHub Security tab upload:</Prose>
-                <CodeBlock code="skillscan scan ./skills/ --format sarif -o results.sarif" />
+                <CodeBlock code="skillscan scan ./skills/ --format sarif --out results.sarif" />
                 <Note>
                   Exit codes: <InlineCode>0</InlineCode> = clean scan &nbsp;·&nbsp;{" "}
                   <InlineCode>1</InlineCode> = findings at or above policy threshold &nbsp;·&nbsp;{" "}
@@ -420,11 +421,11 @@ skillscan scan ./skills/
 
                 <SubTitle>2. Install the ML model</SubTitle>
                 <Prose>
-                  The ML classifier (DeBERTa-v3 + LoRA, beta) catches semantic attacks and novel jailbreaks
-                  that static rules cannot express. It runs entirely offline via ONNX Runtime.
+                  The ML classifier (Qwen2.5-1.5B, beta) catches semantic attacks and novel jailbreaks
+                  that static rules cannot express. It runs entirely offline via llama.cpp.
                   Benchmark metrics will be published with v11.
                 </Prose>
-                <CodeBlock code={`skillscan model install          # downloads from HuggingFace Hub (~350 MB)
+                <CodeBlock code={`skillscan model install          # downloads from HuggingFace Hub (~935 MB)
 skillscan model status           # shows installed version vs Hub latest
 skillscan scan ./skills/ --ml-detect`} />
 
@@ -438,8 +439,8 @@ skillscan update --no-model      # rules + intel DB only (faster for CI)`} />
                   The default profile is <InlineCode>strict</InlineCode>.
                 </Prose>
                 <CodeBlock code={`skillscan policy list            # show available profiles
-skillscan scan ./skills/ --policy ci          # CI-optimized: blocks on critical only
-skillscan scan ./skills/ --policy enterprise  # enterprise: blocks on high+critical`} />
+skillscan scan ./skills/ --profile ci          # CI-optimized: blocks on critical only
+skillscan scan ./skills/ --profile enterprise  # enterprise: blocks on high+critical`} />
 
                 <SubTitle>5. Suppress known false positives</SubTitle>
                 <CodeBlock code={`# Create a suppression file
@@ -468,12 +469,12 @@ EOF
 skillscan scan ./skills/ --rules my-rules.yaml`} />
 
                 <SubTitle>7. Test a custom rule</SubTitle>
-                <CodeBlock code={`skillscan rule test --rules my-rules.yaml --fixture path/to/test.md
+                <CodeBlock code={`skillscan rule test my-rules.yaml path/to/test.md
 # Runs the rule against the fixture and shows match/no-match result`} />
 
                 <SubTitle>8. Compare against a baseline</SubTitle>
                 <CodeBlock code={`# Save a baseline
-skillscan scan ./skills/ --format json -o baseline.json
+skillscan scan ./skills/ --format json --out baseline.json
 
 # Later: compare current scan against baseline
 skillscan scan ./skills/ --baseline baseline.json
@@ -557,7 +558,6 @@ skillscan trace run ./skills/my-skill.md --provider ollama --model llama3.1:8b`}
                         ["openai", "OPENAI_API_KEY", "gpt-4o-mini", "Fast, cheap, good recall"],
                         ["openrouter", "OPENROUTER_API_KEY", "anthropic/claude-3.5-sonnet", "200+ models, one key"],
                         ["ollama", "(none)", "llama3.1:8b", "Fully local, no data leaves machine — model must support tool calling"],
-                        ["anthropic", "ANTHROPIC_API_KEY", "claude-3-haiku-20240307", "Best reasoning, higher cost"],
                       ].map(([provider, envVar, model, tradeoff], i) => (
                         <tr key={provider} style={{ borderBottom: i < 3 ? "1px solid oklch(0.58 0.22 290 / 0.10)" : "none", background: i % 2 === 0 ? "oklch(0.12 0.018 265)" : "transparent" }}>
                           <td className="px-4 py-2.5" style={{ color: "oklch(0.78 0.18 290)" }}>{provider}</td>
@@ -571,10 +571,6 @@ skillscan trace run ./skills/my-skill.md --provider ollama --model llama3.1:8b`}
                 </div>
                 <CodeBlock code={`# OpenAI (default if OPENAI_API_KEY is set)
 skillscan trace run ./skill.md --provider openai --model gpt-4o-mini
-
-# Anthropic
-echo 'ANTHROPIC_API_KEY=sk-ant-...' >> .env
-skillscan trace run ./skill.md --provider anthropic --model claude-3-haiku-20240307
 
 # OpenRouter — access 200+ models with one key
 echo 'OPENROUTER_API_KEY=sk-or-...' >> .env
@@ -607,27 +603,25 @@ Arguments:
   PATH                    File or directory to scan (repeatable)
 
 Options:
-  --format [compact|text|sarif|junit|json]
-                          Output format (default: compact)
-  -o, --output PATH       Write output to file instead of stdout
-  --policy PROFILE        Policy profile: strict|ci|balanced|permissive|enterprise|paranoid|observe
+  --format [text|compact|sarif|junit|json]
+                          Output format (default: text)
+  --out PATH              Write output to file instead of stdout
+  --profile PROFILE       Policy profile: strict|ci|balanced|permissive|enterprise|observe
                           (default: strict)
-  --rules PATH            Additional custom rules YAML file
+  --policy PATH           Path to a custom policy YAML file
   --ml-detect             Enable ML classifier (requires model install)
   --no-model              Disable ML classifier even if installed
   --graph                 Enable skill graph analysis (PSV rules)
   --baseline PATH         Compare against a previous JSON scan report
   --no-suppress           Ignore suppression files for this run
   --no-provenance         Omit provenance meta block from JSON output
-  --max-file-size BYTES   Skip files larger than this (default: 1048576 = 1 MB)
-  --timeout SECONDS       Per-file scan timeout in seconds (default: 30)
-  --exclude PATTERN       Glob pattern to exclude files (repeatable)
-  --verbose               Verbose output
+  --max-file-size KB      Skip files larger than this (default: 1024 = 1 MB)
+  --timeout SECONDS       Abort entire scan after this many seconds (default: 0 = no limit)
   --help                  Show this message`} />
 
                 <SubTitle>Real scan output — compact format</SubTitle>
                 <Prose>
-                  The compact format is the default. Each line shows verdict, score, finding count, and file.
+                  The compact format is a concise alternative to the default text format. Each line shows verdict, score, finding count, and file.
                   Findings are indented below the verdict line.
                 </Prose>
                 <CodeBlock code={`$ skillscan scan ./skills/
@@ -683,14 +677,14 @@ skillscan update --no-model      # rules + intel DB only`} />
               {/* ── MODEL ── */}
               <section id="model">
                 <SectionTitle>skillscan model</SectionTitle>
-                <CodeBlock code={`skillscan model install          # download ONNX adapter from HuggingFace (~350 MB)
+                <CodeBlock code={`skillscan model install          # download GGUF model from HuggingFace (~935 MB)
 skillscan model install --force  # re-download even if already installed
-skillscan model install --repo kurtpayne/skillscan-deberta-adapter
+skillscan model install --repo kurtpayne/skillscan-detector-v4
                                  # install from a specific HF repo
 skillscan model status           # show installed version vs Hub latest`} />
                 <Prose>
-                  The model is a DeBERTa-v3-base adapter fine-tuned via LoRA on 18,161 skill file examples.
-                  It runs entirely offline via ONNX Runtime. No GPU required.
+                  The model is a Qwen2.5-1.5B fine-tuned via QLoRA on 20,035 teacher-distilled examples.
+                  It runs entirely offline via llama.cpp. No GPU required.
                   See the <a href="/model" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Model page</a> for full architecture and evaluation details.
                 </Prose>
               </section>
@@ -715,7 +709,7 @@ skillscan intel status           # show DB size and last-updated timestamp`} />
                 <SectionTitle>skillscan rule</SectionTitle>
                 <CodeBlock code={`skillscan rule list              # list all loaded rules with IDs and severity
 skillscan rule status            # show bundled vs user-local rule versions
-skillscan rule test --rules PATH --fixture PATH
+skillscan rule test RULES_PATH FIXTURE_PATH
                                  # test a custom rule against a fixture file`} />
               </section>
 
@@ -753,15 +747,16 @@ skillscan suppress check .skillscan-suppress.yaml --json
                 >
                   <p className="font-semibold mb-1" style={{ color: "oklch(0.80 0.16 55)" }}>
                     <Lock className="inline w-3.5 h-3.5 mr-1.5 mb-0.5" />
-                    Security design: no inline suppression
+                    Inline suppression
                   </p>
                   <p style={{ color: "oklch(0.65 0.015 265)" }}>
-                    SkillScan intentionally does not support inline suppression comments (e.g.{" "}
-                    <InlineCode>{"<!-- skillscan-disable RULE-ID -->"}</InlineCode>). When scanning
-                    third-party skill files, inline comments are attacker-controlled input — a malicious
-                    skill author could suppress findings on their own payload. All suppressions must be
-                    declared in a policy file under <em>your</em> version control, reviewed by your team,
-                    and outside the attack surface of the skill being scanned.
+                    SkillScan supports inline suppression via{" "}
+                    <InlineCode># skillscan-suppress: RULE-ID</InlineCode> comments placed above the
+                    line to suppress. For third-party skill files, prefer the project-level{" "}
+                    <InlineCode>.skillscan-suppress.yaml</InlineCode> file instead — inline comments
+                    in third-party files are attacker-controlled input, so a malicious skill author
+                    could suppress findings on their own payload. Suppressed findings are recorded in
+                    the provenance block of JSON output so they remain auditable.
                   </p>
                 </div>
               </section>
@@ -900,7 +895,7 @@ class InternalDomainRule(Rule):
         run: pip install skillscan-security skillscan-lint
 
       - name: Run security scan
-        run: skillscan scan ./skills/ --policy ci --format sarif -o security.sarif
+        run: skillscan scan ./skills/ --profile ci --format sarif --out security.sarif
 
       - name: Run quality lint
         run: skillscan lint scan ./skills/ --fail-on error --format compact`} lang="yaml" />
@@ -918,39 +913,39 @@ class InternalDomainRule(Rule):
                 <SubTitle>Basic scan</SubTitle>
                 <CodeBlock code={`docker run --rm \\
   -v $(pwd)/skills:/skills \\
-  kurtpayne/skillscan:latest \\
+  kurtpayne/skillscan-security:latest \\
   scan /skills`} />
 
                 <SubTitle>SARIF output</SubTitle>
                 <CodeBlock code={`docker run --rm \\
   -v $(pwd)/skills:/skills \\
   -v $(pwd)/results:/results \\
-  kurtpayne/skillscan:latest \\
-  scan /skills --format sarif -o /results/results.sarif`} />
+  kurtpayne/skillscan-security:latest \\
+  scan /skills --format sarif --out /results/results.sarif`} />
 
                 <SubTitle>With suppression file</SubTitle>
                 <CodeBlock code={`docker run --rm \\
   -v $(pwd)/skills:/skills \\
   -v $(pwd)/.skillscan-suppress.yaml:/.skillscan-suppress.yaml \\
-  kurtpayne/skillscan:latest \\
+  kurtpayne/skillscan-security:latest \\
   scan /skills`} />
 
                 <SubTitle>With ML model</SubTitle>
                 <CodeBlock code={`# First: download the model to a local volume
 docker run --rm \\
   -v skillscan-model:/root/.skillscan \\
-  kurtpayne/skillscan:latest \\
+  kurtpayne/skillscan-security:latest \\
   model install
 
 # Then: scan with ML detection
 docker run --rm \\
   -v $(pwd)/skills:/skills \\
   -v skillscan-model:/root/.skillscan \\
-  kurtpayne/skillscan:latest \\
+  kurtpayne/skillscan-security:latest \\
   scan /skills --ml-detect`} />
 
                 <SubTitle>Specific version</SubTitle>
-                <CodeBlock code="docker pull kurtpayne/skillscan:v2026.03.29" />
+                <CodeBlock code="docker pull kurtpayne/skillscan-security:v2026.03.29" />
               </section>
 
               {/* ── GITHUB ACTIONS ── */}
@@ -992,8 +987,8 @@ jobs:
         run: |
           skillscan scan ./skills/ \\
             --format sarif \\
-            --policy ci \\
-            -o results.sarif
+            --profile ci \\
+            --out results.sarif
 
       - name: Upload SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
@@ -1016,8 +1011,8 @@ jobs:
           skillscan scan ./skills/ \\
             --ml-detect \\
             --format sarif \\
-            --policy ci \\
-            -o results.sarif`} lang="yaml" />
+            --profile ci \\
+            --out results.sarif`} lang="yaml" />
 
                 <SubTitle>Baseline comparison (PR workflow)</SubTitle>
                 <CodeBlock code={`      - name: Scan main branch baseline
@@ -1025,7 +1020,7 @@ jobs:
         run: |
           git fetch origin main
           git stash
-          skillscan scan ./skills/ --format json -o baseline.json
+          skillscan scan ./skills/ --format json --out baseline.json
           git stash pop
 
       - name: Scan PR changes against baseline
@@ -1034,7 +1029,7 @@ jobs:
           skillscan scan ./skills/ \\
             --baseline baseline.json \\
             --format sarif \\
-            -o results.sarif`} lang="yaml" />
+            --out results.sarif`} lang="yaml" />
 
                 <SubTitle>Suppression hygiene gate</SubTitle>
                 <Prose>
@@ -1061,16 +1056,16 @@ jobs:
               <section id="output-formats">
                 <SectionTitle>Output Formats</SectionTitle>
 
-                <SubTitle>compact (default)</SubTitle>
-                <Prose>Human-readable. One line per file, findings indented below. Ideal for local development.</Prose>
+                <SubTitle>text (default)</SubTitle>
+                <Prose>Verbose human-readable output with full finding details, provenance block, and summary table. The default format.</Prose>
+
+                <SubTitle>compact</SubTitle>
+                <Prose>Concise human-readable format. One line per file, findings indented below. Ideal for local development.</Prose>
                 <CodeBlock code={`verdict=allow  score=0    findings=0  search_tool.md
 verdict=block  score=180  findings=1  data_processor.md
   - CHN-001 [critical/critical] Download+execute chain @ data_processor.md:12
 
 verdict=block  score=180  findings=1  exit=1`} />
-
-                <SubTitle>text</SubTitle>
-                <Prose>Verbose human-readable output with full finding details, provenance block, and summary table.</Prose>
 
                 <SubTitle>sarif</SubTitle>
                 <Prose>
@@ -1113,11 +1108,10 @@ verdict=block  score=180  findings=1  exit=1`} />
                     <tbody>
                       {[
                         { profile: "strict", block: "high+", warn: "medium+", use: "Default. Recommended for production skill registries." },
-                        { profile: "ci", block: "critical only", warn: "high+", use: "CI/CD pipelines where false positives break builds." },
                         { profile: "balanced", block: "high+", warn: "low+", use: "General-purpose. More verbose than strict." },
                         { profile: "permissive", block: "critical only", warn: "high+", use: "Low-noise. For mature pipelines with established baselines." },
+                        { profile: "ci", block: "critical only", warn: "high+", use: "CI/CD pipelines where false positives break builds." },
                         { profile: "enterprise", block: "high+", warn: "medium+", use: "Like strict, but with additional enterprise-specific rules enabled." },
-                        { profile: "paranoid", block: "medium+", warn: "low+", use: "Maximum sensitivity. For marketplace ingestion and third-party skill audits. Expect elevated FP rate." },
                         { profile: "observe", block: "never", warn: "all", use: "Audit mode. Never fails the build. Useful for initial rollout." },
                       ].map((row) => (
                         <tr key={row.profile} style={{ borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)" }}>
@@ -1132,7 +1126,7 @@ verdict=block  score=180  findings=1  exit=1`} />
                 </div>
 
                 <CodeBlock code={`# Use a built-in profile
-skillscan scan ./skills/ --policy ci
+skillscan scan ./skills/ --profile ci
 
 # Use a custom policy file
 skillscan scan ./skills/ --policy ./my-policy.yaml`} />
@@ -1194,7 +1188,7 @@ rules:
 echo "Use sk-internal-abc123def456ghi789jkl012mno345pq to authenticate" > test.md
 
 # Test the rule
-skillscan rule test --rules my-rules.yaml --fixture test.md
+skillscan rule test my-rules.yaml test.md
 # CUSTOM-001 matched: sk-internal-... @ test.md:1`} />
 
                 <SubTitle>Run with custom rules</SubTitle>
@@ -1249,7 +1243,7 @@ skillscan rule test --rules my-rules.yaml --fixture test.md
                     <tbody>
                       {[
                         { layer: "Static rules", what: "Add, override, or disable any pattern", how: "--rules my-rules.yaml  |  # skillscan-suppress: RULE-ID" },
-                        { layer: "Policy profiles", what: "Fail threshold, severity mapping", how: "--policy strict|ci|paranoid|audit|minimal" },
+                        { layer: "Policy profiles", what: "Fail threshold, severity mapping", how: "--profile strict|ci|balanced|permissive|enterprise|observe" },
                         { layer: "Chain rules", what: "Multi-signal correlation logic", how: "chain_rules block in custom YAML" },
                         { layer: "Vuln / IOC DB", what: "CVE and IOC entries", how: "skillscan intel update" },
                         { layer: "Lint rules", what: "Style and quality checks", how: ".skillscan-lint.toml in project root" },
@@ -1267,12 +1261,13 @@ skillscan rule test --rules my-rules.yaml --fixture test.md
                 </div>
 
                 <SubTitle>Policy profiles</SubTitle>
-                <Prose>Five built-in profiles cover the most common deployment contexts:</Prose>
-                <CodeBlock code={`skillscan scan ./skills/ --policy strict    # fail on warn+
-skillscan scan ./skills/ --policy ci        # fail on block only (default for CI)
-skillscan scan ./skills/ --policy paranoid  # fail on info+, stricter ML threshold
-skillscan scan ./skills/ --policy audit     # never fail, always emit full report
-skillscan scan ./skills/ --policy minimal   # static rules only, no ML`} />
+                <Prose>Six built-in profiles cover the most common deployment contexts:</Prose>
+                <CodeBlock code={`skillscan scan ./skills/ --profile strict      # fail on high+ (default)
+skillscan scan ./skills/ --profile balanced    # fail on high+, warn on low+
+skillscan scan ./skills/ --profile permissive  # fail on critical only
+skillscan scan ./skills/ --profile ci          # fail on critical only (CI-optimized)
+skillscan scan ./skills/ --profile enterprise  # fail on high+, enterprise rules enabled
+skillscan scan ./skills/ --profile observe     # never fail, always emit full report`} />
 
                 <SubTitle>Inline suppression</SubTitle>
                 <Prose>
@@ -1324,11 +1319,11 @@ EXF-003  skills/analytics.md    Intentional telemetry, reviewed 2026-03-01`} />
                   <div>
                     <p className="text-sm font-semibold mb-1" style={{ color: "oklch(0.88 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>Layer 6 — ML Classifier is intentionally fixed</p>
                     <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
-                      The DeBERTa-v3 + LoRA model is a frozen ONNX artifact. Its weights cannot be overridden
+                      The Qwen2.5-1.5B model is a frozen GGUF artifact. Its weights cannot be overridden
                       by rules or policy files. This is by design: the model provides a detection signal that
                       is independent of your local configuration, making it resistant to evasion by a skill
                       author who knows your rule set. The model is retrained periodically as the corpus grows;
-                      updates are distributed via <InlineCode>skillscan model update</InlineCode>.
+                      updates are distributed via <InlineCode>skillscan model install</InlineCode>.
                     </p>
                     <a
                       href="/model"

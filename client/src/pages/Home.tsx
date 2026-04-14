@@ -13,7 +13,7 @@ import TerminalDemo from "@/components/TerminalDemo";
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663340703543/GpzBjr25jP63Hgax7fEfrw/hero-bg_24844349.png";
 
 const INSTALL_CMD = "pip install skillscan-security";
-const SCAN_CMD = "skillscan scan ./skills/ --format sarif -o results.sarif";
+const SCAN_CMD = "skillscan scan ./skills/ --format sarif --out results.sarif";
 const LINT_INSTALL_CMD = "pip install skillscan-lint";
 const TRACE_INSTALL_CMD = "pip install skillscan-trace";
 
@@ -508,7 +508,7 @@ export default function Home() {
                     className="ml-3 text-xs"
                     style={{ color: "oklch(0.45 0.012 265)", fontFamily: "'JetBrains Mono', monospace" }}
                   >
-                    skillscan scan ./skills/ --format compact
+                    skillscan scan ./skills/
                   </span>
                 </div>
                 {/* Output lines — real compact format */}
@@ -645,10 +645,10 @@ export default function Home() {
               className="text-3xl sm:text-4xl font-bold mb-4"
               style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}
             >
-              Eight detection layers. One verdict.
+              Eleven detection layers. One verdict.
             </h2>
             <p className="text-base max-w-2xl mx-auto" style={{ color: "oklch(0.60 0.015 265)" }}>
-              Eight independent detection layers, all running offline. Rules catch known patterns. The stemmed scorer catches distributed intent. The ML layer catches novel phrasing no rule can express.
+              Eleven independent detection layers, all running offline. Rules catch known patterns. The stemmed scorer catches distributed intent. The ML layer catches novel phrasing no rule can express.
             </p>
           </div>
 
@@ -663,14 +663,17 @@ export default function Home() {
               </thead>
               <tbody>
                 {[
-                  { n: "1", mech: "IOC matching", detail: "Intel DB scan (5,500 entries: domains, IPs, CIDRs)", catches: "Known malicious domains and IPs embedded in skill content", accent: "oklch(0.65 0.22 25)" },
-                  { n: "2", mech: "Static rules", detail: "Regex pattern matching (156 rules across 9 categories)", catches: "Known attack patterns, structural violations, dangerous constructs", accent: "oklch(0.72 0.19 45)" },
-                  { n: "3", mech: "Python AST data-flow", detail: "Source-to-sink taint analysis (.py files only)", catches: "Secret → decode → exec/network flows in embedded Python scripts", accent: "oklch(0.70 0.15 160)" },
-                  { n: "4", mech: "Stemmed feature scorer", detail: "Porter-stemmed axis scoring (prompt injection + social engineering)", catches: "Multi-sentence intent distributed across text — jailbreaks, credential harvest instructions not caught by single-line rules", accent: "oklch(0.65 0.18 200)" },
-                  { n: "5", mech: "Skill graph analysis", detail: "Graph-based PSV rules", catches: "Tool drift, circular dependencies, permission scope violations", accent: "oklch(0.68 0.16 80)" },
-                  { n: "6", mech: "ML classifier", detail: "DeBERTa-v3 + LoRA  ·  Beta  ·  v11 in training", catches: "Novel phrasing, obfuscated attacks, and semantic patterns no rule or scorer can express", accent: "oklch(0.78 0.18 290)", highlight: true },
-                  { n: "7", mech: "Vuln DB matching", detail: "Dependency scan (28 Python pkgs, 23 npm pkgs, 166 versions)", catches: "Known-vulnerable package versions in requirements.txt / package.json", accent: "oklch(0.60 0.20 320)" },
-                  { n: "8", mech: "ClamAV", detail: "Signature-based AV scan (optional, via --clamav)", catches: "Known malware signatures in embedded script files (.py, .sh, .js…)", accent: "oklch(0.62 0.20 340)" },
+                  { n: "1", mech: "Static regex rules", detail: `Regex pattern matching (${ruleCount}+ rules across 12 categories)`, catches: "Known attack patterns, structural violations, dangerous constructs", accent: "oklch(0.72 0.19 45)" },
+                  { n: "2", mech: "Chain rules", detail: "Multi-signal correlation across rules", catches: "Compound attacks — e.g. download+execute, MCP poisoning + credential access", accent: "oklch(0.65 0.22 25)" },
+                  { n: "3", mech: "Multilang rules", detail: "Cross-language pattern matching", catches: "Attacks spanning multiple languages or encodings within a skill file", accent: "oklch(0.68 0.16 80)" },
+                  { n: "4", mech: "Python AST data-flow", detail: "Source-to-sink taint analysis (.py files only)", catches: "Secret → decode → exec/network flows in embedded Python scripts", accent: "oklch(0.70 0.15 160)" },
+                  { n: "5", mech: "IOC matching", detail: "Intel DB scan (5,500 entries: domains, IPs, CIDRs)", catches: "Known malicious domains and IPs embedded in skill content", accent: "oklch(0.65 0.18 200)" },
+                  { n: "6", mech: "Vuln DB matching", detail: "Dependency scan (28 Python pkgs, 23 npm pkgs, 166 versions)", catches: "Known-vulnerable package versions in requirements.txt / package.json", accent: "oklch(0.60 0.20 320)" },
+                  { n: "7", mech: "Binary artifact detection", detail: "Embedded binary and encoded payload detection", catches: "Base64-encoded executables, obfuscated scripts, embedded binaries in skill files", accent: "oklch(0.62 0.20 340)" },
+                  { n: "8", mech: "ML classifier", detail: "Qwen2.5-1.5B  ·  Beta  ·  v4", catches: "Novel phrasing, obfuscated attacks, and semantic patterns no rule or scorer can express", accent: "oklch(0.78 0.18 290)", highlight: true },
+                  { n: "9", mech: "Skill graph analysis", detail: "Graph-based PSV rules (optional)", catches: "Tool drift, circular dependencies, permission scope violations", accent: "oklch(0.55 0.24 280)" },
+                  { n: "10", mech: "ClamAV", detail: "Signature-based AV scan (optional, via --clamav)", catches: "Known malware signatures in embedded script files (.py, .sh, .js…)", accent: "oklch(0.58 0.18 270)" },
+                  { n: "11", mech: "Stemmed feature scorer", detail: "Porter-stemmed axis scoring (prompt injection + social engineering)", catches: "Multi-sentence intent distributed across text — jailbreaks, credential harvest instructions not caught by single-line rules", accent: "oklch(0.63 0.20 15)" },
                 ].map((row) => (
                   <tr
                     key={row.n}
@@ -762,7 +765,7 @@ export default function Home() {
             </h2>
             <p className="text-base leading-relaxed" style={{ color: "oklch(0.62 0.015 265)" }}>
               Every detection layer is a dial you control — your rules, your thresholds, your policy profiles.
-              The one exception is the ML classifier: a frozen ONNX artifact that acts as a tamper-resistant
+              The one exception is the ML classifier: a frozen GGUF artifact that acts as a tamper-resistant
               trust anchor. A malicious skill author can craft patterns to evade your custom rules.
               They cannot retrain the model.
             </p>
@@ -779,8 +782,8 @@ export default function Home() {
               {
                 icon: <Sliders className="w-4 h-4" />,
                 title: "Policy Profiles",
-                desc: "Choose strict, ci, paranoid, audit, or minimal — or define your own threshold and severity mapping.",
-                code: "skillscan scan ./skills/ --policy paranoid",
+                desc: "Choose strict, balanced, permissive, ci, enterprise, or observe — or define your own threshold and severity mapping.",
+                code: "skillscan scan ./skills/ --profile enterprise",
               },
               {
                 icon: <Link2 className="w-4 h-4" />,
@@ -847,9 +850,9 @@ export default function Home() {
               <Lock className="w-5 h-5" style={{ color: "oklch(0.72 0.22 25)" }} />
             </div>
             <div>
-              <p className="text-sm font-semibold mb-1" style={{ color: "oklch(0.88 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>Layer 6 — ML Classifier is intentionally fixed</p>
+              <p className="text-sm font-semibold mb-1" style={{ color: "oklch(0.88 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>Layer 8 — ML Classifier is intentionally fixed</p>
               <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
-                The DeBERTa-v3 + LoRA model is a frozen ONNX artifact. Its weights are not configurable and
+                The Qwen2.5-1.5B model is a frozen GGUF artifact. Its weights are not configurable and
                 cannot be overridden by rules or policy files. This is by design: the model provides a
                 detection signal that is independent of your local configuration, making it resistant to
                 evasion by a skill author who knows your rule set.
