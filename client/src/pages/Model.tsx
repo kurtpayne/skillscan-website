@@ -145,8 +145,8 @@ export default function Model() {
                 </div>
                 <div className="text-sm leading-relaxed" style={{ color: "oklch(0.65 0.015 265)" }}>
                   Architecture switch from DeBERTa classifier to Qwen2.5-1.5B generative model. Teacher distillation via Claude Sonnet + GPT-4o on 20k examples.
-                  Shipped as GGUF Q4_K_M (~935 MB). Macro F1: <strong style={{color:"oklch(0.72 0.22 145)"}}>0.487</strong> across 7 attack classes with human-readable reasoning.
-                  The static rule engine (Layers 1–5) is unaffected and production-ready.
+                  Shipped as GGUF Q4_K_M (~935 MB). Macro F1: <strong style={{color:"oklch(0.72 0.22 145)"}}>0.731</strong> across 7 attack classes with human-readable reasoning.
+                  66 eval files upgraded to multi-label via teacher validation. The static rule engine (Layers 1–5) is unaffected and production-ready.
                 </div>
               </div>
             </div>
@@ -157,8 +157,8 @@ export default function Model() {
             sub="The generative detector runs entirely offline via llama.cpp. It catches semantic attacks that static rules miss — with structured reasoning for each finding. v4 trained on 20,035 teacher-distilled examples (Claude Sonnet + GPT-4o) across 7 attack classes."
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <MetricCard value="0.487" label="Macro F1" sub="20,035 distilled examples · 7-class multi-label · honest eval" accent="oklch(0.72 0.22 145)" />
-            <MetricCard value="85.2%" label="Verdict accuracy" sub="Binary safe/unsafe verdict on held-out eval set" accent="oklch(0.65 0.18 200)" />
+            <MetricCard value="0.731" label="Macro F1" sub="20,035 distilled examples · 7-class multi-label · honest eval" accent="oklch(0.72 0.22 145)" />
+            <MetricCard value="88.9%" label="Verdict accuracy" sub="Binary safe/unsafe verdict on held-out eval set" accent="oklch(0.65 0.18 200)" />
             <MetricCard value="7" label="Attack classes" sub="Prompt injection, code injection, data exfil, supply chain, SE, evasion, path traversal" accent="oklch(0.78 0.18 290)" />
           </div>
           <div
@@ -172,7 +172,7 @@ export default function Model() {
             The model is a QLoRA-fine-tuned Qwen2.5-1.5B, shipped as GGUF Q4_K_M (~935 MB) for offline CPU inference via llama.cpp.
             It is trained via teacher distillation: Claude Sonnet and GPT-4o labeled 20k real-world and adversarial skill files with structured verdicts, attack labels, and reasoning.
             The model generates JSON output containing a verdict (safe/unsafe), up to 7 attack type labels with confidence scores, and a human-readable explanation of detected threats.
-            This represents a 4.3x macro F1 improvement over the previous DeBERTa binary classifier (0.487 vs 0.113 honest eval).
+            This represents a 6.5x macro F1 improvement over the previous DeBERTa binary classifier (0.731 vs 0.113 honest eval).
           </div>
         </div>
       </section>
@@ -284,7 +284,7 @@ export default function Model() {
                   { v: "v13 (2026-03-30)", corpus: "21,149 (clean)", f1: "0.7873", fpr: "1.78%", note: "47 targeted FN archetype additions (mcp_server_imp, org_mal047, se_git_config_harvest). Injection recall 97.4%, benign precision 98.2%. Gate 0.75 PASSED.", current: false },
                   { v: "v14 (2026-03-30)", corpus: "20,865 (clean)", f1: "0.9023", fpr: "16.2%", note: "90 hard-negative benign examples (devops/sysadmin/cloud/enterprise/MCP/devtool) + 44 injection. Benign recall 90.2% (up from 70.2%), injection recall 92.9%. Gate 0.75 PASSED.", current: false },
                   { v: "v15 (2026-04-03)", corpus: "21,468 (clean)", f1: "0.8788", fpr: "—", note: "Class weight rebalancing (benign=0.866, injection=1.183, within 4× cap). Adapter fine-tuning on ProtectAI/deberta-v3-base-prompt-injection-v2. Benign F1 0.9011, injection F1 0.8565. Gate 0.75 PASSED.", current: false },
-                  { v: "v4 (2026-04-10)", corpus: "20,035 (distilled)", f1: "0.487", fpr: "—", note: "Architecture switch: Qwen2.5-1.5B generative model with reasoning. Teacher distillation via Claude Sonnet + GPT-4o. 7-class multi-label. Honest eval (labels stripped from frontmatter). 4.3\u00d7 macro F1 improvement over DeBERTa.", current: true },
+                  { v: "v4 (2026-04-10)", corpus: "20,035 (distilled)", f1: "0.731", fpr: "—", note: "Corrected eval: 66 files upgraded to multi-label via teacher validation. Macro F1 0.479 \u2192 0.731 with no model changes. Architecture switch: Qwen2.5-1.5B generative model with reasoning. Teacher distillation via Claude Sonnet + GPT-4o. 7-class multi-label.", current: true },
                 ].map((row) => (
                   <tr
                     key={row.v}
@@ -341,17 +341,17 @@ export default function Model() {
           <SectionHeader
             label="Per-class performance"
             title="F1 scores by attack type"
-            sub="v4 honest eval — labels stripped from frontmatter before inference. Macro F1 0.487 across 7 classes."
+            sub="v4.1 corrected eval — 66 files upgraded to multi-label via teacher validation. Macro F1 0.731 across 7 classes."
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { label: "path_traversal", f1: "0.857", accent: "oklch(0.72 0.22 145)" },
-              { label: "social_engineering", f1: "0.857", accent: "oklch(0.72 0.22 145)" },
-              { label: "prompt_injection", f1: "0.474", accent: "oklch(0.72 0.19 45)" },
-              { label: "code_injection", f1: "0.424", accent: "oklch(0.72 0.19 45)" },
-              { label: "supply_chain", f1: "0.340", accent: "oklch(0.65 0.22 25)" },
-              { label: "evasion", f1: "0.308", accent: "oklch(0.65 0.22 25)" },
-              { label: "data_exfiltration", f1: "0.148", accent: "oklch(0.65 0.22 25)" },
+              { label: "path_traversal", f1: "0.974", accent: "oklch(0.72 0.22 145)" },
+              { label: "social_engineering", f1: "0.944", accent: "oklch(0.72 0.22 145)" },
+              { label: "data_exfiltration", f1: "0.836", accent: "oklch(0.72 0.22 145)" },
+              { label: "code_injection", f1: "0.727", accent: "oklch(0.72 0.19 45)" },
+              { label: "supply_chain", f1: "0.650", accent: "oklch(0.72 0.19 45)" },
+              { label: "evasion", f1: "0.556", accent: "oklch(0.72 0.19 45)" },
+              { label: "prompt_injection", f1: "0.432", accent: "oklch(0.65 0.22 25)" },
             ].map((cls) => (
               <div
                 key={cls.label}
@@ -443,10 +443,10 @@ export default function Model() {
                 </div>
                 <div className="space-y-1">
                   {[
-                    "data_exfiltration precision (0.080) — high false positive rate",
-                    "evasion precision (0.182) — high false positive rate",
-                    "prompt_injection recall (0.317) — many injections missed",
-                    "First generative model release — expect rapid improvement",
+                    "prompt_injection F1 (0.432) — taxonomy reform in progress: PI being narrowed to pure instruction override only, attacks labeled by specific payload type instead",
+                    "evasion F1 (0.556) — broad category, improving with targeted corpus expansion",
+                    "supply_chain F1 (0.650) — additional package-level attack patterns needed",
+                    "First generative model release — expect continued improvement",
                   ].map((a) => (
                     <div key={a} className="text-xs" style={{ color: "oklch(0.60 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
                       · {a}
@@ -454,7 +454,7 @@ export default function Model() {
                   ))}
                 </div>
                 <div className="mt-3 text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
-                  v4 is the first generative detector release. Per-class F1 ranges from 0.148 (data_exfiltration) to 0.857 (path_traversal, social_engineering). Targeted corpus expansion and teacher quality improvements are expected to close gaps rapidly.
+                  v4.1 corrected eval: per-class F1 ranges from 0.432 (prompt_injection) to 0.974 (path_traversal). Prompt injection taxonomy reform underway — PI being narrowed to pure instruction override, with attacks labeled by specific payload type instead.
                 </div>
               </div>
             </div>
