@@ -626,7 +626,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 8-LAYER DETECTION FRAMEWORK ── */}
+      {/* ── DETECTION FRAMEWORK ── */}
       <section className="py-24">
         <div className="container">
           <div className="text-center mb-14">
@@ -645,108 +645,185 @@ export default function Home() {
               className="text-3xl sm:text-4xl font-bold mb-4"
               style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}
             >
-              Eleven detection layers. One verdict.
+              Three layers of defense. One verdict.
             </h2>
             <p className="text-base max-w-2xl mx-auto" style={{ color: "oklch(0.60 0.015 265)" }}>
-              Eleven independent detection layers, all running offline. Rules catch known patterns. The stemmed scorer catches distributed intent. The ML layer catches novel phrasing no rule can express.
+              Rule-based detection catches known patterns. The ML classifier catches novel phrasing no rule can express. Third-party integrations extend coverage with external engines. All running offline.
             </p>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
-              <thead>
-                <tr style={{ borderBottom: "1px solid oklch(0.58 0.22 290 / 0.15)" }}>
-                  <th className="text-left py-3 pr-6 text-xs font-semibold uppercase tracking-wider" style={{ color: "oklch(0.55 0.015 265)", width: "2rem" }}>Layer</th>
-                  <th className="text-left py-3 pr-6 text-xs font-semibold uppercase tracking-wider" style={{ color: "oklch(0.55 0.015 265)" }}>Mechanism</th>
-                  <th className="text-left py-3 text-xs font-semibold uppercase tracking-wider" style={{ color: "oklch(0.55 0.015 265)" }}>What it catches</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { n: "1", mech: "Static regex rules", detail: `Regex pattern matching (${ruleCount}+ rules across 12 categories)`, catches: "Known attack patterns, structural violations, dangerous constructs", accent: "oklch(0.72 0.19 45)" },
-                  { n: "2", mech: "Chain rules", detail: "Multi-signal correlation across rules", catches: "Compound attacks — e.g. download+execute, MCP poisoning + credential access", accent: "oklch(0.65 0.22 25)" },
-                  { n: "3", mech: "Multilang rules", detail: "Cross-language pattern matching", catches: "Attacks spanning multiple languages or encodings within a skill file", accent: "oklch(0.68 0.16 80)" },
-                  { n: "4", mech: "Python AST data-flow", detail: "Source-to-sink taint analysis (.py files only)", catches: "Secret → decode → exec/network flows in embedded Python scripts", accent: "oklch(0.70 0.15 160)" },
-                  { n: "5", mech: "IOC matching", detail: "Intel DB scan (5,500 entries: domains, IPs, CIDRs)", catches: "Known malicious domains and IPs embedded in skill content", accent: "oklch(0.65 0.18 200)" },
-                  { n: "6", mech: "Vuln DB matching", detail: "Dependency scan (28 Python pkgs, 23 npm pkgs, 166 versions)", catches: "Known-vulnerable package versions in requirements.txt / package.json", accent: "oklch(0.60 0.20 320)" },
-                  { n: "7", mech: "Binary artifact detection", detail: "Embedded binary and encoded payload detection", catches: "Base64-encoded executables, obfuscated scripts, embedded binaries in skill files", accent: "oklch(0.62 0.20 340)" },
-                  { n: "8", mech: "ML classifier", detail: "Qwen2.5-1.5B  ·  Beta  ·  v4", catches: "Novel phrasing, obfuscated attacks, and semantic patterns no rule or scorer can express", accent: "oklch(0.78 0.18 290)", highlight: true },
-                  { n: "9", mech: "Skill graph analysis", detail: "Graph-based PSV rules (optional)", catches: "Tool drift, circular dependencies, permission scope violations", accent: "oklch(0.55 0.24 280)" },
-                  { n: "10", mech: "ClamAV", detail: "Signature-based AV scan (optional, via --clamav)", catches: "Known malware signatures in embedded script files (.py, .sh, .js…)", accent: "oklch(0.58 0.18 270)" },
-                  { n: "11", mech: "Stemmed feature scorer", detail: "Porter-stemmed axis scoring (prompt injection + social engineering)", catches: "Multi-sentence intent distributed across text — jailbreaks, credential harvest instructions not caught by single-line rules", accent: "oklch(0.63 0.20 15)" },
-                ].map((row) => (
-                  <tr
-                    key={row.n}
-                    onClick={row.highlight ? () => window.location.href = '/model' : undefined}
-                    style={{
-                      borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)",
-                      background: row.highlight ? "oklch(0.58 0.22 290 / 0.06)" : "transparent",
-                      cursor: row.highlight ? "pointer" : "default",
-                      transition: "background 0.15s ease",
-                    }}
-                    onMouseEnter={row.highlight ? (e) => { (e.currentTarget as HTMLElement).style.background = "oklch(0.58 0.22 290 / 0.12)"; } : undefined}
-                    onMouseLeave={row.highlight ? (e) => { (e.currentTarget as HTMLElement).style.background = "oklch(0.58 0.22 290 / 0.06)"; } : undefined}
-                  >
-                    <td className="py-4 pr-6">
-                      <span
-                        className="inline-flex items-center justify-center w-6 h-6 rounded text-xs font-bold"
-                        style={{
-                          background: `${row.accent} / 0.15`,
-                          color: row.accent,
-                          fontFamily: "'JetBrains Mono', monospace",
-                        }}
-                      >
-                        {row.n}
-                      </span>
-                    </td>
-                    <td className="py-4 pr-6">
-                      <div className="font-semibold mb-0.5" style={{ color: row.highlight ? "oklch(0.88 0.18 290)" : "oklch(0.88 0.005 265)" }}>
-                        {row.mech}
-                        {row.highlight && (
-                          <>
-                            <span
-                              className="ml-2 px-1.5 py-0.5 rounded text-xs"
-                              style={{
-                                background: "oklch(0.58 0.22 290 / 0.20)",
-                                color: "oklch(0.78 0.18 290)",
-                                fontFamily: "'JetBrains Mono', monospace",
-                              }}
-                            >
-                              ML
-                            </span>
-                            <span
-                              className="ml-2 text-xs"
-                              style={{ color: "oklch(0.58 0.22 290 / 0.70)", fontFamily: "'Inter', sans-serif" }}
-                            >
-                              → view model
-                            </span>
-                          </>
-                        )}
-                      </div>
-                      <div className="text-xs" style={{ color: "oklch(0.50 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
-                        {row.detail}
-                      </div>
-                    </td>
-                    <td className="py-4 text-sm" style={{ color: "oklch(0.62 0.015 265)" }}>
-                      {row.catches}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="mt-8 text-center">
-            <a
-              href="/model"
-              className="inline-flex items-center gap-2 text-sm font-semibold transition-colors duration-200"
-              style={{ color: "oklch(0.78 0.18 290)" }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.88 0.18 290)")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)")}
+          <div className="grid gap-8 md:grid-cols-3">
+            {/* ── Rule-based detection ── */}
+            <div
+              className="rounded-xl p-6"
+              style={{
+                background: "oklch(0.14 0.020 265)",
+                border: "1px solid oklch(0.72 0.19 45 / 0.20)",
+              }}
             >
-              ML model details, architecture, and evaluation history
-              <ChevronRight className="w-4 h-4" />
-            </a>
+              <div className="flex items-center gap-3 mb-5">
+                <div
+                  className="w-10 h-10 rounded-lg flex items-center justify-center"
+                  style={{ background: "oklch(0.72 0.19 45 / 0.15)" }}
+                >
+                  <Shield className="w-5 h-5" style={{ color: "oklch(0.72 0.19 45)" }} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}>
+                    Rule-based detection
+                  </h3>
+                  <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>Deterministic, zero-config, instant</p>
+                </div>
+              </div>
+              <p className="text-sm mb-5" style={{ color: "oklch(0.62 0.015 265)" }}>
+                {ruleCount}+ static rules, chain correlation, multilang analysis, AST data-flow, graph-based structural checks, and stemmed semantic scoring. Includes continuously updated threat intelligence with 5,500+ IOCs and vulnerable package detection.
+              </p>
+              <div className="space-y-3">
+                {[
+                  { label: "Static regex rules", detail: `${ruleCount}+ rules across 12 categories` },
+                  { label: "Chain rules", detail: "Multi-signal correlation (e.g. download + execute)" },
+                  { label: "Multilang rules", detail: "Language-gated patterns for .js, .ts, .py, .go, .rs" },
+                  { label: "Python AST data-flow", detail: "Source-to-sink taint analysis" },
+                  { label: "IOC matching", detail: "5,500+ domains, IPs, CIDRs" },
+                  { label: "Vuln DB matching", detail: "Known-vulnerable package versions" },
+                  { label: "Binary artifact detection", detail: "Embedded executables and encoded payloads" },
+                  { label: "Skill graph analysis", detail: "Cross-file permission scope violations" },
+                  { label: "Stemmed feature scorer", detail: "Distributed intent across sentences" },
+                ].map((item) => (
+                  <div key={item.label} className="flex gap-2 items-start">
+                    <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: "oklch(0.72 0.19 45 / 0.50)" }} />
+                    <div>
+                      <span className="text-xs font-semibold" style={{ color: "oklch(0.80 0.008 265)" }}>{item.label}</span>
+                      <span className="text-xs ml-1" style={{ color: "oklch(0.50 0.015 265)" }}> — {item.detail}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <a
+                href="/rules"
+                className="inline-flex items-center gap-1 text-xs mt-5 font-semibold transition-colors duration-200"
+                style={{ color: "oklch(0.72 0.19 45)" }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.82 0.19 45)")}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.72 0.19 45)")}
+              >
+                Browse all rules <ChevronRight className="w-3 h-3" />
+              </a>
+            </div>
+
+            {/* ── ML classifier ── */}
+            <div
+              className="rounded-xl p-6"
+              style={{
+                background: "oklch(0.14 0.020 265)",
+                border: "1px solid oklch(0.78 0.18 290 / 0.25)",
+              }}
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <div
+                  className="w-10 h-10 rounded-lg flex items-center justify-center"
+                  style={{ background: "oklch(0.58 0.22 290 / 0.15)" }}
+                >
+                  <FlaskConical className="w-5 h-5" style={{ color: "oklch(0.78 0.18 290)" }} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}>
+                    ML classifier
+                  </h3>
+                  <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>Catches what rules can't express</p>
+                </div>
+              </div>
+              <p className="text-sm mb-5" style={{ color: "oklch(0.62 0.015 265)" }}>
+                Fine-tuned Qwen2.5-1.5B generative detector. Identifies novel prompt injection, obfuscated attacks, and semantic patterns that no static rule or keyword scorer can match. Runs offline via llama.cpp — no API keys, no network.
+              </p>
+              <div className="space-y-3">
+                {[
+                  { label: "Model", detail: "Qwen2.5-1.5B, GGUF Q4_K_M (~935 MB)" },
+                  { label: "7 attack classes", detail: "With human-readable reasoning" },
+                  { label: "Offline inference", detail: "CPU-only via llama.cpp" },
+                  { label: "Frozen weights", detail: "Independent of your rule config" },
+                ].map((item) => (
+                  <div key={item.label} className="flex gap-2 items-start">
+                    <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: "oklch(0.78 0.18 290 / 0.50)" }} />
+                    <div>
+                      <span className="text-xs font-semibold" style={{ color: "oklch(0.80 0.008 265)" }}>{item.label}</span>
+                      <span className="text-xs ml-1" style={{ color: "oklch(0.50 0.015 265)" }}> — {item.detail}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <a
+                href="/model"
+                className="inline-flex items-center gap-1 text-xs mt-5 font-semibold transition-colors duration-200"
+                style={{ color: "oklch(0.78 0.18 290)" }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.88 0.18 290)")}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)")}
+              >
+                View model card <ChevronRight className="w-3 h-3" />
+              </a>
+            </div>
+
+            {/* ── Integrations ── */}
+            <div
+              className="rounded-xl p-6"
+              style={{
+                background: "oklch(0.14 0.020 265)",
+                border: "1px solid oklch(0.65 0.18 200 / 0.20)",
+              }}
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <div
+                  className="w-10 h-10 rounded-lg flex items-center justify-center"
+                  style={{ background: "oklch(0.65 0.18 200 / 0.15)" }}
+                >
+                  <Link2 className="w-5 h-5" style={{ color: "oklch(0.65 0.18 200)" }} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}>
+                    Integrations
+                  </h3>
+                  <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>Extend coverage with external engines</p>
+                </div>
+              </div>
+              <p className="text-sm mb-5" style={{ color: "oklch(0.62 0.015 265)" }}>
+                Plug in third-party detection engines to extend SkillScan's coverage. Integration findings are scored and reported alongside native detections.
+              </p>
+              <div
+                className="rounded-lg p-4 mb-4"
+                style={{
+                  background: "oklch(0.12 0.018 265)",
+                  border: "1px solid oklch(0.65 0.18 200 / 0.12)",
+                }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <Shield className="w-4 h-4" style={{ color: "oklch(0.65 0.18 200)" }} />
+                  <span className="text-sm font-semibold" style={{ color: "oklch(0.85 0.008 265)" }}>ClamAV</span>
+                  <span
+                    className="px-1.5 py-0.5 rounded text-xs"
+                    style={{
+                      background: "oklch(0.65 0.18 145 / 0.15)",
+                      color: "oklch(0.65 0.18 145)",
+                      fontFamily: "'JetBrains Mono', monospace",
+                    }}
+                  >
+                    available
+                  </span>
+                </div>
+                <p className="text-xs" style={{ color: "oklch(0.55 0.015 265)" }}>
+                  Signature-based antivirus scan of embedded scripts and binaries. Enable with <code style={{ fontFamily: "'JetBrains Mono', monospace", color: "oklch(0.65 0.18 200)" }}>--clamav</code>.
+                </p>
+              </div>
+              <a
+                href="https://github.com/kurtpayne/skillscan-security/issues/new?title=Integration+suggestion:+&labels=enhancement"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs font-semibold transition-colors duration-200"
+                style={{ color: "oklch(0.65 0.18 200)" }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.75 0.18 200)")}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.65 0.18 200)")}
+              >
+                Suggest an integration <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -838,30 +915,6 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Fixed ML anchor callout */}
-          <div
-            className="rounded-xl p-5 flex gap-4 items-start"
-            style={{
-              background: "oklch(0.12 0.025 265 / 0.6)",
-              border: "1px solid oklch(0.65 0.22 25 / 0.30)",
-            }}
-          >
-            <div className="mt-0.5 flex-shrink-0">
-              <Lock className="w-5 h-5" style={{ color: "oklch(0.72 0.22 25)" }} />
-            </div>
-            <div>
-              <p className="text-sm font-semibold mb-1" style={{ color: "oklch(0.88 0.008 265)", fontFamily: "'Space Grotesk', sans-serif" }}>Layer 8 — ML Classifier is intentionally fixed</p>
-              <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
-                The Qwen2.5-1.5B model is a frozen GGUF artifact. Its weights are not configurable and
-                cannot be overridden by rules or policy files. This is by design: the model provides a
-                detection signal that is independent of your local configuration, making it resistant to
-                evasion by a skill author who knows your rule set.
-              </p>
-              <a href="/model" className="inline-flex items-center gap-1 text-xs mt-2 font-semibold" style={{ color: "oklch(0.72 0.22 25)" }}>
-                View model card <ChevronRight className="w-3 h-3" />
-              </a>
-            </div>
-          </div>
         </div>
       </section>
       {/* ── GITHUB ACTIONS CTA ── */}
