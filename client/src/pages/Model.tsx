@@ -456,6 +456,19 @@ export default function Model() {
                 <div className="mt-3 text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
                   v4.1 corrected eval: per-class F1 ranges from 0.432 (prompt_injection) to 0.974 (path_traversal). Prompt injection taxonomy reform underway — PI being narrowed to pure instruction override, with attacks labeled by specific payload type instead.
                 </div>
+                <div className="mt-3 pt-3" style={{ borderTop: "1px solid oklch(0.72 0.19 45 / 0.15)" }}>
+                  <a
+                    href="https://github.com/kurtpayne/skillscan-security/issues/new?template=false-negative.md"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-semibold underline transition-colors duration-200"
+                    style={{ color: "oklch(0.72 0.19 45)" }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.82 0.19 45)")}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.72 0.19 45)")}
+                  >
+                    Model missed an attack? Open a false negative report &rarr;
+                  </a>
+                </div>
               </div>
             </div>
           </div>

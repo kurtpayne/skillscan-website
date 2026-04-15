@@ -7,7 +7,6 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Rules from "./pages/Rules";
 import Docs from "./pages/Docs";
-import Linter from "./pages/Linter";
 import Updates from "./pages/Updates";
 import Feed from "./pages/Feed";
 import Model from "./pages/Model";
@@ -25,7 +24,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/rules" component={Rules} />
       <Route path="/docs" component={Docs} />
-      <Route path="/linter" component={Linter} />
+      <Route path="/linter" component={LintPage} />
       <Route path="/updates" component={Updates} />
       <Route path="/feed" component={Feed} />
       <Route path="/model" component={Model} />

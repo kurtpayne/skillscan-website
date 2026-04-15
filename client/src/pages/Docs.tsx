@@ -234,6 +234,36 @@ export default function Docs() {
                 </p>
               </div>
 
+              {/* ── FP/FN Callout ── */}
+              <div
+                className="rounded-xl p-5"
+                style={{
+                  background: "oklch(0.58 0.22 290 / 0.06)",
+                  border: "1px solid oklch(0.58 0.22 290 / 0.25)",
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <Lock className="w-5 h-5 flex-shrink-0" style={{ color: "oklch(0.78 0.18 290)" }} />
+                  <div>
+                    <span className="text-sm" style={{ color: "oklch(0.80 0.010 265)" }}>
+                      Found a false positive?{" "}
+                      <a
+                        href="https://github.com/kurtpayne/skillscan-security/issues/new?template=false-positive.md"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline font-semibold"
+                        style={{ color: "oklch(0.78 0.18 290)" }}
+                      >
+                        Report it on GitHub &rarr;
+                      </a>
+                    </span>
+                    <span className="text-xs block mt-0.5" style={{ color: "oklch(0.55 0.015 265)" }}>
+                      FP reports feed directly into the training corpus and are reviewed within 5 business days.
+                    </span>
+                  </div>
+                </div>
+              </div>
+
               {/* ── WHAT ARE SKILLS? ── */}
               <section id="what-are-skills">
                 <SectionTitle>What are skills?</SectionTitle>
@@ -421,9 +451,10 @@ skillscan scan ./skills/
 
                 <SubTitle>2. Install the ML model</SubTitle>
                 <Prose>
-                  The ML classifier (Qwen2.5-1.5B, beta) catches semantic attacks and novel jailbreaks
+                  The ML classifier (Qwen2.5-1.5B, v4) catches semantic attacks and novel jailbreaks
                   that static rules cannot express. It runs entirely offline via llama.cpp.
-                  Benchmark metrics will be published with v11.
+                  Macro F1: 0.731 across 7 attack classes. See the{" "}
+                  <a href="/model" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Model page</a> for full metrics.
                 </Prose>
                 <CodeBlock code={`skillscan model install          # downloads from HuggingFace Hub (~935 MB)
 skillscan model status           # shows installed version vs Hub latest

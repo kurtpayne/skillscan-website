@@ -11,13 +11,13 @@ SkillScan is a Python-based command-line tool that scans AI agent skill files (M
 - **Install**: `pip install skillscan-security`
 - **Repository**: https://github.com/kurtpayne/skillscan-security
 - **PyPI**: https://pypi.org/project/skillscan-security/
-- **Docker**: `docker pull kurtpayne/skillscan` (ClamAV included)
+- **Docker**: `docker pull kurtpayne/skillscan-security` (ClamAV included)
 
 ## Detection Coverage
 
 - 181 static detection rules + 14 chain rules = 195 total rules
 - Rule categories: MAL (malware, 67), EXF (exfiltration, 21), SUP (supply chain, 35), PINJ (prompt/pipeline injection, 22), ABU (abuse patterns, 8), PSV (passive surveillance, 14), OBF (obfuscation, 5), SE (social engineering, 3), DEF (defense evasion, 1), EVASION (evasion techniques, 1), EXEC (execution hijack, 2), GR (graph rules, 1), CAP (capability laundering, 1)
-- 8-layer detection architecture: ClamAV AV scan, static regex rules, Python AST dataflow analysis, stemmed feature scorer, chain rules, ML classifier (DeBERTa-v3 + LoRA, F1=0.9752, FPR=1.89%), vulnerability/IOC database, skill graph analysis
+- 8-layer detection architecture: ClamAV AV scan, static regex rules, Python AST dataflow analysis, stemmed feature scorer, chain rules, ML classifier (Qwen2.5-1.5B generative detector, Macro F1=0.731, 7-class multi-label), vulnerability/IOC database, skill graph analysis
 - Detects: MCP tool description poisoning, prompt injection, credential harvesting, Docker socket mounts, privileged container execution, cross-server MCP invocation, stealth instruction concealment, Kubernetes wiper payloads, API traffic hijacking via settings override, SANDWORM_MODE npm worm / McpInject AI toolchain poisoning, Clinejection indirect prompt injection via external data fields (GitHub issue titles, EC2 metadata, CRM comments), Azure MCP Server SSRF privilege escalation (CVE-2026-26118), postmark-mcp BCC email harvesting (MAL-055), Nx/s1ngularity AI CLI weaponization via --dangerously-skip-permissions (MAL-056), mcp-remote OAuth authorization_endpoint command injection CVE-2025-6514 (SUP-023), compromised axios npm versions 1.14.1/0.30.4 TeamPCP RAT dropper (SUP-024), Telnyx PyPI WAV steganography credential stealer (MAL-060), compromised telnyx versions 4.87.1/4.87.2 (SUP-027), NomShub cursor-tunnel sandbox escape and persistence via shell builtins (MAL-061), UNC1069 social engineering lure domain teams.onlivemeet.com targeting npm maintainers (SUP-028)
 - Output formats: SARIF, JUnit XML, compact text, JSON (with provenance blocks)
 - Exit codes: 0 (clean), 1 (findings at threshold), 2 (scan error)
@@ -34,7 +34,7 @@ Every detection layer except the ML classifier is user-configurable:
 - **Output format**: `--format sarif|junit|text|json`
 - **Fail threshold**: `--fail-on block|warn|info` per invocation
 
-The ML classifier (Layer 6) is intentionally fixed — a frozen ONNX artifact that serves as a tamper-resistant trust anchor. Its weights cannot be overridden by custom rules or configuration, which prevents a malicious skill author from crafting patterns that evade detection by manipulating your local rule set.
+The ML classifier (Layer 6) is intentionally fixed — a frozen GGUF model that serves as a tamper-resistant trust anchor. Its weights cannot be overridden by custom rules or configuration, which prevents a malicious skill author from crafting patterns that evade detection by manipulating your local rule set.
 
 Community rule contributions are accepted via GitHub issues using the corpus-submission template.
 
@@ -47,11 +47,11 @@ Uploads SARIF to GitHub Security tab. Configurable fail-on threshold (block/warn
 
 ## ML Model
 
-- Model: kurtpayne/skillscan-deberta-adapter (Hugging Face)
-- Architecture: DeBERTa-v3-base + LoRA adapter, ONNX FP32
-- Training: 18,161 examples
-- F1: 0.9752 | FPR: 1.89%
-- Model card: https://huggingface.co/kurtpayne/skillscan-deberta-adapter
+- Model: kurtpayne/skillscan-detector-v4 (Hugging Face)
+- Architecture: Qwen2.5-1.5B-Instruct, QLoRA fine-tune, GGUF Q4_K_M (~935 MB)
+- Training: 24,328 teacher-distilled examples (Claude Sonnet + GPT-4o), 7 attack classes
+- Macro F1: 0.731 | Verdict accuracy: 88.9%
+- Model card: https://huggingface.co/kurtpayne/skillscan-detector-v4
 
 ## Documentation
 

@@ -34,6 +34,7 @@ const tools = [
 const navLinks = [
   { href: "/rules", label: "Rules" },
   { href: "/docs", label: "Docs" },
+  { href: "/model", label: "Model" },
   { href: "/updates", label: "Updates" },
   { href: "/feed", label: "Feed" },
   { href: "/blog", label: "Blog" },

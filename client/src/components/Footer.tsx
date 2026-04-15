@@ -63,7 +63,7 @@ export default function Footer() {
                 PyPI
               </a>
               <a
-                href="https://hub.docker.com/r/kurtpayne/skillscan"
+                href="https://hub.docker.com/r/kurtpayne/skillscan-security"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 text-sm transition-colors duration-200"
@@ -164,6 +164,8 @@ export default function Footer() {
                 { label: "Contributing", href: "https://github.com/kurtpayne/skillscan-security/blob/main/CONTRIBUTING.md" },
                 { label: "Threat Model", href: "https://github.com/kurtpayne/skillscan-security/blob/main/docs/THREAT_MODEL.md" },
                 { label: "Architecture", href: "https://github.com/kurtpayne/skillscan-security/blob/main/docs/ARCHITECTURE.md" },
+                { label: "Report a False Positive", href: "https://github.com/kurtpayne/skillscan-security/issues/new?template=false-positive.md" },
+                { label: "Report a Missed Attack", href: "https://github.com/kurtpayne/skillscan-security/issues/new?template=false-negative.md" },
                 { label: "Report an Issue", href: "https://github.com/kurtpayne/skillscan-security/issues/new/choose" },
                 { label: "Submit Corpus Sample", href: "https://github.com/kurtpayne/skillscan-security/issues/new?template=corpus-submission.md" },
                 { label: "Open Issues", href: "https://github.com/kurtpayne/skillscan-security/issues" },
