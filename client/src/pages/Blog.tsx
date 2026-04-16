@@ -27,7 +27,7 @@ const posts: Post[] = [
     readTime: "11 min read",
     tags: ["ML / Training", "Generative AI", "Qwen", "Transparency"],
     excerpt:
-      "For months our ML detector was a DeBERTa LoRA adapter that, on a clean eval with labels stripped, landed at macro F1 0.113. We threw it out. Here's the honest story of what went wrong, why encoder-only classifiers are the wrong tool for this problem, and how a Qwen2.5-1.5B model that reasons about code ended up at macro F1 0.731.",
+      "For months our ML detector was a DeBERTa LoRA adapter that, on a clean eval with labels stripped, caught almost nothing. We threw it out. Here's the honest story of what went wrong, why encoder-only classifiers are the wrong tool for this problem, and how a Qwen2.5-1.5B model that reasons about code ended up catching 87.4% of malicious skills at 88.9% verdict accuracy.",
     featured: true,
   },
   {

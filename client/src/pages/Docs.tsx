@@ -453,7 +453,7 @@ skillscan scan ./skills/
                 <Prose>
                   The ML classifier (Qwen2.5-1.5B, v4) catches semantic attacks and novel jailbreaks
                   that static rules cannot express. It runs entirely offline via llama.cpp.
-                  Macro F1: 0.731 across 7 attack classes. See the{" "}
+                  Detection rate: 87.4% on held-out threats; verdict accuracy: 88.9%. See the{" "}
                   <a href="/model" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Model page</a> for full metrics.
                 </Prose>
                 <CodeBlock code={`skillscan model install          # downloads from HuggingFace Hub (~935 MB)
@@ -645,6 +645,13 @@ Options:
   --graph                 Enable skill graph analysis (PSV rules)
   --live-vuln-check       Query OSV.dev in real time for dependencies
                           (augments the bundled static vuln DB; requires network)
+  --vuln-report PATH      Cross-reference a Snyk, Dependabot, or Grype JSON
+                          vulnerability report against the skill's discovered
+                          dependencies. Format is auto-detected. Each match
+                          emits an EXT-VULN-* finding with the external
+                          advisory ID. Generate e.g. with:
+                            snyk test --json > snyk.json
+                            gh api /repos/{owner}/{repo}/dependabot/alerts > dependabot.json
   --virustotal            Submit SHA-256 hashes of embedded binary artifacts to
                           VirusTotal v3 (BYOK — requires VIRUSTOTAL_API_KEY env
                           var or --virustotal-api-key). Free-tier rate limit:
@@ -653,6 +660,14 @@ Options:
                           are not cached.
   --virustotal-api-key K  VirusTotal API key (reads VIRUSTOTAL_API_KEY env var
                           by default; also loaded from a local .env file).
+  --yara-rules DIR        Directory containing .yar/.yara rule files to run
+                          against skill files. Requires: pip install
+                          'skillscan-security[yara]'.
+  --semgrep-rules DIR     Directory containing Semgrep rule YAML files to run
+                          against embedded code in skill bundles. Only code
+                          files (.py/.js/.ts/.sh/.rb/.go/.rs) are inspected.
+                          Requires the semgrep CLI — install with:
+                          pip install 'skillscan-security[semgrep]'.
   --baseline PATH         Compare against a previous JSON scan report
   --no-suppress           Ignore suppression files for this run
   --no-provenance         Omit provenance meta block from JSON output

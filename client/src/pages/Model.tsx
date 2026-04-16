@@ -145,8 +145,8 @@ export default function Model() {
                 </div>
                 <div className="text-sm leading-relaxed" style={{ color: "oklch(0.65 0.015 265)" }}>
                   Architecture switch from DeBERTa classifier to Qwen2.5-1.5B generative model. Teacher distillation via Claude Sonnet + GPT-4o on 20k examples.
-                  Shipped as GGUF Q4_K_M (~935 MB). Macro F1: <strong style={{color:"oklch(0.72 0.22 145)"}}>0.731</strong> across 7 attack classes with human-readable reasoning.
-                  66 eval files upgraded to multi-label via teacher validation. The static rule engine (Layers 1–5) is unaffected and production-ready.
+                  Shipped as GGUF Q4_K_M (~935 MB). Verdict accuracy: <strong style={{color:"oklch(0.72 0.22 145)"}}>88.9%</strong> · threat detection rate: <strong style={{color:"oklch(0.72 0.22 145)"}}>87.4%</strong> on held-out eval,
+                  with human-readable reasoning across 7 attack classes. 66 eval files upgraded to multi-label via teacher validation. The static rule engine (Layers 1–5) is unaffected and production-ready.
                 </div>
               </div>
             </div>
@@ -157,8 +157,8 @@ export default function Model() {
             sub="The generative detector runs entirely offline via llama.cpp. It catches semantic attacks that static rules miss — with structured reasoning for each finding. v4 trained on 20,035 teacher-distilled examples (Claude Sonnet + GPT-4o) across 7 attack classes."
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <MetricCard value="0.731" label="Macro F1" sub="20,035 distilled examples · 7-class multi-label · honest eval" accent="oklch(0.72 0.22 145)" />
-            <MetricCard value="88.9%" label="Verdict accuracy" sub="Binary safe/unsafe verdict on held-out eval set" accent="oklch(0.65 0.18 200)" />
+            <MetricCard value="88.9%" label="Verdict accuracy" sub="Correctly labels malicious vs benign on held-out eval set" accent="oklch(0.72 0.22 145)" />
+            <MetricCard value="87.4%" label="Threat detection rate" sub="146 / 167 actual threats caught on held-out eval set" accent="oklch(0.65 0.18 200)" />
             <MetricCard value="7" label="Attack classes" sub="Prompt injection, code injection, data exfil, supply chain, SE, evasion, path traversal" accent="oklch(0.78 0.18 290)" />
           </div>
           <div
@@ -172,7 +172,7 @@ export default function Model() {
             The model is a QLoRA-fine-tuned Qwen2.5-1.5B, shipped as GGUF Q4_K_M (~935 MB) for offline CPU inference via llama.cpp.
             It is trained via teacher distillation: Claude Sonnet and GPT-4o labeled 20k real-world and adversarial skill files with structured verdicts, attack labels, and reasoning.
             The model generates JSON output containing a verdict (safe/unsafe), up to 7 attack type labels with confidence scores, and a human-readable explanation of detected threats.
-            This represents a 6.5x macro F1 improvement over the previous DeBERTa binary classifier (0.731 vs 0.113 honest eval).
+            On a multi-label categorization metric (how precisely we pick the specific attack type), macro F1 is 0.731 — a 6.5× lift over the previous DeBERTa classifier's 0.113 honest eval. A file correctly flagged as malicious but labeled <code>path_traversal</code> when the gold label is <code>code_injection</code> counts as a partial miss on that metric, even though the verdict is correct.
           </div>
         </div>
       </section>
@@ -340,8 +340,8 @@ export default function Model() {
         <div className="container">
           <SectionHeader
             label="Per-class performance"
-            title="F1 scores by attack type"
-            sub="v4.1 corrected eval — 66 files upgraded to multi-label via teacher validation. Macro F1 0.731 across 7 classes."
+            title="Categorization F1 by attack type"
+            sub="v4.1 corrected eval — 66 files upgraded to multi-label via teacher validation. F1 here measures how precisely the model picks the specific attack type, not whether it catches the file. Headline detection rate (87.4%) and verdict accuracy (88.9%) live above. Macro F1 across 7 classes: 0.731."
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[

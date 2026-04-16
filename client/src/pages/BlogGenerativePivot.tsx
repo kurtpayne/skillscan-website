@@ -80,9 +80,10 @@ export default function BlogGenerativePivot() {
             </h1>
             <p className="text-lg leading-relaxed" style={{ color: "oklch(0.62 0.015 265)" }}>
               For months our ML detector was a DeBERTa-v3-base LoRA adapter that, on a clean eval with labels
-              stripped, landed at macro F1 0.113. We threw it out. This post is the honest story of what went
+              stripped, caught almost nothing. We threw it out. This post is the honest story of what went
               wrong, why encoder-only classifiers are the wrong tool for this problem, and how a 1.5B-parameter
-              generative model that <em>reasons</em> about code ended up at macro F1 0.731.
+              generative model that <em>reasons</em> about code ended up catching 87.4% of malicious skills at
+              88.9% verdict accuracy.
             </p>
           </header>
 
@@ -256,7 +257,11 @@ comment instructs the agent to read raw file content for non-template paths.`} /
               <p>
                 All numbers below are measured on a held-out eval set that has never entered training, with
                 frontmatter labels stripped before tokenization. Verdict accuracy is the top-level
-                malicious/benign/suspicious call; class F1 is per-label multi-label performance.
+                malicious/benign call. Threat detection rate is the share of actual threats the model flagged.
+                Class F1 is per-label multi-label performance — it measures how precisely the model
+                categorizes the specific attack type, so a file correctly flagged as malicious but labeled
+                <InlineCode>path_traversal</InlineCode> when the gold label is <InlineCode>code_injection</InlineCode>
+                counts as a partial miss on this metric, even though the verdict is correct.
               </p>
               <div className="overflow-x-auto rounded-xl my-5" style={{ border: "1px solid oklch(0.58 0.22 290 / 0.15)" }}>
                 <table className="w-full" style={{ borderCollapse: "collapse" }}>
@@ -268,9 +273,9 @@ comment instructs the agent to read raw file content for non-template paths.`} /
                     </tr>
                   </thead>
                   <tbody>
-                    <MetricRow label="Macro F1" oldV="0.113" newV="0.731" better={true} />
                     <MetricRow label="Verdict accuracy" oldV="—" newV="88.9%" better={true} />
-                    <MetricRow label="Threat detection" oldV="—" newV="87.4%" better={true} />
+                    <MetricRow label="Threat detection rate" oldV="—" newV="87.4%" better={true} />
+                    <MetricRow label="Multi-label F1 (categorization)" oldV="0.113" newV="0.731" better={true} />
                     <MetricRow label="path_traversal F1" oldV="0.000" newV="0.974" better={true} />
                     <MetricRow label="social_engineering F1" oldV="0.000" newV="0.944" better={true} />
                     <MetricRow label="prompt_injection F1" oldV="0.540" newV="0.432" better={false} />
@@ -280,13 +285,16 @@ comment instructs the agent to read raw file content for non-template paths.`} /
                 </table>
               </div>
               <p>
-                Path traversal and social engineering jumped from complete failure to 0.974 and 0.944. These
-                are the classes where reasoning matters most — the attacks look benign at the token level and
-                are dangerous only in context. The encoder literally could not see them.
+                The headline is that the model reliably flags bad skills: 87.4% of malicious files are caught
+                and 88.9% of verdicts agree with the gold label. Path traversal and social engineering
+                categorization jumped from complete failure to F1 0.974 and 0.944. These are the classes where
+                reasoning matters most — the attacks look benign at the token level and are dangerous only in
+                context. The encoder literally could not see them.
               </p>
               <p className="mt-4">
-                The weak spot is prompt injection (F1 0.432), which is <em>lower</em> than the encoder's
-                number. That's not a model regression. It's a taxonomy problem we explain below.
+                The weak spot on the categorization metric is prompt injection (F1 0.432), which is
+                <em> lower</em> than the encoder's number. That's not a model regression — the model still
+                catches these files as malicious. It's a taxonomy problem we explain below.
               </p>
             </section>
 
@@ -301,12 +309,13 @@ comment instructs the agent to read raw file content for non-template paths.`} /
                     Measurement matters more than optimization.
                   </p>
                   <p>
-                    The single biggest lift in this entire project — from macro F1 0.479 to 0.731 — came from
-                    <em> zero model changes</em>. Our eval labels were single-class when the attacks were multi-class.
-                    A file that was both path_traversal and prompt_injection was labeled only as one; the
-                    model's correct "both" prediction was scored as a partial miss. We re-ran the teachers
-                    over the eval set with multi-label output, corrected the gold labels, and watched macro
-                    F1 climb 25 points. You cannot optimize a metric that is measuring the wrong thing.
+                    The single biggest lift in this entire project — from multi-label F1 0.479 to 0.731 —
+                    came from <em>zero model changes</em>. Our eval labels were single-class when the attacks
+                    were multi-class. A file that was both path_traversal and prompt_injection was labeled
+                    only as one; the model's correct "both" prediction was scored as a partial miss. We
+                    re-ran the teachers over the eval set with multi-label output, corrected the gold labels,
+                    and watched F1 climb 25 points. You cannot optimize a metric that is measuring the wrong
+                    thing.
                   </p>
                 </div>
                 <div>

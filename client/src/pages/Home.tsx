@@ -412,8 +412,8 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { value: `${ruleCount}+`, label: "Detection Rules" },
-              { value: "0.731", label: "Macro F1 (v4)" },
               { value: "88.9%", label: "Verdict Accuracy" },
+              { value: "87.4%", label: "Threat Detection" },
               { value: "0", label: "Network Calls" },
             ].map((stat, i) => (
               <div
