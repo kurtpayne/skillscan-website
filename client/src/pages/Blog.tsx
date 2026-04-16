@@ -20,6 +20,17 @@ interface Post {
 
 const posts: Post[] = [
   {
+    slug: "/blog/generative-pivot",
+    title: "From Pattern Matching to Reasoning: SkillScan's Pivot to Generative Detection",
+    subtitle: "Why encoder-only classifiers failed and how a 1.5B-param reasoning model replaced them",
+    date: "April 15, 2026",
+    readTime: "11 min read",
+    tags: ["ML / Training", "Generative AI", "Qwen", "Transparency"],
+    excerpt:
+      "For months our ML detector was a DeBERTa LoRA adapter that, on a clean eval with labels stripped, landed at macro F1 0.113. We threw it out. Here's the honest story of what went wrong, why encoder-only classifiers are the wrong tool for this problem, and how a Qwen2.5-1.5B model that reasons about code ended up at macro F1 0.731.",
+    featured: true,
+  },
+  {
     slug: "/blog/skills-security-model",
     title: "The Invisible Attack Surface: How Malicious Instructions Hide in AI Agent Skills",
     subtitle: "A security model for agentic AI",
@@ -28,7 +39,6 @@ const posts: Post[] = [
     tags: ["Security", "AI Agents", "Prompt Injection", "Skills"],
     excerpt:
       "AI agent skills are runbooks written in plain Markdown — not code. But they carry executable intent. We walk through five real attack archetypes, explain where SkillScan fits in the broader security stack, and show exactly what hard-to-spot malicious instructions look like.",
-    featured: true,
   },
   {
     slug: "/blog/v12-training-methodology",
