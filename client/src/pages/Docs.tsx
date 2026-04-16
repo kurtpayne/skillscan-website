@@ -645,6 +645,14 @@ Options:
   --graph                 Enable skill graph analysis (PSV rules)
   --live-vuln-check       Query OSV.dev in real time for dependencies
                           (augments the bundled static vuln DB; requires network)
+  --virustotal            Submit SHA-256 hashes of embedded binary artifacts to
+                          VirusTotal v3 (BYOK — requires VIRUSTOTAL_API_KEY env
+                          var or --virustotal-api-key). Free-tier rate limit:
+                          4 requests/minute. Complements --clamav with cloud AV
+                          coverage. Hashes are cached per-scan; errored lookups
+                          are not cached.
+  --virustotal-api-key K  VirusTotal API key (reads VIRUSTOTAL_API_KEY env var
+                          by default; also loaded from a local .env file).
   --baseline PATH         Compare against a previous JSON scan report
   --no-suppress           Ignore suppression files for this run
   --no-provenance         Omit provenance meta block from JSON output
