@@ -643,6 +643,8 @@ Options:
   --ml-detect             Enable ML classifier (requires model install)
   --no-model              Disable ML classifier even if installed
   --graph                 Enable skill graph analysis (PSV rules)
+  --live-vuln-check       Query OSV.dev in real time for dependencies
+                          (augments the bundled static vuln DB; requires network)
   --baseline PATH         Compare against a previous JSON scan report
   --no-suppress           Ignore suppression files for this run
   --no-provenance         Omit provenance meta block from JSON output
