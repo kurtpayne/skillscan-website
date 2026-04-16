@@ -512,8 +512,8 @@ export default function Rules() {
               Detection Signals
             </h2>
             <p className="text-sm mb-5" style={{ color: "oklch(0.50 0.015 265)" }}>
-              Beyond the named rules above, the scanner uses <strong style={{ color: "oklch(0.70 0.015 265)" }}>23 named detection signals</strong> — regex fragments referenced by chain rules to detect multi-step attack sequences. A chain rule fires when two or more signals co-occur within a sliding line window. These signals account for the difference between the {rules.length} rules shown here and the total detection signal count.{" "}
-              <span style={{ color: "oklch(0.42 0.015 265)", fontStyle: "italic" }}>as of rulepack 2026.04.13.1 — update this count when action_patterns or capability_patterns change in default.yaml</span>
+              Beyond the named rules above, the scanner uses <strong style={{ color: "oklch(0.70 0.015 265)" }}>20 named detection signals</strong> — regex fragments referenced by chain rules to detect multi-step attack sequences. A chain rule fires when two or more signals co-occur within a sliding line window. These signals account for the difference between the {rules.length} rules shown here and the total detection signal count.{" "}
+              <span style={{ color: "oklch(0.42 0.015 265)", fontStyle: "italic" }}>as of rulepack 2026.04.16.1 — update this count when action_patterns or capability_patterns change in default.yaml</span>
             </p>
             <div className="mb-5">
               <h3 className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "oklch(0.65 0.18 200)", fontFamily: "'JetBrains Mono', monospace" }}>Action Patterns (20)</h3>
