@@ -162,7 +162,7 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {[
                 { label: "Contributing", href: "https://github.com/kurtpayne/skillscan-security/blob/main/CONTRIBUTING.md" },
-                { label: "Threat Model", href: "https://github.com/kurtpayne/skillscan-security/blob/main/docs/THREAT_MODEL.md" },
+                { label: "Detection Model", href: "https://github.com/kurtpayne/skillscan-security/blob/main/docs/DETECTION_MODEL.md" },
                 { label: "Architecture", href: "https://github.com/kurtpayne/skillscan-security/blob/main/docs/ARCHITECTURE.md" },
                 { label: "Report a False Positive", href: "https://github.com/kurtpayne/skillscan-security/issues/new?template=false-positive.md" },
                 { label: "Report a Missed Attack", href: "https://github.com/kurtpayne/skillscan-security/issues/new?template=false-negative.md" },
