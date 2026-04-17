@@ -1106,6 +1106,27 @@ jobs:
                   If you do not have a suppression file yet, skip this step or guard it with{" "}
                   <InlineCode>if: hashFiles('.skillscan-suppress.yaml') != ''</InlineCode> to avoid a file-not-found error.
                 </Prose>
+
+                <SubTitle>Report attestation (SLSA provenance)</SubTitle>
+                <Prose>
+                  For cryptographic proof that a scan report was produced in CI — not fabricated —
+                  use GitHub's artifact attestation. This uses Sigstore under the hood. No key management needed.
+                </Prose>
+                <CodeBlock code={`permissions:
+  id-token: write       # Sigstore OIDC
+  attestations: write   # Artifact attestation
+
+steps:
+  - name: Scan
+    run: skillscan scan ./skills/ --format json --out report.json
+
+  - name: Attest scan report
+    uses: actions/attest-build-provenance@v2
+    with:
+      subject-path: report.json`} lang="yaml" />
+                <Prose>
+                  Verify the attestation with: <InlineCode>gh attestation verify report.json --owner your-org</InlineCode>
+                </Prose>
               </section>
 
               {/* ── OUTPUT FORMATS ── */}
