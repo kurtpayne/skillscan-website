@@ -671,6 +671,12 @@ Options:
   --baseline PATH         Compare against a previous JSON scan report
   --no-suppress           Ignore suppression files for this run
   --no-provenance         Omit provenance meta block from JSON output
+  --exclude PATTERN       Glob pattern to exclude files from scanning
+                          (repeatable). E.g., --exclude 'tests/**'
+                          --exclude '*.pyc'. Also accepts SKILLSCAN_EXCLUDE
+                          env var (comma-separated).
+  --no-default-excludes   Disable default exclusion patterns (tests/,
+                          node_modules/, __pycache__/, .git/, .venv/, etc.)
   --max-file-size KB      Skip files larger than this (default: 1024 = 1 MB)
   --timeout SECONDS       Abort entire scan after this many seconds (default: 0 = no limit)
   --help                  Show this message`} />
