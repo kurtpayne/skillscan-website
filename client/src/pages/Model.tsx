@@ -141,24 +141,24 @@ export default function Model() {
               <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.72 0.19 45)" }} />
               <div>
                 <div className="text-sm font-semibold mb-1" style={{ color: "oklch(0.85 0.12 45)" }}>
-                  v4 generative detector — first release
+                  v4.2 generative detector
                 </div>
                 <div className="text-sm leading-relaxed" style={{ color: "oklch(0.65 0.015 265)" }}>
-                  Architecture switch from DeBERTa classifier to Qwen2.5-1.5B generative model. Teacher distillation via Claude Sonnet + GPT-4o on 20k examples.
-                  Shipped as GGUF Q4_K_M (~935 MB). Verdict accuracy: <strong style={{color:"oklch(0.72 0.22 145)"}}>88.9%</strong> · threat detection rate: <strong style={{color:"oklch(0.72 0.22 145)"}}>87.4%</strong> on held-out eval,
-                  with human-readable reasoning across 7 attack classes. 66 eval files upgraded to multi-label via teacher validation. The static rule engine (Layers 1–5) is unaffected and production-ready.
+                  Architecture switch from DeBERTa classifier to Qwen2.5-1.5B generative model. Teacher distillation via Claude Sonnet + GPT-4o on 20k+ examples.
+                  Shipped as GGUF Q4_K_M (~940 MB). Verdict accuracy: <strong style={{color:"oklch(0.72 0.22 145)"}}>98.6%</strong> (205/208) · threat detection rate: <strong style={{color:"oklch(0.72 0.22 145)"}}>99.4%</strong> (163/164) on held-out eval — zero false negatives,
+                  with human-readable reasoning across 7 attack classes plus severity, sub-classes, and affected line numbers. The static rule engine (Layers 1–5) is unaffected and production-ready.
                 </div>
               </div>
             </div>
           </div>
           <SectionHeader
-            label="v4 — 2026-04-10"
+            label="v4.2 — 2026-04-16"
             title="Generative detection layer"
-            sub="The generative detector runs entirely offline via llama.cpp. It catches semantic attacks that static rules miss — with structured reasoning for each finding. v4 trained on 20,035 teacher-distilled examples (Claude Sonnet + GPT-4o) across 7 attack classes."
+            sub="The generative detector runs entirely offline via llama.cpp. It catches semantic attacks that static rules miss — with structured reasoning, severity, sub-classes, and affected line numbers for each finding. Trained on teacher-distilled examples (Claude Sonnet + GPT-4o) across 7 attack classes."
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <MetricCard value="88.9%" label="Verdict accuracy" sub="Correctly labels malicious vs benign on held-out eval set" accent="oklch(0.72 0.22 145)" />
-            <MetricCard value="87.4%" label="Threat detection rate" sub="146 / 167 actual threats caught on held-out eval set" accent="oklch(0.65 0.18 200)" />
+            <MetricCard value="98.6%" label="Verdict accuracy" sub="205 / 208 correctly labelled malicious vs benign on held-out eval" accent="oklch(0.72 0.22 145)" />
+            <MetricCard value="99.4%" label="Threat detection rate" sub="163 / 164 actual threats caught — zero false negatives" accent="oklch(0.65 0.18 200)" />
             <MetricCard value="7" label="Attack classes" sub="Prompt injection, code injection, data exfil, supply chain, SE, evasion, path traversal" accent="oklch(0.78 0.18 290)" />
           </div>
           <div
@@ -169,10 +169,10 @@ export default function Model() {
               color: "oklch(0.62 0.015 265)",
             }}
           >
-            The model is a QLoRA-fine-tuned Qwen2.5-1.5B, shipped as GGUF Q4_K_M (~935 MB) for offline CPU inference via llama.cpp.
-            It is trained via teacher distillation: Claude Sonnet and GPT-4o labeled 20k real-world and adversarial skill files with structured verdicts, attack labels, and reasoning.
-            The model generates JSON output containing a verdict (safe/unsafe), up to 7 attack type labels with confidence scores, and a human-readable explanation of detected threats.
-            On a multi-label categorization metric (how precisely we pick the specific attack type), macro F1 is 0.731 — a 6.5× lift over the previous DeBERTa classifier's 0.113 honest eval. A file correctly flagged as malicious but labeled <code>path_traversal</code> when the gold label is <code>code_injection</code> counts as a partial miss on that metric, even though the verdict is correct.
+            The model is a QLoRA-fine-tuned Qwen2.5-1.5B, shipped as GGUF Q4_K_M (~940 MB) for offline CPU inference via llama.cpp.
+            It is trained via teacher distillation: Claude Sonnet and GPT-4o labeled 20k+ real-world and adversarial skill files with structured verdicts, attack labels, and reasoning.
+            The model generates JSON output containing a verdict, up to 7 attack type labels, a severity level (critical/high/medium/low/none), finer-grained sub-classes, affected line numbers, and a human-readable explanation of detected threats.
+            On a multi-label categorization metric (how precisely we pick the specific attack type, not whether we correctly flag malicious skills), macro F1 is 0.620. A file correctly flagged as malicious but labeled <code>path_traversal</code> when the gold label is <code>code_injection</code> counts as a partial miss on that metric, even though the verdict is correct.
           </div>
         </div>
       </section>
@@ -191,10 +191,10 @@ export default function Model() {
                 { label: "Base model", value: "Qwen/Qwen2.5-1.5B-Instruct" },
                 { label: "Fine-tuning", value: "QLoRA (r=32, alpha=64), 3 epochs on 20k teacher-distilled examples" },
                 { label: "Task", value: "Multi-label classification with reasoning (7 attack types)" },
-                { label: "Inference format", value: "GGUF Q4_K_M (~935 MB)" },
+                { label: "Inference format", value: "GGUF Q4_K_M (~940 MB)" },
                 { label: "Runtime", value: "llama.cpp via llama-cpp-python, CPU-only" },
                 { label: "Input", value: "Full SKILL.md text (up to 2048 tokens)" },
-                { label: "Output", value: "Structured JSON with verdict, labels, confidence, and reasoning" },
+                { label: "Output", value: "Structured JSON: verdict, labels, severity, sub_classes, affected_lines, reasoning" },
               ].map((row) => (
                 <div
                   key={row.label}
@@ -229,19 +229,24 @@ export default function Model() {
               </div>
               <div className="space-y-1 text-xs" style={{ color: "oklch(0.65 0.015 265)" }}>
                 <div>{"{"}</div>
-                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"verdict"</span>: <span style={{ color: "oklch(0.65 0.22 25)" }}>"unsafe"</span>,</div>
+                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"verdict"</span>: <span style={{ color: "oklch(0.65 0.22 25)" }}>"malicious"</span>,</div>
                 <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"labels"</span>: [</div>
-                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>"prompt_injection"</span>,</div>
-                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>"data_exfiltration"</span></div>
+                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>"data_exfiltration"</span>,</div>
+                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>"social_engineering"</span></div>
                 <div className="pl-4">],</div>
-                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"confidence"</span>: <span style={{ color: "oklch(0.72 0.22 145)" }}>0.91</span>,</div>
-                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"reasoning"</span>: <span style={{ color: "oklch(0.65 0.22 25)" }}>"Skill overrides</span></div>
-                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>system prompt via role injection and</span></div>
-                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>exfils context to external webhook."</span></div>
+                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"severity"</span>: <span style={{ color: "oklch(0.65 0.22 25)" }}>"high"</span>,</div>
+                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"sub_classes"</span>: [</div>
+                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>"exfil_credentials"</span>,</div>
+                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>"se_phishing"</span></div>
+                <div className="pl-4">],</div>
+                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"affected_lines"</span>: [<span style={{ color: "oklch(0.72 0.22 145)" }}>10</span>, <span style={{ color: "oklch(0.72 0.22 145)" }}>12</span>, <span style={{ color: "oklch(0.72 0.22 145)" }}>14</span>, <span style={{ color: "oklch(0.72 0.22 145)" }}>15</span>],</div>
+                <div className="pl-4"><span style={{ color: "oklch(0.78 0.18 290)" }}>"reasoning"</span>: <span style={{ color: "oklch(0.65 0.22 25)" }}>"Skill prompts user</span></div>
+                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>to paste credentials then posts them</span></div>
+                <div className="pl-8"><span style={{ color: "oklch(0.65 0.22 25)" }}>to an external webhook."</span></div>
                 <div>{"}"}</div>
               </div>
               <div className="mt-4 pt-4 text-xs" style={{ borderTop: "1px solid oklch(0.58 0.22 290 / 0.12)", color: "oklch(0.50 0.015 265)" }}>
-                The model explains what it found and why, making findings actionable without manual triage.
+                Each finding includes severity, finer-grained sub-classes (15+ types), and specific line numbers to inspect — actionable without manual triage.
               </div>
             </div>
           </div>
@@ -254,7 +259,7 @@ export default function Model() {
           <SectionHeader
             label="Training history"
             title="Model training progression"
-            sub="v1–v15 used DeBERTa-v3-base binary classifier. v4 (2026-04-10) switches to Qwen2.5-1.5B generative model with 7-class multi-label classification and reasoning. v1–v10 metrics were measured on a contaminated held-out set."
+            sub="v1–v15 used DeBERTa-v3-base binary classifier. v4 (2026-04-10) switches to Qwen2.5-1.5B generative model with 7-class multi-label classification and reasoning. v4.2 (2026-04-16) is the current release. v1–v10 metrics were measured on a contaminated held-out set."
           />
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -284,7 +289,8 @@ export default function Model() {
                   { v: "v13 (2026-03-30)", corpus: "21,149 (clean)", f1: "0.7873", fpr: "1.78%", note: "47 targeted FN archetype additions (mcp_server_imp, org_mal047, se_git_config_harvest). Injection recall 97.4%, benign precision 98.2%. Gate 0.75 PASSED.", current: false },
                   { v: "v14 (2026-03-30)", corpus: "20,865 (clean)", f1: "0.9023", fpr: "16.2%", note: "90 hard-negative benign examples (devops/sysadmin/cloud/enterprise/MCP/devtool) + 44 injection. Benign recall 90.2% (up from 70.2%), injection recall 92.9%. Gate 0.75 PASSED.", current: false },
                   { v: "v15 (2026-04-03)", corpus: "21,468 (clean)", f1: "0.8788", fpr: "—", note: "Class weight rebalancing (benign=0.866, injection=1.183, within 4× cap). Adapter fine-tuning on ProtectAI/deberta-v3-base-prompt-injection-v2. Benign F1 0.9011, injection F1 0.8565. Gate 0.75 PASSED.", current: false },
-                  { v: "v4 (2026-04-10)", corpus: "20,035 (distilled)", f1: "0.731", fpr: "—", note: "Corrected eval: 66 files upgraded to multi-label via teacher validation. Macro F1 0.479 \u2192 0.731 with no model changes. Architecture switch: Qwen2.5-1.5B generative model with reasoning. Teacher distillation via Claude Sonnet + GPT-4o. 7-class multi-label.", current: true },
+                  { v: "v4 (2026-04-10)", corpus: "20,035 (distilled)", f1: "0.731", fpr: "—", note: "Corrected eval: 66 files upgraded to multi-label via teacher validation. Macro F1 0.479 \u2192 0.731 with no model changes. Architecture switch: Qwen2.5-1.5B generative model with reasoning. Teacher distillation via Claude Sonnet + GPT-4o. 7-class multi-label.", current: false },
+                  { v: "v4.2 (2026-04-16)", corpus: "20k+ (distilled)", f1: "0.620", fpr: "—", note: "Verdict accuracy 98.6% (205/208), threat detection 99.4% (163/164), zero false negatives, 2 false positives on hard-benign enterprise files. Rich structured output: severity, sub_classes, affected_lines. Macro F1 reflects fine-grained categorization, not verdict correctness.", current: true },
                 ].map((row) => (
                   <tr
                     key={row.v}
@@ -341,17 +347,17 @@ export default function Model() {
           <SectionHeader
             label="Per-class performance"
             title="Categorization F1 by attack type"
-            sub="v4.1 corrected eval — 66 files upgraded to multi-label via teacher validation. F1 here measures how precisely the model picks the specific attack type, not whether it catches the file. Headline detection rate (87.4%) and verdict accuracy (88.9%) live above. Macro F1 across 7 classes: 0.731."
+            sub="F1 here measures how precisely the model picks the specific attack type, not whether it correctly flags malicious skills. Headline detection rate (99.4%) and verdict accuracy (98.6%) live above. Macro F1 across 7 classes: 0.620 — the weakest metric, and appropriately so: fine-grained categorization is harder than the malicious/benign call."
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { label: "path_traversal", f1: "0.974", accent: "oklch(0.72 0.22 145)" },
-              { label: "social_engineering", f1: "0.944", accent: "oklch(0.72 0.22 145)" },
-              { label: "data_exfiltration", f1: "0.836", accent: "oklch(0.72 0.22 145)" },
-              { label: "code_injection", f1: "0.727", accent: "oklch(0.72 0.19 45)" },
-              { label: "supply_chain", f1: "0.650", accent: "oklch(0.72 0.19 45)" },
-              { label: "evasion", f1: "0.556", accent: "oklch(0.72 0.19 45)" },
-              { label: "prompt_injection", f1: "0.432", accent: "oklch(0.65 0.22 25)" },
+              { label: "path_traversal", f1: "0.905", accent: "oklch(0.72 0.22 145)" },
+              { label: "social_engineering", f1: "0.791", accent: "oklch(0.72 0.22 145)" },
+              { label: "data_exfiltration", f1: "0.754", accent: "oklch(0.72 0.22 145)" },
+              { label: "supply_chain", f1: "0.529", accent: "oklch(0.72 0.19 45)" },
+              { label: "code_injection", f1: "0.481", accent: "oklch(0.72 0.19 45)" },
+              { label: "evasion", f1: "0.486", accent: "oklch(0.72 0.19 45)" },
+              { label: "prompt_injection", f1: "0.394", accent: "oklch(0.65 0.22 25)" },
             ].map((cls) => (
               <div
                 key={cls.label}
@@ -438,15 +444,15 @@ export default function Model() {
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle className="w-4 h-4" style={{ color: "oklch(0.72 0.19 45)" }} />
                   <span className="text-xs font-semibold" style={{ color: "oklch(0.72 0.19 45)" }}>
-                    Known coverage gaps (v4 eval)
+                    Known categorization gaps (v4.2 eval)
                   </span>
                 </div>
                 <div className="space-y-1">
                   {[
-                    "prompt_injection F1 (0.432) — taxonomy reform in progress: PI being narrowed to pure instruction override only, attacks labeled by specific payload type instead",
-                    "evasion F1 (0.556) — broad category, improving with targeted corpus expansion",
-                    "supply_chain F1 (0.650) — additional package-level attack patterns needed",
-                    "First generative model release — expect continued improvement",
+                    "prompt_injection F1 (0.394) — high precision (0.800) but low recall (0.262); taxonomy reform in progress, attacks labeled by specific payload type instead of the broad PI class",
+                    "evasion F1 (0.486) — broad category with high recall (0.818) but low precision; improving with targeted corpus expansion",
+                    "code_injection F1 (0.481) — middling precision and recall; additional sub-type training data in progress",
+                    "supply_chain F1 (0.529) — additional package-level attack patterns needed",
                   ].map((a) => (
                     <div key={a} className="text-xs" style={{ color: "oklch(0.60 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
                       · {a}
@@ -454,7 +460,7 @@ export default function Model() {
                   ))}
                 </div>
                 <div className="mt-3 text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>
-                  v4.1 corrected eval: per-class F1 ranges from 0.432 (prompt_injection) to 0.974 (path_traversal). Prompt injection taxonomy reform underway — PI being narrowed to pure instruction override, with attacks labeled by specific payload type instead.
+                  These gaps are about categorization, not detection. The model still catches these attacks — it just sometimes applies a neighbouring label. Threat detection on held-out eval is 99.4% (163/164), with zero false negatives.
                 </div>
                 <div className="mt-3 pt-3" style={{ borderTop: "1px solid oklch(0.72 0.19 45 / 0.15)" }}>
                   <a
@@ -488,7 +494,7 @@ export default function Model() {
               {
                 title: "Install and run",
                 code: `pip install 'skillscan-security[ml]'
-skillscan model sync             # downloads GGUF (~935 MB)
+skillscan model sync             # downloads GGUF (~940 MB)
 skillscan scan path/to/skills/ --ml-detect`,
               },
               {

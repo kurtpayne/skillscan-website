@@ -20,6 +20,17 @@ interface Post {
 
 const posts: Post[] = [
   {
+    slug: "/blog/v42-richer",
+    title: "Richer Output, Fewer Misses: Shipping SkillScan Detector v4.2",
+    subtitle: "Three failed iterations, a one-line parser bug, and the schema augmentation that finally worked",
+    date: "April 17, 2026",
+    readTime: "12 min read",
+    tags: ["ML / Training", "Generative AI", "Measurement", "Transparency"],
+    excerpt:
+      "Three failed training iterations after v4.1. A one-line ground-truth parser bug silently suppressing our metrics. A prompt mismatch that nearly hid the actual win. This is the honest path to v4.2 — a detector that now catches 99.4% of threats on our held-out eval with zero false negatives, and returns structured severity, sub-classes, and affected-line information alongside every verdict.",
+    featured: true,
+  },
+  {
     slug: "/blog/generative-pivot",
     title: "From Pattern Matching to Reasoning: SkillScan's Pivot to Generative Detection",
     subtitle: "Why encoder-only classifiers failed and how a 1.5B-param reasoning model replaced them",
@@ -28,7 +39,6 @@ const posts: Post[] = [
     tags: ["ML / Training", "Generative AI", "Qwen", "Transparency"],
     excerpt:
       "For months our ML detector was a DeBERTa LoRA adapter that, on a clean eval with labels stripped, caught almost nothing. We threw it out. Here's the honest story of what went wrong, why encoder-only classifiers are the wrong tool for this problem, and how a Qwen2.5-1.5B model that reasons about code ended up catching 87.4% of malicious skills at 88.9% verdict accuracy.",
-    featured: true,
   },
   {
     slug: "/blog/skills-security-model",

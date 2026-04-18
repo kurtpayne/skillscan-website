@@ -17,6 +17,7 @@ import BlogSkillsSecurity from "./pages/BlogSkillsSecurity";
 import BlogV12Training from "./pages/BlogV12Training";
 import BlogV15Training from "./pages/BlogV15Training";
 import BlogGenerativePivot from "./pages/BlogGenerativePivot";
+import BlogV42Richer from "./pages/BlogV42Richer";
 import TraceRun from "./pages/TraceRun";
 
 function Router() {
@@ -37,6 +38,7 @@ function Router() {
       <Route path="/blog/v12-training-methodology" component={BlogV12Training} />
       <Route path="/blog/v15-model" component={BlogV15Training} />
       <Route path="/blog/generative-pivot" component={BlogGenerativePivot} />
+      <Route path="/blog/v42-richer" component={BlogV42Richer} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

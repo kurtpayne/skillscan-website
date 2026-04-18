@@ -453,7 +453,7 @@ skillscan scan ./skills/
                 <Prose>
                   The ML classifier (Qwen2.5-1.5B, v4) catches semantic attacks and novel jailbreaks
                   that static rules cannot express. It runs entirely offline via llama.cpp.
-                  Detection rate: 87.4% on held-out threats; verdict accuracy: 88.9%. See the{" "}
+                  Detection rate: 99.4% on held-out threats; verdict accuracy: 98.6%. See the{" "}
                   <a href="/model" className="underline" style={{ color: "oklch(0.78 0.18 290)" }}>Model page</a> for full metrics.
                 </Prose>
                 <CodeBlock code={`skillscan model install          # downloads from HuggingFace Hub (~935 MB)
