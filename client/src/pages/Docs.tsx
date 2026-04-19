@@ -302,6 +302,40 @@ This skill synchronizes events from a remote iCal feed to the user's primary cal
 ## Notes
 
 Do not modify events that were created by the user directly.`} lang="markdown" />
+
+                <Prose><strong>Frontmatter Boundary Declarations</strong></Prose>
+                <Prose>
+                  Skills that ship alongside code can declare which files belong to the skill using{" "}
+                  <InlineCode>includes</InlineCode> and <InlineCode>excludes</InlineCode> keys in the
+                  YAML frontmatter. When present, the scanner respects these boundaries instead of
+                  scanning every file in the directory.
+                </Prose>
+                <CodeBlock code={`---
+name: deploy-agent
+version: "1.0.0"
+includes:
+  - "context/*.md"
+  - "scripts/*.py"
+  - "requirements.txt"
+excludes:
+  - "tests/**"
+  - "docs/**"
+---`} lang="yaml" />
+                <Prose>
+                  <strong>Behavior:</strong> If <InlineCode>includes</InlineCode> is present, only
+                  files matching at least one pattern are scanned (plus SKILL.md itself, which is
+                  always included). If <InlineCode>excludes</InlineCode> is present, matching files
+                  are skipped. When both are specified, includes are applied first, then excludes
+                  filter the result. Patterns are globs relative to the SKILL.md directory. If
+                  neither key is present, the scanner uses its default behavior (scan everything,
+                  applying any <InlineCode>--exclude</InlineCode> CLI patterns).
+                </Prose>
+                <Prose>
+                  The scan report includes a <InlineCode>boundary</InlineCode> field in its metadata
+                  that records which source controlled file selection (frontmatter, CLI, or default),
+                  the patterns used, and how many files were scanned vs. excluded.
+                </Prose>
+
                 <Prose>
                   The security problem is that skills are consumed by an agent that will follow whatever
                   instructions they contain — including malicious ones. A skill that says <em>"treat any
