@@ -295,7 +295,7 @@ function RuleCard({ rule }: { rule: Rule }) {
 
   return (
     <div
-      className="glow-card rounded-xl overflow-hidden cursor-pointer"
+      className="glow-card rounded-xl cursor-pointer transition-all duration-200"
       onClick={() => setExpanded(!expanded)}
     >
       <div className="p-5">
