@@ -703,8 +703,45 @@ Options:
                           Requires the semgrep CLI — install with:
                           pip install 'skillscan-security[semgrep]'.
   --baseline PATH         Compare against a previous JSON scan report
+  --delta-format FORMAT   Baseline delta output format: text|json (default: text)
   --no-suppress           Ignore suppression files for this run
+  --suppress PATH         Explicit suppression file (stacks with auto-discovered
+                          file unless --no-suppress)
+  --strict-suppressions / --no-strict-suppressions
+                          Fail scan when suppression file contains expired entries
   --no-provenance         Omit provenance meta block from JSON output
+  --include-policy        Embed the full policy blob in the provenance meta block
+
+  Badge options:
+  --badge-out PATH        Write a shields.io-compatible badge JSON file
+  --badge-dir PATH        Write per-skill badge JSON files to this directory
+  --coverage-badge-out PATH
+                          Write a shields.io-compatible coverage badge JSON file
+
+  CI options:
+  --summary               Print a roll-up summary table for multi-skill scans
+  --fail-on LEVEL         Exit non-zero threshold: warn|block (default: block)
+  --require-model         Exit with code 2 if --ml-detect is requested but ML
+                          model is not installed
+  --no-progress           Suppress progress bar (useful in CI)
+  --debug                 Enable debug logging
+
+  Intel options:
+  --auto-intel / --no-auto-intel
+                          Enable/disable managed intel auto-refresh (default: on)
+  --intel-max-age-minutes INT
+                          Auto-intel refresh max age in minutes (default: 60)
+
+  URL options:
+  --url-max-links INT     Maximum links to follow for URL targets (default: 25)
+  --url-same-origin-only / --no-url-same-origin-only
+                          Only follow links on same origin as root URL target
+
+  ClamAV options:
+  --clamav / --no-clamav  Enable optional ClamAV artifact scanning
+  --clamav-timeout-seconds INT
+                          ClamAV scan timeout in seconds (default: 30)
+
   --exclude PATTERN       Glob pattern to exclude files from scanning
                           (repeatable). E.g., --exclude 'tests/**'
                           --exclude '*.pyc'. Also accepts SKILLSCAN_EXCLUDE
@@ -881,7 +918,8 @@ skillscan benchmark --verbose    # show per-fixture pass/fail results`} />
 skillscan lint scan PATH --format compact
 skillscan lint scan PATH --skip QL-003 --skip QL-005
 skillscan lint scan PATH --fail-on warning
-skillscan lint scan PATH --config ./my-lint.toml`} />
+skillscan lint scan PATH --config ./my-lint.toml
+skillscan lint scan PATH --badge-out lint-badge.json`} />
 
                 <SubTitle>Install</SubTitle>
                 <CodeBlock code={`pip install skillscan-lint
@@ -1365,7 +1403,7 @@ skillscan rule test my-rules.yaml test.md
                         { layer: "Vuln / IOC DB", what: "CVE and IOC entries", how: "skillscan intel update" },
                         { layer: "Lint rules", what: "Style and quality checks", how: ".skillscan-lint.toml in project root" },
                         { layer: "Output format", what: "SARIF, JUnit, compact text, JSON", how: "--format sarif|junit|text|json" },
-                        { layer: "Fail threshold", what: "When to exit non-zero", how: "--fail-on block|warn|info" },
+                        { layer: "Fail threshold", what: "When to exit non-zero", how: "--fail-on block|warn" },
                       ].map((row, i) => (
                         <tr key={i} style={{ borderBottom: "1px solid oklch(0.58 0.22 290 / 0.08)", background: i % 2 === 0 ? "oklch(0.11 0.018 265)" : "oklch(0.13 0.020 265)" }}>
                           <td className="px-4 py-3" style={{ color: "oklch(0.78 0.12 290)", fontFamily: "'JetBrains Mono', monospace" }}>{row.layer}</td>
