@@ -478,6 +478,53 @@ export default function Rules() {
             </div>
           </div>
 
+          {/* Category legend */}
+          <details className="mb-6 group">
+            <summary
+              className="cursor-pointer text-xs font-semibold uppercase tracking-widest select-none inline-flex items-center gap-1.5 transition-colors duration-200"
+              style={{ color: "oklch(0.55 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}
+            >
+              <ChevronDown className="w-3.5 h-3.5 transition-transform group-open:rotate-180" />
+              Rule prefix legend
+            </summary>
+            <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1.5 text-xs" style={{ color: "oklch(0.65 0.015 265)" }}>
+              {([
+                ["MAL", "Malware patterns"],
+                ["EXF", "Exfiltration"],
+                ["PINJ", "Prompt / pipeline injection"],
+                ["ABU", "Instruction abuse"],
+                ["CHN", "Chain detection (co-occurrence)"],
+                ["SUP", "Supply chain"],
+                ["SE", "Social engineering"],
+                ["DEF", "Defense evasion"],
+                ["EXEC", "Execution hijack"],
+                ["OBF", "Obfuscation"],
+                ["PSV", "Permission scope violation"],
+                ["GR", "Graph analysis"],
+                ["IOC", "Threat intelligence"],
+                ["DEP", "Dependency vulnerability"],
+                ["BIN", "Binary artifact"],
+                ["AST", "AST data-flow"],
+                ["CAP", "Capability laundering"],
+                ["EVASION", "Evasion techniques"],
+              ] as const).map(([prefix, label]) => (
+                <span key={prefix} className="inline-flex items-center gap-1.5 py-0.5">
+                  <span
+                    className="font-bold px-1.5 py-0.5 rounded"
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      background: `${categoryColors[prefix as Category] ?? "oklch(0.55 0.015 265)"} / 0.12`,
+                      color: categoryColors[prefix as Category] ?? "oklch(0.55 0.015 265)",
+                    }}
+                  >
+                    {prefix}
+                  </span>
+                  <span>{label}</span>
+                </span>
+              ))}
+            </div>
+          </details>
+
           {/* Results count */}
           <p className="text-sm mb-5" style={{ color: "oklch(0.50 0.015 265)" }}>
             Showing {filtered.length} of {rules.length} rules
@@ -518,68 +565,6 @@ export default function Rules() {
             </a>
           </div>
 
-          {/* Detection Signals */}
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold mb-1" style={{ color: "oklch(0.88 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}>
-              Detection Signals
-            </h2>
-            <p className="text-sm mb-5" style={{ color: "oklch(0.50 0.015 265)" }}>
-              Beyond the named rules above, the scanner uses <strong style={{ color: "oklch(0.70 0.015 265)" }}>20 named detection signals</strong> — regex fragments referenced by chain rules to detect multi-step attack sequences. A chain rule fires when two or more signals co-occur within a sliding line window. These signals account for the difference between the {rules.length} rules shown here and the total detection signal count.{" "}
-              <span style={{ color: "oklch(0.42 0.015 265)", fontStyle: "italic" }}>as of rulepack 2026.04.16.1 — update this count when action_patterns or capability_patterns change in default.yaml</span>
-            </p>
-            <div className="mb-5">
-              <h3 className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "oklch(0.65 0.18 200)", fontFamily: "'JetBrains Mono', monospace" }}>Action Patterns (20)</h3>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  "download", "execute", "secret_access", "network", "exfil_channel",
-                  "privilege", "security_disable", "gh_actions_secrets", "gh_pr_target",
-                  "gh_pr_head_checkout", "gh_pr_untrusted_meta", "gh_pr_ref_meta",
-                  "gh_cache_untrusted_key", "gh_unpinned_action_ref", "claude_hooks_marker",
-                  "hook_shell_command_field", "mcp_tool_poison", "stealth_conceal",
-                  "container_escape", "host_path_mount",
-                ].map((sig) => (
-                  <span
-                    key={sig}
-                    className="px-2.5 py-1 rounded text-xs"
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      background: "oklch(0.65 0.18 200 / 0.10)",
-                      color: "oklch(0.72 0.12 200)",
-                      border: "1px solid oklch(0.65 0.18 200 / 0.20)",
-                    }}
-                  >
-                    {sig}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="mb-4">
-              <h3 className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "oklch(0.65 0.18 200)", fontFamily: "'JetBrains Mono', monospace" }}>Capability Patterns (3)</h3>
-              <div className="flex flex-wrap gap-2">
-                {["shell_execution", "network_access", "filesystem_write"].map((sig) => (
-                  <span
-                    key={sig}
-                    className="px-2.5 py-1 rounded text-xs"
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      background: "oklch(0.65 0.18 200 / 0.10)",
-                      color: "oklch(0.72 0.12 200)",
-                      border: "1px solid oklch(0.65 0.18 200 / 0.20)",
-                    }}
-                  >
-                    {sig}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <p className="text-xs" style={{ color: "oklch(0.42 0.015 265)" }}>
-              Signals are defined in <code style={{ color: "oklch(0.60 0.015 265)" }}>action_patterns</code> and <code style={{ color: "oklch(0.60 0.015 265)" }}>capability_patterns</code> in <code style={{ color: "oklch(0.60 0.015 265)" }}>default.yaml</code>. You can reference them in custom chain rules or define your own —{" "}
-              <a href="/docs#customization" className="transition-colors duration-200" style={{ color: "oklch(0.65 0.18 290)" }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)")}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.65 0.18 290)")}
-              >see the Customization guide</a>.
-            </p>
-          </div>
         </div>
       </div>
 

@@ -233,6 +233,17 @@ export default function Trace() {
                 Quick Start
                 <ChevronRight className="w-4 h-4" />
               </a>
+              <a
+                href="/trace/run"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200"
+                style={{ background: "oklch(0.72 0.19 45)", color: "oklch(0.12 0.025 265)" }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "oklch(0.78 0.19 45)")}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "oklch(0.72 0.19 45)")}
+              >
+                <Zap className="w-4 h-4" />
+                Try it now — run a live trace
+                <ChevronRight className="w-4 h-4" />
+              </a>
             </div>
             {/* CI badge */}
             <div className="flex justify-center mt-5">
