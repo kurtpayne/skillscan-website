@@ -683,6 +683,75 @@ export default function Trace() {
         </div>
       </section>
 
+      {/* ── Canary Tool Surface ── */}
+      <section className="py-16">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center gap-3 mb-2">
+              <h2
+                className="text-2xl font-bold"
+                style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}
+              >
+                74 canary tools across 20 categories
+              </h2>
+            </div>
+            <p className="text-sm mb-8" style={{ color: "oklch(0.60 0.015 265)" }}>
+              The tracer presents a fully instrumented MCP environment to the model. Every tool call is intercepted, logged, and analyzed — the model never touches real infrastructure. If a skill tries to read credentials, send emails, or execute shell commands, the tracer catches it.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { cat: "Filesystem", count: 9, examples: "read, write, move, search, edit, tree" },
+                { cat: "GitHub", count: 7, examples: "push, create PR, merge, issues, secrets" },
+                { cat: "Git", count: 6, examples: "clone, commit, diff, log, branch, tag" },
+                { cat: "Browser", count: 5, examples: "navigate, click, fill, screenshot, eval" },
+                { cat: "Memory", count: 5, examples: "read, write, context, search, list" },
+                { cat: "Notion", count: 5, examples: "create page, append, search, DB query" },
+                { cat: "Slack", count: 5, examples: "post, search, read channel, threads" },
+                { cat: "Email", count: 4, examples: "send, search, read, Gmail" },
+                { cat: "Google Drive", count: 3, examples: "upload, search, share" },
+                { cat: "Database", count: 3, examples: "SQL execute, list tables, describe" },
+                { cat: "Secrets", count: 3, examples: "read secret, list, vault" },
+                { cat: "Network", count: 3, examples: "http fetch, web search, DNS" },
+                { cat: "Jira", count: 3, examples: "create issue, search, transition" },
+                { cat: "Calendar", count: 2, examples: "create event, list events" },
+                { cat: "Cloud", count: 2, examples: "AWS CLI, kubectl" },
+                { cat: "Code Exec", count: 2, examples: "python, computer use" },
+                { cat: "DNS", count: 2, examples: "resolve, reverse lookup" },
+                { cat: "Monitoring", count: 2, examples: "log event, query metrics" },
+                { cat: "SMS", count: 2, examples: "send SMS, read messages" },
+                { cat: "Container", count: 1, examples: "docker exec" },
+              ].map((cat) => (
+                <div
+                  key={cat.cat}
+                  className="rounded-lg p-3"
+                  style={{
+                    background: "oklch(0.14 0.020 265)",
+                    border: "1px solid oklch(0.58 0.22 290 / 0.10)",
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-semibold" style={{ color: "oklch(0.85 0.008 265)" }}>
+                      {cat.cat}
+                    </span>
+                    <span
+                      className="text-xs font-bold px-1.5 py-0.5 rounded"
+                      style={{
+                        background: "oklch(0.58 0.22 290 / 0.15)",
+                        color: "oklch(0.78 0.18 290)",
+                        fontFamily: "'JetBrains Mono', monospace",
+                      }}
+                    >
+                      {cat.count}
+                    </span>
+                  </div>
+                  <p className="text-xs" style={{ color: "oklch(0.50 0.015 265)" }}>{cat.examples}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Multi-Model Trace ── */}
       <section className="py-16">
         <div className="container">
