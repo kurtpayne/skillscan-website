@@ -4,7 +4,7 @@
              Rule Categories, GitHub Actions CTA, Final CTA
    ============================================================ */
 import { useState, useEffect } from "react";
-import { Shield, Zap, Lock, GitBranch, Terminal, ChevronRight, Copy, Check, ExternalLink, AlertTriangle, CheckCircle2, XCircle, Sliders, FileCode2, Link2, Database, GitMerge, FlaskConical } from "lucide-react";
+import { Shield, Zap, Lock, GitBranch, Terminal, ChevronRight, Copy, Check, ExternalLink, AlertTriangle, CheckCircle2, XCircle, Sliders, FileCode2, Link2, Database, GitMerge, FlaskConical, Search, Globe, Code2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TerminalScan from "@/components/TerminalScan";
@@ -823,6 +823,330 @@ export default function Home() {
               >
                 Suggest an integration <ExternalLink className="w-3 h-3" />
               </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── INTEGRATIONS ── */}
+      <section className="py-24 section-divider" style={{ background: "oklch(0.10 0.020 265)" }}>
+        <div className="container">
+          <div className="text-center mb-14">
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-5"
+              style={{
+                background: "oklch(0.65 0.18 200 / 0.12)",
+                border: "1px solid oklch(0.65 0.18 200 / 0.30)",
+                color: "oklch(0.72 0.18 200)",
+                fontFamily: "'JetBrains Mono', monospace",
+              }}
+            >
+              7 built-in integrations
+            </div>
+            <h2
+              className="text-3xl sm:text-4xl font-bold mb-4"
+              style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.95 0.005 265)" }}
+            >
+              Extend coverage with external engines
+            </h2>
+            <p className="text-base max-w-2xl mx-auto" style={{ color: "oklch(0.60 0.015 265)" }}>
+              Plug in AV scanners, custom rule sets, and live threat intelligence. All integration findings are scored alongside native detections and factored into the final verdict.
+            </p>
+          </div>
+
+          <div className="space-y-10">
+            {/* ── AV / Malware ── */}
+            <div>
+              <div className="flex items-center gap-3 mb-5">
+                <span
+                  className="text-xs font-semibold uppercase tracking-widest"
+                  style={{ color: "oklch(0.50 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  AV / Malware
+                </span>
+                <div className="flex-1 h-px" style={{ background: "oklch(0.22 0.020 265)" }} />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* VirusTotal */}
+                <div
+                  className="rounded-xl p-5"
+                  style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.65 0.22 25 / 0.18)" }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: "oklch(0.65 0.22 25 / 0.12)", border: "1px solid oklch(0.65 0.22 25 / 0.25)" }}
+                    >
+                      <Search className="w-4 h-4" style={{ color: "oklch(0.65 0.22 25)" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                        <h3
+                          className="text-sm font-semibold"
+                          style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.92 0.005 265)" }}
+                        >
+                          VirusTotal
+                        </h3>
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded"
+                          style={{ background: "oklch(0.65 0.22 25 / 0.10)", color: "oklch(0.72 0.22 25)", fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          --virustotal
+                        </span>
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded"
+                          style={{ background: "oklch(0.58 0.22 290 / 0.10)", color: "oklch(0.72 0.18 290)", fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          BYOK
+                        </span>
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
+                        SHA-256 hash lookups via the VirusTotal v3 API. Rate-limited on the free tier. Requires your own API key.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {/* ClamAV */}
+                <div
+                  className="rounded-xl p-5"
+                  style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.65 0.22 25 / 0.18)" }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: "oklch(0.65 0.22 25 / 0.12)", border: "1px solid oklch(0.65 0.22 25 / 0.25)" }}
+                    >
+                      <Shield className="w-4 h-4" style={{ color: "oklch(0.65 0.22 25)" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                        <h3
+                          className="text-sm font-semibold"
+                          style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.92 0.005 265)" }}
+                        >
+                          ClamAV
+                        </h3>
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded"
+                          style={{ background: "oklch(0.65 0.22 25 / 0.10)", color: "oklch(0.72 0.22 25)", fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          --clamav
+                        </span>
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded"
+                          style={{ background: "oklch(0.70 0.15 160 / 0.12)", color: "oklch(0.70 0.15 160)", fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          Docker default
+                        </span>
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
+                        Local AV via subprocess wrapper. Signature-based scan of embedded scripts and binaries. Enabled by default in the Docker image.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Rules Engines ── */}
+            <div>
+              <div className="flex items-center gap-3 mb-5">
+                <span
+                  className="text-xs font-semibold uppercase tracking-widest"
+                  style={{ color: "oklch(0.50 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  Rules Engines
+                </span>
+                <div className="flex-1 h-px" style={{ background: "oklch(0.22 0.020 265)" }} />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* YARA */}
+                <div
+                  className="rounded-xl p-5"
+                  style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.58 0.22 290 / 0.18)" }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: "oklch(0.58 0.22 290 / 0.12)", border: "1px solid oklch(0.58 0.22 290 / 0.25)" }}
+                    >
+                      <FileCode2 className="w-4 h-4" style={{ color: "oklch(0.72 0.18 290)" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                        <h3
+                          className="text-sm font-semibold"
+                          style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.92 0.005 265)" }}
+                        >
+                          YARA
+                        </h3>
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded"
+                          style={{ background: "oklch(0.58 0.22 290 / 0.10)", color: "oklch(0.72 0.18 290)", fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          --yara-rules
+                        </span>
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded"
+                          style={{ background: "oklch(0.58 0.22 290 / 0.08)", color: "oklch(0.60 0.15 290)", fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          yara-python
+                        </span>
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
+                        Match user-supplied .yar rule files against skill content. Requires the optional yara-python dependency.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {/* Semgrep */}
+                <div
+                  className="rounded-xl p-5"
+                  style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.58 0.22 290 / 0.18)" }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: "oklch(0.58 0.22 290 / 0.12)", border: "1px solid oklch(0.58 0.22 290 / 0.25)" }}
+                    >
+                      <Code2 className="w-4 h-4" style={{ color: "oklch(0.72 0.18 290)" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                        <h3
+                          className="text-sm font-semibold"
+                          style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.92 0.005 265)" }}
+                        >
+                          Semgrep
+                        </h3>
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded"
+                          style={{ background: "oklch(0.58 0.22 290 / 0.10)", color: "oklch(0.72 0.18 290)", fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          --semgrep-rules
+                        </span>
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
+                        AST-level static analysis of code embedded in skills via the external Semgrep CLI. Catches injection patterns, insecure APIs, and language-specific anti-patterns.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Threat Intelligence ── */}
+            <div>
+              <div className="flex items-center gap-3 mb-5">
+                <span
+                  className="text-xs font-semibold uppercase tracking-widest"
+                  style={{ color: "oklch(0.50 0.015 265)", fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  Threat Intelligence
+                </span>
+                <div className="flex-1 h-px" style={{ background: "oklch(0.22 0.020 265)" }} />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* IOC Database */}
+                <div
+                  className="rounded-xl p-5"
+                  style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.65 0.18 200 / 0.18)" }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: "oklch(0.65 0.18 200 / 0.12)", border: "1px solid oklch(0.65 0.18 200 / 0.25)" }}
+                    >
+                      <Database className="w-4 h-4" style={{ color: "oklch(0.65 0.18 200)" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                        <h3
+                          className="text-sm font-semibold"
+                          style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.92 0.005 265)" }}
+                        >
+                          IOC Database
+                        </h3>
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded"
+                          style={{ background: "oklch(0.70 0.15 160 / 0.12)", color: "oklch(0.70 0.15 160)", fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          built-in
+                        </span>
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
+                        9 threat feeds — URLhaus, FeodoTracker, Spamhaus DROP, HaGeZi, Phishing Army, KADhosts. ~5K bundled high-precision IOCs; large feeds (~1M entries) pulled at scan time. Refreshed twice daily.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {/* OSV.dev */}
+                <div
+                  className="rounded-xl p-5"
+                  style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.65 0.18 200 / 0.18)" }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: "oklch(0.65 0.18 200 / 0.12)", border: "1px solid oklch(0.65 0.18 200 / 0.25)" }}
+                    >
+                      <Globe className="w-4 h-4" style={{ color: "oklch(0.65 0.18 200)" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                        <h3
+                          className="text-sm font-semibold"
+                          style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.92 0.005 265)" }}
+                        >
+                          OSV.dev
+                        </h3>
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded"
+                          style={{ background: "oklch(0.70 0.15 160 / 0.12)", color: "oklch(0.70 0.15 160)", fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          built-in
+                        </span>
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
+                        Live vulnerability lookups for package dependencies against the public Open Source Vulnerabilities API. No API key required.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {/* External Vuln Reports */}
+                <div
+                  className="rounded-xl p-5"
+                  style={{ background: "oklch(0.14 0.022 265)", border: "1px solid oklch(0.65 0.18 200 / 0.18)" }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: "oklch(0.65 0.18 200 / 0.12)", border: "1px solid oklch(0.65 0.18 200 / 0.25)" }}
+                    >
+                      <GitMerge className="w-4 h-4" style={{ color: "oklch(0.65 0.18 200)" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                        <h3
+                          className="text-sm font-semibold"
+                          style={{ fontFamily: "'Space Grotesk', sans-serif", color: "oklch(0.92 0.005 265)" }}
+                        >
+                          External Vuln Reports
+                        </h3>
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded"
+                          style={{ background: "oklch(0.65 0.18 200 / 0.10)", color: "oklch(0.72 0.18 200)", fontFamily: "'JetBrains Mono', monospace" }}
+                        >
+                          --vuln-report
+                        </span>
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
+                        Ingest findings from Snyk, GitHub Dependabot, or Grype JSON exports. Scored and reported alongside native vulnerability detections.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
