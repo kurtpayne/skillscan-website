@@ -1141,7 +1141,7 @@ export default function Home() {
                         </span>
                       </div>
                       <p className="text-xs leading-relaxed" style={{ color: "oklch(0.58 0.015 265)" }}>
-                        Ingest findings from Snyk, GitHub Dependabot, or Grype JSON exports. Scored and reported alongside native vulnerability detections.
+                        Ingest findings from Snyk, GitHub Dependabot, or Grype JSON exports. Normalized and reported alongside native vulnerability detections.
                       </p>
                     </div>
                   </div>
