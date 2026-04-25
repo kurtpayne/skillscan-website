@@ -121,7 +121,7 @@ export default function Footer() {
                 { label: "Documentation", href: "/docs" },
                 { label: "ML Model", href: "/model" },
                 { label: "Blog", href: "/blog" },
-                { label: "Changelog", href: "https://github.com/kurtpayne/skillscan-security/blob/main/PATTERN_UPDATES.md", external: true },
+                { label: "Changelog", href: "https://github.com/kurtpayne/skillscan-rules/blob/main/CHANGELOG.md", external: true },
               ].map((item) => (
                 <li key={item.label}>
                   {item.external ? (
