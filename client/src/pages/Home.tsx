@@ -124,12 +124,11 @@ export default function Home() {
         // Extract version from first line: version: "2026.03.17.2"
         const verMatch = text.match(/^version:\s*["']?([\d.]+)["']?/m);
         if (verMatch) setRulepackVersion(verMatch[1]);
-        // Count all rules across sections:
-        // static_rules and chain_rules use '  - id:' (2-space indent)
-        // capability_patterns are dicts without id lines (3 entries)
-        // offset = 3
+        // Count static_rules + chain_rules via `  - id:` lines (2-space indent).
+        // This is the same count llms.txt and the rule-table page display —
+        // capability_patterns are not user-facing rules and shouldn't be added.
         const ids = text.match(/^  - id: /gm);
-        if (ids) setRuleCount(ids.length + 3);
+        if (ids) setRuleCount(ids.length);
       })
       .catch(() => { /* keep defaults on error */ });
   }, []);
