@@ -112,9 +112,12 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Fetch live rule count and rulepack version from GitHub
+  // Fetch live rule count and rulepack version from GitHub.
+  // Source of truth is kurtpayne/skillscan-rules (the split-out rules repo);
+  // skillscan-security/src/skillscan/data/rules/default.yaml is a bundled
+  // snapshot that only refreshes at package-release time.
   useEffect(() => {
-    const url = "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/src/skillscan/data/rules/default.yaml";
+    const url = "https://raw.githubusercontent.com/kurtpayne/skillscan-rules/main/rules/default.yaml";
     fetch(url)
       .then((r) => r.text())
       .then((text) => {

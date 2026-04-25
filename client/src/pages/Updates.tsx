@@ -8,10 +8,17 @@ import { ExternalLink, RefreshCw, AlertTriangle, Shield, Zap, GitCommit, Calenda
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+// Historical pattern-update log on the security repo is frozen post-split
+// (rules moved to kurtpayne/skillscan-rules on 2026-04-18). Keep fetching it
+// for the historical timeline back to early 2026.
 const PATTERN_UPDATES_URL =
   "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/PATTERN_UPDATES.md";
 const CHANGELOG_URL =
   "https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/CHANGELOG.md";
+// Canonical post-split rule changelog: daily rulepack updates without a
+// package release. Heading format is `## YYYY.MM.DD.N` (rulepack version).
+const RULES_CHANGELOG_URL =
+  "https://raw.githubusercontent.com/kurtpayne/skillscan-rules/main/CHANGELOG.md";
 
 interface UpdateEntry {
   date: string;
@@ -81,10 +88,60 @@ function parseChangelog(markdown: string): UpdateEntry[] {
   return entries;
 }
 
-function mergeAndSort(a: UpdateEntry[], b: UpdateEntry[]): UpdateEntry[] {
-  return [...a, ...b].sort((x, y) => {
+// Parser for kurtpayne/skillscan-rules CHANGELOG.md. Heading format:
+//   ## YYYY.MM.DD.N          (rulepack version, 1-based same-day counter)
+//   <description paragraph>
+//   - <bullet lines referencing rule IDs>
+// There's no explicit date, but the date is embedded in the version string
+// (YYYY.MM.DD prefix) — use that as the entry date.
+function parseRulesChangelog(markdown: string): UpdateEntry[] {
+  const sections = markdown.split(/\n(?=## \d{4}\.\d{2}\.\d{2}\.\d+)/);
+  const entries: UpdateEntry[] = [];
+  for (const section of sections) {
+    const headerMatch = section.match(/^## (\d{4})\.(\d{2})\.(\d{2})\.(\d+)/m);
+    if (!headerMatch) continue;
+    const [, yyyy, mm, dd, n] = headerMatch;
+    const date = `${yyyy}-${mm}-${dd}`;
+    const version = `${yyyy}.${mm}.${dd}.${n}`;
+    const rules = extractRules(section);
+    const catSet = new Set<string>();
+    rules.forEach((r) => catSet.add(r.split("-")[0]));
+    const lines = section.split("\n").filter((l) => l.trim() && !l.startsWith("#") && !l.startsWith("-"));
+    const summary = lines[0]?.trim() || "Rulepack update — see details below.";
+    entries.push({
+      date,
+      version,
+      rules,
+      categories: Array.from(catSet),
+      summary,
+      rawBlock: section,
+      severity: parseSeverity(section),
+      source: "pattern",
+    });
+  }
+  return entries;
+}
+
+function mergeAndSort(...lists: UpdateEntry[][]): UpdateEntry[] {
+  const merged = lists.flat();
+  // Dedupe on version: prefer the entry with the most rule-ID badges (usually
+  // the canonical rules-repo CHANGELOG entry, since frozen PATTERN_UPDATES.md
+  // entries may summarize the same version less completely).
+  const bestByVersion = new Map<string, UpdateEntry>();
+  for (const e of merged) {
+    const key = e.version;
+    const existing = bestByVersion.get(key);
+    if (!existing || e.rules.length > existing.rules.length) {
+      bestByVersion.set(key, e);
+    }
+  }
+  return Array.from(bestByVersion.values()).sort((x, y) => {
     const d = y.date.localeCompare(x.date);
     if (d !== 0) return d;
+    // same-day: higher rulepack N first
+    const nx = parseInt(x.version.split(".").pop() || "0", 10);
+    const ny = parseInt(y.version.split(".").pop() || "0", 10);
+    if (nx !== ny) return ny - nx;
     return x.source === "pattern" ? -1 : 1;
   });
 }
@@ -258,16 +315,19 @@ export default function Updates() {
     setLoading(true);
     setError(null);
     try {
-      const [patternRes, changelogRes] = await Promise.all([
+      const [patternRes, changelogRes, rulesRes] = await Promise.all([
         fetch(PATTERN_UPDATES_URL, { cache: "no-cache" }),
         fetch(CHANGELOG_URL, { cache: "no-cache" }),
+        fetch(RULES_CHANGELOG_URL, { cache: "no-cache" }),
       ]);
       const patternText = patternRes.ok ? await patternRes.text() : "";
       const changelogText = changelogRes.ok ? await changelogRes.text() : "";
-      if (!patternText && !changelogText) throw new Error("Both sources returned errors");
+      const rulesText = rulesRes.ok ? await rulesRes.text() : "";
+      if (!patternText && !changelogText && !rulesText) throw new Error("All sources returned errors");
       const merged = mergeAndSort(
         patternText ? parsePatternUpdates(patternText) : [],
-        changelogText ? parseChangelog(changelogText) : []
+        changelogText ? parseChangelog(changelogText) : [],
+        rulesText ? parseRulesChangelog(rulesText) : [],
       );
       setEntries(merged);
       setLastFetched(new Date());
@@ -372,7 +432,7 @@ export default function Updates() {
                     Refresh
                   </button>
                   <a
-                    href="https://github.com/kurtpayne/skillscan-security/blob/main/PATTERN_UPDATES.md"
+                    href="https://github.com/kurtpayne/skillscan-rules/blob/main/CHANGELOG.md"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-xs transition-colors duration-200"
@@ -402,7 +462,7 @@ export default function Updates() {
                     </p>
                     <p className="text-xs" style={{ color: "oklch(0.60 0.012 265)" }}>{error}</p>
                     <a
-                      href="https://github.com/kurtpayne/skillscan-security/blob/main/PATTERN_UPDATES.md"
+                      href="https://github.com/kurtpayne/skillscan-rules/blob/main/CHANGELOG.md"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-xs mt-2"
