@@ -47,7 +47,7 @@ const features = [
   },
   {
     icon: Shield,
-    title: "183+ Detection Rules",
+    title: "250+ Detection Rules",
     description: "Covers MCP tool poisoning, prompt injection, credential exfiltration, container escape, social engineering chains, and more.",
     color: "oklch(0.72 0.19 45)",
   },
@@ -79,13 +79,13 @@ const features = [
 
 const ruleCategories = [
 // AUTO_SYNC_BEGIN: ruleCategories
-  { prefix: "MAL", label: "Malware Patterns", count: 70, color: "oklch(0.65 0.22 25)" },
+  { prefix: "MAL", label: "Malware Patterns", count: 72, color: "oklch(0.65 0.22 25)" },
   { prefix: "EXF", label: "Exfiltration", count: 22, color: "oklch(0.72 0.19 45)" },
   { prefix: "ABU", label: "Abuse Patterns", count: 8, color: "oklch(0.70 0.15 160)" },
   { prefix: "CHN", label: "Chain Rules", count: 14, color: "oklch(0.65 0.18 200)" },
   { prefix: "PINJ", label: "Prompt/Pipeline Injection", count: 28, color: "oklch(0.55 0.24 280)" },
   { prefix: "SUP", label: "Supply Chain", count: 45, color: "oklch(0.68 0.16 80)" },
-  { prefix: "SE", label: "Social Engineering", count: 5, color: "oklch(0.62 0.20 340)" },
+  { prefix: "SE", label: "Social Engineering", count: 6, color: "oklch(0.62 0.20 340)" },
   { prefix: "DEF", label: "Defense Evasion", count: 1, color: "oklch(0.60 0.18 240)" },
   { prefix: "EXEC", label: "Execution Hijack", count: 2, color: "oklch(0.63 0.20 15)" },
   { prefix: "GR", label: "Graph Rules", count: 1, color: "oklch(0.65 0.15 180)" },
@@ -104,7 +104,7 @@ const scanResults = [
 
 export default function Home() {
   const [visibleStats, setVisibleStats] = useState(false);
-  const [ruleCount, setRuleCount] = useState(183);
+  const [ruleCount, setRuleCount] = useState(250);
   const [rulepackVersion, setRulepackVersion] = useState("0.3");
 
   useEffect(() => {
