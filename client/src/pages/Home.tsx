@@ -90,7 +90,7 @@ const ruleCategories = [
   { prefix: "EXEC", label: "Execution Hijack", count: 2, color: "oklch(0.63 0.20 15)" },
   { prefix: "GR", label: "Graph Rules", count: 1, color: "oklch(0.65 0.15 180)" },
   { prefix: "OBF", label: "Obfuscation", count: 5, color: "oklch(0.58 0.18 270)" },
-  { prefix: "PSV", label: "Passive Surveillance", count: 47, color: "oklch(0.67 0.16 60)" },
+  { prefix: "PSV", label: "Passive Surveillance", count: 50, color: "oklch(0.67 0.16 60)" },
 // AUTO_SYNC_END: ruleCategories
 ];
 // Note: ruleCategories counts are static display values; live total comes from GitHub API
@@ -104,7 +104,7 @@ const scanResults = [
 
 export default function Home() {
   const [visibleStats, setVisibleStats] = useState(false);
-  const [ruleCount, setRuleCount] = useState(250);
+  const [ruleCount, setRuleCount] = useState(248);
   const [rulepackVersion, setRulepackVersion] = useState("0.3");
 
   useEffect(() => {
