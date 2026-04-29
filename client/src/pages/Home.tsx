@@ -84,13 +84,13 @@ const ruleCategories = [
   { prefix: "ABU", label: "Abuse Patterns", count: 8, color: "oklch(0.70 0.15 160)" },
   { prefix: "CHN", label: "Chain Rules", count: 14, color: "oklch(0.65 0.18 200)" },
   { prefix: "PINJ", label: "Prompt/Pipeline Injection", count: 29, color: "oklch(0.55 0.24 280)" },
-  { prefix: "SUP", label: "Supply Chain", count: 45, color: "oklch(0.68 0.16 80)" },
+  { prefix: "SUP", label: "Supply Chain", count: 46, color: "oklch(0.68 0.16 80)" },
   { prefix: "SE", label: "Social Engineering", count: 6, color: "oklch(0.62 0.20 340)" },
   { prefix: "DEF", label: "Defense Evasion", count: 1, color: "oklch(0.60 0.18 240)" },
   { prefix: "EXEC", label: "Execution Hijack", count: 2, color: "oklch(0.63 0.20 15)" },
   { prefix: "GR", label: "Graph Rules", count: 1, color: "oklch(0.65 0.15 180)" },
   { prefix: "OBF", label: "Obfuscation", count: 5, color: "oklch(0.58 0.18 270)" },
-  { prefix: "PSV", label: "Passive Surveillance", count: 53, color: "oklch(0.67 0.16 60)" },
+  { prefix: "PSV", label: "Passive Surveillance", count: 56, color: "oklch(0.67 0.16 60)" },
 // AUTO_SYNC_END: ruleCategories
 ];
 // Note: ruleCategories counts are static display values; live total comes from GitHub API
@@ -104,7 +104,7 @@ const scanResults = [
 
 export default function Home() {
   const [visibleStats, setVisibleStats] = useState(false);
-  const [ruleCount, setRuleCount] = useState(248);
+  const [ruleCount, setRuleCount] = useState(252);
   const [rulepackVersion, setRulepackVersion] = useState("0.3");
 
   useEffect(() => {
@@ -678,7 +678,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-sm mb-5" style={{ color: "oklch(0.62 0.015 265)" }}>
-                {ruleCount}+ static rules, chain correlation, multilang analysis, AST data-flow, graph-based structural checks, and stemmed semantic scoring. Includes continuously updated threat intelligence with 5,500+ IOCs and vulnerable package detection.
+                {ruleCount}+ static rules, chain correlation, multilang analysis, AST data-flow, graph-based structural checks, and stemmed semantic scoring. Includes continuously updated threat intelligence with 6,000+ IOCs and vulnerable package detection.
               </p>
               <div className="space-y-3">
                 {[
@@ -686,7 +686,7 @@ export default function Home() {
                   { label: "Chain rules", detail: "Multi-signal correlation (e.g. download + execute)" },
                   { label: "Multilang rules", detail: "Language-gated patterns for .js, .ts, .py, .go, .rs" },
                   { label: "Python AST data-flow", detail: "Source-to-sink taint analysis" },
-                  { label: "IOC matching", detail: "5,500+ domains, IPs, CIDRs" },
+                  { label: "IOC matching", detail: "6,000+ domains, IPs, CIDRs" },
                   { label: "Vuln DB matching", detail: "Known-vulnerable package versions" },
                   { label: "Binary artifact detection", detail: "Embedded executables and encoded payloads" },
                   { label: "Skill graph analysis", detail: "Cross-file permission scope violations" },
