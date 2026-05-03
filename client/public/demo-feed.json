@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-04-26T06:05:32.555413+00:00",
-  "skillscan_version": "1.0.0",
-  "entry_count": 40,
-  "block_count": 26,
-  "warn_count": 2,
-  "allow_count": 12,
-  "error_count": 0,
-  "unexpected_count": 3,
+  "generated_at": "2026-05-03T06:25:01.338393+00:00",
+  "skillscan_version": "unknown",
+  "entry_count": 106,
+  "block_count": 0,
+  "warn_count": 0,
+  "allow_count": 0,
+  "error_count": 106,
+  "unexpected_count": 106,
   "entries": [
     {
       "id": "organic_mal045_stoatwaffle_vscode",
@@ -16,20 +16,13 @@
       "archetype": "malware_pattern",
       "rule_id": "MAL-045",
       "reference": "https://www.cryptika.com/waterplum-deploys-new-stoatwaffle-malware-in-vscode-based-supply-chain-campaign/",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 1,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "StoatWaffle Node.js malware family (WaterPlum/Contagious Interview)",
-          "severity": "high",
-          "confidence": 0.86
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:07.976700+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:02.159731+00:00"
     },
     {
       "id": "organic_mal046_cursorjack_deeplink",
@@ -39,38 +32,13 @@
       "archetype": "malware_pattern",
       "rule_id": "MAL-046",
       "reference": "https://www.bleepingcomputer.com/news/security/cursorjacking-attack-exploits-cursor-ide-deep-links/",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 4,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Download-and-execute chain",
-          "severity": "critical",
-          "confidence": 0.95
-        },
-        {
-          "rule_id": "",
-          "title": "IDE deeplink MCP server install abuse",
-          "severity": "high",
-          "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "CursorJack-style MCP deeplink staged payload",
-          "severity": "critical",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "Download + Execute chain",
-          "severity": "critical",
-          "confidence": 0.95
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:11.560904+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:03.278602+00:00"
     },
     {
       "id": "organic_mal047_claude_hooks_rce",
@@ -80,44 +48,13 @@
       "archetype": "malware_pattern",
       "rule_id": "MAL-047",
       "reference": "https://embracethered.com/blog/posts/2025/claude-desktop-rce-via-hooks/",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 5,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Download-and-execute chain",
-          "severity": "critical",
-          "confidence": 0.95
-        },
-        {
-          "rule_id": "",
-          "title": "Claude Code project MCP auto-approval marker",
-          "severity": "high",
-          "confidence": 0.84
-        },
-        {
-          "rule_id": "",
-          "title": "Claude Code hooks RCE via project settings",
-          "severity": "critical",
-          "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "Download + Execute chain",
-          "severity": "critical",
-          "confidence": 0.95
-        },
-        {
-          "rule_id": "",
-          "title": "Secret access + Network exfiltration chain",
-          "severity": "critical",
-          "confidence": 0.95
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:15.105572+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:04.435856+00:00"
     },
     {
       "id": "organic_mal048_langflow_rce",
@@ -127,26 +64,13 @@
       "archetype": "malware_pattern",
       "rule_id": "MAL-048",
       "reference": "https://nvd.nist.gov/vuln/detail/CVE-2025-3248",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 2,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Langflow unauthenticated RCE via build_public_tmp endpoint",
-          "severity": "critical",
-          "confidence": 0.87
-        },
-        {
-          "rule_id": "",
-          "title": "pip install in skill body with non-standard or suspicious package name",
-          "severity": "medium",
-          "confidence": 0.82
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:18.683926+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:05.562789+00:00"
     },
     {
       "id": "organic_mal049_litellm_pth_persistence",
@@ -156,44 +80,13 @@
       "archetype": "supply_chain",
       "rule_id": "MAL-049",
       "reference": "https://securitylabs.datadoghq.com/articles/litellm-compromised-pypi-teampcp-supply-chain-campaign/",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 5,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "GitHub Actions credential stealer with Runner.Worker memory harvesting",
-          "severity": "critical",
-          "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "pip install in skill body with non-standard or suspicious package name",
-          "severity": "medium",
-          "confidence": 0.82
-        },
-        {
-          "rule_id": "",
-          "title": "LiteLLM .pth file persistence and sysmon backdoor (TeamPCP)",
-          "severity": "critical",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "Compromised LiteLLM package version reference",
-          "severity": "critical",
-          "confidence": 0.92
-        },
-        {
-          "rule_id": "",
-          "title": "Secret access + Network exfiltration chain",
-          "severity": "critical",
-          "confidence": 0.95
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:22.297834+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:06.689520+00:00"
     },
     {
       "id": "organic_mal050_ghost_campaign_npm",
@@ -203,20 +96,13 @@
       "archetype": "malware_pattern",
       "rule_id": "MAL-050",
       "reference": "https://thehackernews.com/2026/03/ghost-campaign-uses-7-npm-packages-to.html",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 1,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Ghost Campaign malicious npm packages (sudo phishing RAT)",
-          "severity": "high",
-          "confidence": 0.9
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:25.943116+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:07.809764+00:00"
     },
     {
       "id": "organic_pinj007_mcp_sampling_exfil",
@@ -226,26 +112,13 @@
       "archetype": "prompt_injection",
       "rule_id": "PINJ-007",
       "reference": "",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 2,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "MCP sampling-based context exfiltration",
-          "severity": "high",
-          "confidence": 0.82
-        },
-        {
-          "rule_id": "",
-          "title": "Local semantic prompt-injection intent pattern",
-          "severity": "medium",
-          "confidence": 0.68
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:29.508134+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:08.931156+00:00"
     },
     {
       "id": "organic_pinj015_prompt_poaching_extension",
@@ -255,20 +128,13 @@
       "archetype": "prompt_injection",
       "rule_id": "PINJ-015",
       "reference": "",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 1,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Prompt poaching via malicious browser extension installation",
-          "severity": "high",
-          "confidence": 0.85
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:33.101154+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:10.234681+00:00"
     },
     {
       "id": "organic_sup016_mcp_server_cmd_injection",
@@ -278,38 +144,13 @@
       "archetype": "supply_chain",
       "rule_id": "SUP-016",
       "reference": "",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 4,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Download-and-execute chain",
-          "severity": "critical",
-          "confidence": 0.95
-        },
-        {
-          "rule_id": "",
-          "title": "MCP server command injection via unsanitized Git parameters",
-          "severity": "high",
-          "confidence": 0.85
-        },
-        {
-          "rule_id": "",
-          "title": "Vulnerable MCP server package with command injection",
-          "severity": "high",
-          "confidence": 0.85
-        },
-        {
-          "rule_id": "",
-          "title": "Download + Execute chain",
-          "severity": "critical",
-          "confidence": 0.95
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:36.652277+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:11.374578+00:00"
     },
     {
       "id": "organic_sup017_checkmarx_actions",
@@ -319,44 +160,13 @@
       "archetype": "supply_chain",
       "rule_id": "SUP-017",
       "reference": "https://unit42.paloaltonetworks.com/checkmarx-github-actions-supply-chain-attack/",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 5,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "pull_request_target workflow using unpinned third-party action ref",
-          "severity": "high",
-          "confidence": 0.84
-        },
-        {
-          "rule_id": "",
-          "title": "GitHub Actions credential stealer with Runner.Worker memory harvesting",
-          "severity": "critical",
-          "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "GitHub Actions supply chain compromise via release tag repointing",
-          "severity": "critical",
-          "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "Checkmarx GitHub Actions supply chain compromise (TeamPCP)",
-          "severity": "critical",
-          "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "LiteLLM .pth file persistence and sysmon backdoor (TeamPCP)",
-          "severity": "critical",
-          "confidence": 0.9
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:40.254867+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:12.517657+00:00"
     },
     {
       "id": "organic_sup019_litellm_compromised_version",
@@ -366,32 +176,13 @@
       "archetype": "supply_chain",
       "rule_id": "SUP-019",
       "reference": "",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 3,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Sensitive credential file access",
-          "severity": "high",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "pip install in skill body with non-standard or suspicious package name",
-          "severity": "medium",
-          "confidence": 0.82
-        },
-        {
-          "rule_id": "",
-          "title": "Compromised LiteLLM package version reference",
-          "severity": "critical",
-          "confidence": 0.92
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:43.809283+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:13.636645+00:00"
     },
     {
       "id": "organic_sup020_clawhavoc_typosquat",
@@ -401,32 +192,13 @@
       "archetype": "supply_chain",
       "rule_id": "SUP-020",
       "reference": "",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 3,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Sensitive credential file access",
-          "severity": "high",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "ClawHavoc malicious ClawHub skill typosquat names",
-          "severity": "high",
-          "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "Secret access + Network exfiltration chain",
-          "severity": "critical",
-          "confidence": 0.95
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:47.403736+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:14.758297+00:00"
     },
     {
       "id": "organic_sup021_teampcp_checkmarx_vscode",
@@ -436,32 +208,13 @@
       "archetype": "supply_chain",
       "rule_id": "SUP-021",
       "reference": "",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 3,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "GitHub Actions credential stealer with Runner.Worker memory harvesting",
-          "severity": "critical",
-          "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "Checkmarx GitHub Actions supply chain compromise (TeamPCP)",
-          "severity": "critical",
-          "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "TeamPCP Checkmarx VS Code extension compromise (Open VSX)",
-          "severity": "critical",
-          "confidence": 0.88
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:50.954248+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:15.881715+00:00"
     },
     {
       "id": "organic_sup022_react_native_account_takeover",
@@ -471,20 +224,13 @@
       "archetype": "supply_chain",
       "rule_id": "SUP-022",
       "reference": "https://www.stepsecurity.io/blog/malicious-npm-releases-found-in-popular-react-native-packages---130k-monthly-downloads-compromised",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 1,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "React Native npm account takeover supply chain attack",
-          "severity": "high",
-          "confidence": 0.88
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:54.568054+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:17.008268+00:00"
     },
     {
       "id": "organic_mal054_glassworm_chrome_rat",
@@ -494,26 +240,13 @@
       "archetype": "malware_pattern",
       "rule_id": "MAL-054",
       "reference": "https://www.aikido.dev/blog/glassworm-chrome-extension-rat",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 2,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Solana RPC blockchain C2 resolution marker",
-          "severity": "critical",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "GlassWorm multi-stage Chrome extension RAT",
-          "severity": "critical",
-          "confidence": 0.9
-        }
-      ],
-      "scanned_at": "2026-04-26T06:03:58.156954+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:18.131424+00:00"
     },
     {
       "id": "organic_pinj016_contexthub_doc_poisoning",
@@ -523,26 +256,13 @@
       "archetype": "prompt_injection",
       "rule_id": "PINJ-016",
       "reference": "https://www.theregister.com/2026/03/25/ai_agents_supply_chain_attack_context_hub/",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "medium",
-      "findings_count": 2,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "pip install in skill body with non-standard or suspicious package name",
-          "severity": "medium",
-          "confidence": 0.82
-        },
-        {
-          "rule_id": "",
-          "title": "AI documentation context poisoning (ContextHub)",
-          "severity": "high",
-          "confidence": 0.85
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:01.696160+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:19.281274+00:00"
     },
     {
       "id": "organic_exf020_teampcp_kubernetes_lateral",
@@ -552,44 +272,13 @@
       "archetype": "exfiltration",
       "rule_id": "EXF-020",
       "reference": "https://www.stepsecurity.io/blog/litellm-credential-stealer-hidden-in-pypi-wheel",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 5,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "LiteLLM .pth file persistence and sysmon backdoor (TeamPCP)",
-          "severity": "critical",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "TeamPCP sysmon backdoor Kubernetes lateral movement",
-          "severity": "critical",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "Local semantic social-engineering credential-harvest pattern",
-          "severity": "high",
-          "confidence": 0.92
-        },
-        {
-          "rule_id": "",
-          "title": "Secret access + Network exfiltration chain",
-          "severity": "critical",
-          "confidence": 0.95
-        },
-        {
-          "rule_id": "",
-          "title": "Local semantic prompt-injection intent pattern",
-          "severity": "medium",
-          "confidence": 0.78
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:05.260225+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:20.404454+00:00"
     },
     {
       "id": "organic_cap001_capability_laundering",
@@ -599,26 +288,13 @@
       "archetype": "capability_laundering",
       "rule_id": "CAP-001",
       "reference": "",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 2,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Sensitive credential file access",
-          "severity": "high",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "Capability laundering \u2014 disproportionate credential or file access for stated purpose",
-          "severity": "high",
-          "confidence": 0.78
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:08.881426+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:21.529712+00:00"
     },
     {
       "id": "organic_obf005_dns_covert_channel",
@@ -628,26 +304,13 @@
       "archetype": "obfuscation",
       "rule_id": "OBF-005",
       "reference": "",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 2,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Covert-channel exfiltration via DNS, whitespace encoding, or HTML comments",
-          "severity": "high",
-          "confidence": 0.85
-        },
-        {
-          "rule_id": "",
-          "title": "Local semantic prompt-injection intent pattern",
-          "severity": "medium",
-          "confidence": 0.73
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:12.440065+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:22.658793+00:00"
     },
     {
       "id": "organic_sup039_xinference_pypi",
@@ -657,44 +320,13 @@
       "archetype": "supply_chain",
       "rule_id": "SUP-039",
       "reference": "https://www.ox.security/blog/xinference-allegedly-hacked-by-teampcp-malicious-package-in-pypi/",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 5,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Sensitive credential file access",
-          "severity": "high",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "GitHub Actions credential stealer with Runner.Worker memory harvesting",
-          "severity": "critical",
-          "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "pip install in skill body with non-standard or suspicious package name",
-          "severity": "medium",
-          "confidence": 0.82
-        },
-        {
-          "rule_id": "",
-          "title": "Xinference PyPI supply chain compromise (TeamPCP-style credential harvester)",
-          "severity": "critical",
-          "confidence": 0.95
-        },
-        {
-          "rule_id": "",
-          "title": "Secret access combined with DNS exfiltration",
-          "severity": "high",
-          "confidence": 0.9
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:16.111719+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:23.788578+00:00"
     },
     {
       "id": "organic_psv036_magento2_dev_mcp_shellquote",
@@ -704,38 +336,13 @@
       "archetype": "passive_surveillance",
       "rule_id": "PSV-036",
       "reference": "https://dev.to/armor1ai/how-to-check-your-mcp-server-for-cve-2026-5603s-vulnerability-pattern-and-why-shellquote-isnt-gdn",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 4,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Dynamic code evaluation pattern",
-          "severity": "high",
-          "confidence": 0.85
-        },
-        {
-          "rule_id": "",
-          "title": "MCP Python SDK DNS rebinding vulnerability (CVE-2025-66416, mcp < 1.23.0)",
-          "severity": "high",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "MCP server command injection via insufficient shellQuote \u2014 CVE-2026-5603 (@elgentos/magento2-dev-mcp <= 1.0.2)",
-          "severity": "high",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "Local semantic prompt-injection intent pattern",
-          "severity": "medium",
-          "confidence": 0.64
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:19.691333+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:24.916072+00:00"
     },
     {
       "id": "organic_psv038_flowise_csv_agent_rce",
@@ -745,26 +352,13 @@
       "archetype": "passive_surveillance",
       "rule_id": "PSV-038",
       "reference": "https://advisories.gitlab.com/npm/flowise-components/CVE-2026-41264/",
-      "verdict": "WARN",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
       "verdict_match": false,
-      "severity": "high",
-      "findings_count": 2,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Flowise CSV Agent prompt-injection RCE (CVE-2026-41264, flowise-components < 3.1.0)",
-          "severity": "high",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "Local semantic prompt-injection intent pattern",
-          "severity": "medium",
-          "confidence": 0.69
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:23.293306+00:00"
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:26.047511+00:00"
     },
     {
       "id": "organic_psv039_splunk_mcp_token_log_disclosure",
@@ -774,20 +368,13 @@
       "archetype": "passive_surveillance",
       "rule_id": "PSV-039",
       "reference": "https://www.sentinelone.com/vulnerability-database/cve-2026-20205/",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
       "verdict_match": false,
-      "severity": "medium",
-      "findings_count": 1,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Splunk MCP Server session token log disclosure (CVE-2026-20205, < 1.0.3)",
-          "severity": "medium",
-          "confidence": 0.85
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:26.924591+00:00"
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:27.176506+00:00"
     },
     {
       "id": "organic_sup045_gpt_proxy_kube_health",
@@ -797,26 +384,13 @@
       "archetype": "supply_chain",
       "rule_id": "SUP-045",
       "reference": "https://www.aikido.dev/blog/gpt-proxy-backdoor-npm-pypi-chinese-llm-relay",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "medium",
-      "findings_count": 2,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "pip install in skill body with non-standard or suspicious package name",
-          "severity": "medium",
-          "confidence": 0.82
-        },
-        {
-          "rule_id": "",
-          "title": "GPT-Proxy backdoor: kube-health-tools (npm) / kube-node-health (PyPI) Chinese LLM relay (April 2026)",
-          "severity": "critical",
-          "confidence": 0.95
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:30.543074+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:28.311726+00:00"
     },
     {
       "id": "organic_psv043_azure_data_explorer_mcp_kqli",
@@ -826,26 +400,13 @@
       "archetype": "passive_surveillance",
       "rule_id": "PSV-043",
       "reference": "https://nvd.nist.gov/vuln/detail/CVE-2026-33980",
-      "verdict": "WARN",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
       "verdict_match": false,
-      "severity": "high",
-      "findings_count": 2,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "MCP Python SDK DNS rebinding vulnerability (CVE-2025-66416, mcp < 1.23.0)",
-          "severity": "high",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "Azure Data Explorer MCP Server KQL injection (CVE-2026-33980, GHSA-vphc-468g-8rfp, <= 0.1.1)",
-          "severity": "high",
-          "confidence": 0.92
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:34.141453+00:00"
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:29.463720+00:00"
     },
     {
       "id": "organic_pinj024_windsurf_mcp_stdio_rce",
@@ -855,20 +416,13 @@
       "archetype": "prompt_injection",
       "rule_id": "PINJ-024",
       "reference": "https://nvd.nist.gov/vuln/detail/CVE-2026-30615",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 1,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Windsurf MCP STDIO command injection via HTML prompt injection (CVE-2026-30615, 1.9544.26)",
-          "severity": "critical",
-          "confidence": 0.93
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:37.727297+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:30.609933+00:00"
     },
     {
       "id": "organic_psv040_azure_devops_mcp_cve_2026_32211_20260425",
@@ -878,32 +432,13 @@
       "archetype": "passive_surveillance",
       "rule_id": "PSV-040",
       "reference": "https://windowsnews.ai/article/cve-2026-32211-critical-azure-mcp-server-authentication-flaw-exposes-sensitive-data-cvss-91.409622",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 3,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Azure DevOps MCP Server missing authentication (CVE-2026-32211, @azure-devops/mcp, CWE-306, CVSS 9.1)",
-          "severity": "critical",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "Local semantic social-engineering credential-harvest pattern",
-          "severity": "high",
-          "confidence": 0.92
-        },
-        {
-          "rule_id": "",
-          "title": "Local semantic prompt-injection intent pattern",
-          "severity": "medium",
-          "confidence": 0.79
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:41.357479+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:31.728086+00:00"
     },
     {
       "id": "organic_sup042_shai_hulud_bitwarden_cli_20260425",
@@ -913,44 +448,13 @@
       "archetype": "supply_chain",
       "rule_id": "SUP-042",
       "reference": "https://www.aikido.dev/blog/shai-hulud-npm-bitwarden-cli-compromise",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 5,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "GitHub Actions credential stealer with Runner.Worker memory harvesting",
-          "severity": "critical",
-          "confidence": 0.88
-        },
-        {
-          "rule_id": "",
-          "title": "Nx/s1ngularity AI CLI weaponization via dangerously-skip-permissions",
-          "severity": "critical",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "Shai-Hulud: @bitwarden/cli@2026.4.0 supply chain compromise (TeamPCP, April 2026)",
-          "severity": "critical",
-          "confidence": 0.95
-        },
-        {
-          "rule_id": "",
-          "title": "Secret access + Network exfiltration chain",
-          "severity": "critical",
-          "confidence": 0.95
-        },
-        {
-          "rule_id": "",
-          "title": "Local semantic prompt-injection intent pattern",
-          "severity": "medium",
-          "confidence": 0.67
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:45.009226+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:32.862316+00:00"
     },
     {
       "id": "organic_psv041_mcp_ruby_sdk_sse_hijack",
@@ -960,32 +464,1069 @@
       "archetype": "passive_surveillance",
       "rule_id": "PSV-041",
       "reference": "https://rubysec.com/advisories/CVE-2026-33946/",
-      "verdict": "BLOCK",
+      "verdict": "ERROR",
       "expected_verdict": "BLOCK",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 3,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "MCP Python SDK DNS rebinding vulnerability (CVE-2025-66416, mcp < 1.23.0)",
-          "severity": "high",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "MCP Ruby SDK SSE session hijacking via session fixation (CVE-2026-33946, mcp gem < 0.9.2, CWE-384)",
-          "severity": "high",
-          "confidence": 0.9
-        },
-        {
-          "rule_id": "",
-          "title": "Local semantic prompt-injection intent pattern",
-          "severity": "medium",
-          "confidence": 0.64
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:48.672250+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:33.999034+00:00"
+    },
+    {
+      "id": "organic_mal071_tradingclaw_needle_stealer",
+      "demo_title": "TradingClaw / Needle Stealer (Fake TradingView AI Agent)",
+      "demo_description": "Fake TradingView AI agent site (tradingclaw.pro) distributes Needle Stealer via DLL-hijacking loader (iviewers.dll). Process hollowing into RegAsm.exe. Modular Go infostealer with malicious browser extension achieving full browser takeover.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-071",
+      "reference": "https://www.malwarebytes.com/blog/threat-intel/2026/04/malicious-trading-website-drop-malware-that-hands-over-your-browser-to-attackers",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:35.127265+00:00"
+    },
+    {
+      "id": "organic_mal072_amos_cursor_agent_clickfix",
+      "demo_title": "AMOS Stealer via Cursor AI Agent (ClickFix / arkypc.com)",
+      "demo_description": "ClickFix-style fake Claude Code troubleshooting page at arkypc.com social-engineers Cursor agent into downloading AMOS Stealer. Obfuscated AppleScript with VM evasion; exfiltrates to lakhov.com/contact.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-072",
+      "reference": "https://fieldeffect.com/blog/field-effect-detects-amos-stealer-delivered-via-cursor-ai-agent-session",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:36.252375+00:00"
+    },
+    {
+      "id": "organic_se006_athr_ai_vishing_platform",
+      "demo_title": "ATHR AI Vishing Platform (TOAD Callback Phishing)",
+      "demo_description": "Criminal PaaS for automated telephone-oriented attack delivery. AI voice agents extract 6-digit verification codes. Brand-spoofed mailer for Google/Microsoft/Coinbase/Binance/Gemini.",
+      "label": "injection",
+      "archetype": "social_engineering",
+      "rule_id": "SE-006",
+      "reference": "https://www.helpnetsecurity.com/2026/04/20/athr-voice-phishing-ai-platform/",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:37.365554+00:00"
+    },
+    {
+      "id": "organic_exec042_ide_config_injection",
+      "demo_title": "IDE config injection via CurXecute and MCPoison attacks modifying mcp",
+      "demo_description": "IDE config injection via CurXecute and MCPoison attacks modifying mcp.json for silent command execution in Cursor IDE",
+      "label": "injection",
+      "archetype": "prompt_injection",
+      "rule_id": "EXEC-042",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:38.484784+00:00"
+    },
+    {
+      "id": "organic_mal055_postmark_mcp_bcc_harvest",
+      "demo_title": "postmark-mcp BCC email harvesting \u2014 silent BCC injection via first in-the-wil...",
+      "demo_description": "postmark-mcp BCC email harvesting \u2014 silent BCC injection via first in-the-wild malicious MCP server (phanpak/giftshop.club)",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-055",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:39.627334+00:00"
+    },
+    {
+      "id": "organic_mal056_nx_s1ngularity_ai_weaponization",
+      "demo_title": "Nx/s1ngularity AI CLI weaponization via --dangerously-skip-permissions to enu...",
+      "demo_description": "Nx/s1ngularity AI CLI weaponization via --dangerously-skip-permissions to enumerate credentials with destructive shutdown payload",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-056",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:40.763321+00:00"
+    },
+    {
+      "id": "organic_mal057_jarkastealer_ai_trojan",
+      "demo_title": "JarkaStealer AI package trojan distributing JavaUpdater",
+      "demo_description": "JarkaStealer AI package trojan distributing JavaUpdater.jar via malicious PyPI packages gptplus and claudeai-eng for credential theft",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-057",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:41.897717+00:00"
+    },
+    {
+      "id": "organic_mal059_glassworm_mcp_20260403",
+      "demo_title": "GlassWorm 5th Wave MCP server supply chain attack using @iflow-mcp/watercrawl...",
+      "demo_description": "GlassWorm 5th Wave MCP server supply chain attack using @iflow-mcp/watercrawl-watercrawl-mcp with invisible Unicode characters to execute payloads",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-059",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:43.020864+00:00"
+    },
+    {
+      "id": "organic_mal060_telnyx_wav_steg",
+      "demo_title": "Telnyx PyPI WAV steganography credential stealer \u2014 TeamPCP campaign",
+      "demo_description": "Telnyx PyPI WAV steganography credential stealer \u2014 TeamPCP campaign",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-060",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:44.142327+00:00"
+    },
+    {
+      "id": "organic_mal061_nomshub_cursor_tunnel",
+      "demo_title": "NomShub cursor-tunnel sandbox escape and persistence via shell builtins \u2014 Str...",
+      "demo_description": "NomShub cursor-tunnel sandbox escape and persistence via shell builtins \u2014 Straiker disclosure April 3, 2026",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-061",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:45.255456+00:00"
+    },
+    {
+      "id": "organic_mal070_nkabuse_huggingface_typosquat_20260420",
+      "demo_title": "NKAbuse RAT delivered via typosquatted Hugging Face Space (vsccode-modetx) wi...",
+      "demo_description": "NKAbuse RAT delivered via typosquatted Hugging Face Space (vsccode-modetx) with kagent binary mimicking Kubernetes AI agent",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-070",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:46.358812+00:00"
+    },
+    {
+      "id": "organic_pinj018_hidden_prompt_injection",
+      "demo_title": "Hidden prompt injection using CSS display:none and HTML aria-hidden to embed ...",
+      "demo_description": "Hidden prompt injection using CSS display:none and HTML aria-hidden to embed invisible override instructions for AI content moderation",
+      "label": "injection",
+      "archetype": "prompt_injection",
+      "rule_id": "PINJ-018",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:47.472472+00:00"
+    },
+    {
+      "id": "organic_pinj022_nanobot_email_injection_20260412",
+      "demo_title": "nanobot CVE-2026-33654 indirect prompt injection via email channel",
+      "demo_description": "nanobot CVE-2026-33654 indirect prompt injection via email channel",
+      "label": "injection",
+      "archetype": "prompt_injection",
+      "rule_id": "PINJ-022",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:48.592935+00:00"
+    },
+    {
+      "id": "organic_psv008_cursor_rce_20260403",
+      "demo_title": "CVE-2026-22708 Cursor IDE RCE via shell built-ins (export/typeset/declare) by...",
+      "demo_description": "CVE-2026-22708 Cursor IDE RCE via shell built-ins (export/typeset/declare) bypassing the command allowlist sandbox",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-008",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:49.716537+00:00"
+    },
+    {
+      "id": "organic_psv013_cursor_rce_cve_2026_31854_20260412",
+      "demo_title": "Cursor IDE CVE-2026-31854 RCE via indirect prompt injection from malicious we...",
+      "demo_description": "Cursor IDE CVE-2026-31854 RCE via indirect prompt injection from malicious websites",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-013",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:50.836681+00:00"
+    },
+    {
+      "id": "organic_psv014_apollo_mcp_dns_rebinding_20260412",
+      "demo_title": "Apollo MCP Server CVE-2026-35577 DNS rebinding via StreamableHTTP transport",
+      "demo_description": "Apollo MCP Server CVE-2026-35577 DNS rebinding via StreamableHTTP transport",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-014",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:51.953414+00:00"
+    },
+    {
+      "id": "organic_psv026_mcp_neo4j_rce",
+      "demo_title": "Psv026 Mcp Neo4J Rce",
+      "demo_description": "Organic holdout eval sample for PSV-026.",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-026",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:53.065075+00:00"
+    },
+    {
+      "id": "organic_psv027_aap_mcp_log_injection",
+      "demo_title": "Psv027 Aap Mcp Log Injection",
+      "demo_description": "Organic holdout eval sample for PSV-027.",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-027",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:54.166071+00:00"
+    },
+    {
+      "id": "organic_psv028_openclaw_pair_approve",
+      "demo_title": "Psv028 Openclaw Pair Approve",
+      "demo_description": "Organic holdout eval sample for PSV-028.",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-028",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:55.270417+00:00"
+    },
+    {
+      "id": "organic_psv029_openclaw_shared_auth",
+      "demo_title": "Psv029 Openclaw Shared Auth",
+      "demo_description": "Organic holdout eval sample for PSV-029.",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-029",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:56.373653+00:00"
+    },
+    {
+      "id": "organic_psv030_openclaw_session_kill",
+      "demo_title": "Psv030 Openclaw Session Kill",
+      "demo_description": "Organic holdout eval sample for PSV-030.",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-030",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:57.477557+00:00"
+    },
+    {
+      "id": "organic_psv031_openclaw_chat_allowlist",
+      "demo_title": "Psv031 Openclaw Chat Allowlist",
+      "demo_description": "Organic holdout eval sample for PSV-031.",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-031",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:58.580968+00:00"
+    },
+    {
+      "id": "organic_psv032_mcp_kubernetes_kubectl_injection_20260420",
+      "demo_title": "mcp-server-kubernetes kubectl argument injection RCE (CVE-2026-39884) \u2014 port_...",
+      "demo_description": "mcp-server-kubernetes kubectl argument injection RCE (CVE-2026-39884) \u2014 port_forward tool allows arbitrary kubectl flag injection via string concatenation",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-032",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:23:59.697834+00:00"
+    },
+    {
+      "id": "organic_psv033_mcp_framework_dos_20260420",
+      "demo_title": "mcp-framework HTTP server DoS via unbounded POST body (CVE-2026-39313) \u2014 read...",
+      "demo_description": "mcp-framework HTTP server DoS via unbounded POST body (CVE-2026-39313) \u2014 readRequestBody allows memory exhaustion crash",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-033",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:00.829608+00:00"
+    },
+    {
+      "id": "organic_psv034_openclaw_webview_rce_20260420",
+      "demo_title": "OpenClaw WebView JavascriptInterface RCE (CVE-2026-35643) \u2014 unvalidated WebVi...",
+      "demo_description": "OpenClaw WebView JavascriptInterface RCE (CVE-2026-35643) \u2014 unvalidated WebView interface enables arbitrary code execution in Android app",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-034",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:01.953784+00:00"
+    },
+    {
+      "id": "organic_psv035_flowise_mcp_rce_20260420",
+      "demo_title": "Flowise authenticated RCE via MCP adapter STDIO command injection (CVE-2026-4...",
+      "demo_description": "Flowise authenticated RCE via MCP adapter STDIO command injection (CVE-2026-40933) \u2014 unsafe serialization allows arbitrary command execution",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-035",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:03.077435+00:00"
+    },
+    {
+      "id": "organic_psv037_cursor_mcp_oauth_rce_cve_2025_61591_20260424",
+      "demo_title": "Cursor AI MCP OAuth impersonation RCE (CVE-2025-61591, CVSS 8",
+      "demo_description": "Cursor AI MCP OAuth impersonation RCE (CVE-2025-61591, CVSS 8.8) \u2014 versions \u22641.7 allow command injection via malicious MCP server OAuth impersonation",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-037",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:04.193005+00:00"
+    },
+    {
+      "id": "organic_psv042_openclaw_channel_shadow_rce_cve_2026_41295_20260425",
+      "demo_title": "OpenClaw < 2026",
+      "demo_description": "OpenClaw < 2026.4.2 untrusted workspace channel shadow RCE (CVE-2026-41295, CVSS 7.8 HIGH, CWE-829) \u2014 malicious workspace plugin claims bundled channel ID to execute code during built-in channel setup",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-042",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:05.314880+00:00"
+    },
+    {
+      "id": "organic_sup023_mcp_remote_oauth_cmd_injection",
+      "demo_title": "mcp-remote OAuth authorization_endpoint command injection (CVE-2025-6514) \u2014 c...",
+      "demo_description": "mcp-remote OAuth authorization_endpoint command injection (CVE-2025-6514) \u2014 crafted OAuth discovery metadata triggers OS command execution on MCP client",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-023",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:06.423637+00:00"
+    },
+    {
+      "id": "organic_sup024_axios_compromised_versions",
+      "demo_title": "Compromised axios npm versions 1",
+      "demo_description": "Compromised axios npm versions 1.14.1 and 0.30.4 that inject plain-crypto-js RAT dropper (TeamPCP)",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-024",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:07.544550+00:00"
+    },
+    {
+      "id": "organic_sup026_maliciouscorgi_vscode_20260403",
+      "demo_title": "MaliciousCorgi VS Code AI extensions (whensunset",
+      "demo_description": "MaliciousCorgi VS Code AI extensions (whensunset.chatgpt-china, zhukunpeng.chat-moss) exfiltrating source code to aihao123.cn",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "SUP-026",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:08.651418+00:00"
+    },
+    {
+      "id": "organic_sup027_telnyx_compromised_version",
+      "demo_title": "Compromised telnyx package version reference \u2014 known-malicious versions 4",
+      "demo_description": "Compromised telnyx package version reference \u2014 known-malicious versions 4.87.1 and 4.87.2",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-027",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:09.778335+00:00"
+    },
+    {
+      "id": "organic_sup028_unc1069_onlivemeet",
+      "demo_title": "UNC1069 social engineering lure domain teams",
+      "demo_description": "UNC1069 social engineering lure domain teams.onlivemeet.com \u2014 North Korean APT targeting npm maintainers",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-028",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:10.891200+00:00"
+    },
+    {
+      "id": "organic_sup034_claude_code_action_mcp_json_20260412",
+      "demo_title": "claude-code-action arbitrary code execution via malicious",
+      "demo_description": "claude-code-action arbitrary code execution via malicious .mcp.json in PR branch",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-034",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:12.001442+00:00"
+    },
+    {
+      "id": "organic_sup038_context_ai_chrome_extension_vercel_20260420",
+      "demo_title": "Context",
+      "demo_description": "Context.ai Chrome extension supply chain compromise leading to Vercel breach \u2014 compromised OAuth grant enabled Google Workspace access",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-038",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:13.125668+00:00"
+    },
+    {
+      "id": "organic_sup040_xinference_pypi_teampcp_20260424",
+      "demo_title": "Xinference PyPI supply chain compromise \u2014 versions 2",
+      "demo_description": "Xinference PyPI supply chain compromise \u2014 versions 2.6.0-2.6.2 contain TeamPCP-style credential harvester exfiltrating to whereisitat.lucyatemysuperbox.space",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-040",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:14.240145+00:00"
+    },
+    {
+      "id": "organic_sup041_namastex_canisterworm_npm_20260424",
+      "demo_title": "Namastex CanisterWorm npm worm wave \u2014 @automagik/genie, pgserve, @fairwords/*...",
+      "demo_description": "Namastex CanisterWorm npm worm wave \u2014 @automagik/genie, pgserve, @fairwords/* packages with ICP canister C2 and self-propagation",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-041",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:15.350316+00:00"
+    },
+    {
+      "id": "organic_sup043_checkmarx_kics_docker_mcpaddon_20260425",
+      "demo_title": "Checkmarx KICS Docker Hub supply chain compromise \u2014 malicious v2",
+      "demo_description": "Checkmarx KICS Docker Hub supply chain compromise \u2014 malicious v2.1.21 image downloads mcpAddon.js credential stealer, exfiltrates to audit.checkmarx.cx (91.195.240.123)",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-043",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:16.450735+00:00"
+    },
+    {
+      "id": "organic_sup044_elementary_data_pypi_ghcr_gha_injection_20260425",
+      "demo_title": "elementary-data 0",
+      "demo_description": "elementary-data 0.23.3 PyPI/GHCR supply chain compromise via GitHub Actions script injection \u2014 elementary.pth three-stage credential harvester exfiltrates to skyhanni.cloud",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-044",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:17.562158+00:00"
+    },
+    {
+      "id": "organic_mal062_clawhub_keylogger_skill_20260407",
+      "demo_title": "Mal062 Clawhub Keylogger Skill 20260407",
+      "demo_description": "Organic holdout eval sample for mal062_clawhub_keylogger_skill_20260407.md.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:18.672456+00:00"
+    },
+    {
+      "id": "organic_mal063_lazarus_graphalgo_npm_rat_20260408",
+      "demo_title": "Lazarus Group fake-recruitment npm/PyPI RAT campaign \u2014 packages graphalgo, bi...",
+      "demo_description": "Lazarus Group fake-recruitment npm/PyPI RAT campaign \u2014 packages graphalgo, bigmathutils, duer-js, xpack-utils deliver GolangGhost/BeaverTail RAT via postinstall hook to crypto/AI developers.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-063",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:19.778779+00:00"
+    },
+    {
+      "id": "organic_mal064_velora_dex_sdk_minirat_20260409",
+      "demo_title": "velora-dex/sdk@9",
+      "demo_description": "velora-dex/sdk@9.4.1 npm supply-chain attack \u2014 compromised DeFi SDK delivers minirat Go RAT via launchctl persistence (zsh.profiler). C2 at datahub.ink, cloud-sync.online, byte-io.us.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-064",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:20.884253+00:00"
+    },
+    {
+      "id": "organic_mal065_hermes_px_ai_prompt_stealer_20260409",
+      "demo_title": "hermes-px PyPI malicious AI proxy \u2014 routes all LLM requests through universit...",
+      "demo_description": "hermes-px PyPI malicious AI proxy \u2014 routes all LLM requests through universitecentrale.net and exfiltrates prompts/responses to urlvoelpilswwxkiosey.supabase.co (JFROG XRAY-961094).",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-065",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:21.988604+00:00"
+    },
+    {
+      "id": "organic_mal066_glassworm_zig_dropper_wakatime_20260410",
+      "demo_title": "GlassWorm Zig dropper via fake WakaTime OpenVSX extension (specstudio/code-wa...",
+      "demo_description": "GlassWorm Zig dropper via fake WakaTime OpenVSX extension (specstudio/code-wakatime-activity-tracker) \u2014 delivers win.node/mac.node Zig-compiled native dropper that installs floktokbok.autoimport in...",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-066",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:23.103510+00:00"
+    },
+    {
+      "id": "organic_mal067_glassworm_unicode_pua_eval_20260411",
+      "demo_title": "GlassWorm invisible Unicode PUA payload injection (eval via FE00-FE0F/E0100-E...",
+      "demo_description": "GlassWorm invisible Unicode PUA payload injection (eval via FE00-FE0F/E0100-E01EF encoding) \u2014 malicious JavaScript payload hidden in invisible Unicode PUA characters, decoded via codePointAt() and ...",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-067",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:24.215319+00:00"
+    },
+    {
+      "id": "organic_mal069_phantompulse_obsidian_rat_20260416",
+      "demo_title": "PHANTOMPULSE RAT via Obsidian Shell Commands plugin abuse (REF6598) \u2014 AI-assi...",
+      "demo_description": "PHANTOMPULSE RAT via Obsidian Shell Commands plugin abuse (REF6598) \u2014 AI-assisted Windows RAT delivered via trojanized Obsidian vault with blockchain-based C2 resolution.",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "MAL-069",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:25.332181+00:00"
+    },
+    {
+      "id": "organic_pinj019_claudy_day_url_injection_20260407",
+      "demo_title": "Claudy Day invisible URL parameter prompt injection + Files API exfiltration ...",
+      "demo_description": "Claudy Day invisible URL parameter prompt injection + Files API exfiltration \u2014 Oasis Security attack chain against claude.ai, March 2026. Chains hidden HTML in ?q= URL param with Anthropic Files AP...",
+      "label": "injection",
+      "archetype": "prompt_injection",
+      "rule_id": "PINJ-019",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:26.435532+00:00"
+    },
+    {
+      "id": "organic_pinj020_minja_cross_session_memory_poisoning_20260408",
+      "demo_title": "MINJA cross-session AI agent memory poisoning \u2014 malicious content in processe...",
+      "demo_description": "MINJA cross-session AI agent memory poisoning \u2014 malicious content in processed documents injects persistent instructions into agent memory store that survive across sessions and affect future unrel...",
+      "label": "injection",
+      "archetype": "prompt_injection",
+      "rule_id": "PINJ-020",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:27.561225+00:00"
+    },
+    {
+      "id": "organic_pinj021_a2a_agent_card_poisoning_20260410",
+      "demo_title": "A2A agent card poisoning \u2014 adversarial instructions embedded in agent card de...",
+      "demo_description": "A2A agent card poisoning \u2014 adversarial instructions embedded in agent card description field at /.well-known/agent.json cause host LLM to exfiltrate user data (Keysight/CyPerf, March 2026).",
+      "label": "injection",
+      "archetype": "prompt_injection",
+      "rule_id": "PINJ-021",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:28.675365+00:00"
+    },
+    {
+      "id": "organic_psv009_langflow_agentic_rce_20260406",
+      "demo_title": "Langflow Agentic Assistant RCE Vulnerability (CVE-2026-33873) \u2014 server-side e...",
+      "demo_description": "Langflow Agentic Assistant RCE Vulnerability (CVE-2026-33873) \u2014 server-side execution of LLM-generated Python code",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-009",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:29.783848+00:00"
+    },
+    {
+      "id": "organic_psv010_mcp_sdk_dns_rebinding_20260410",
+      "demo_title": "MCP Python SDK DNS rebinding vulnerability CVE-2025-66416 (GHSA-9h52-p55h-vw2...",
+      "demo_description": "MCP Python SDK DNS rebinding vulnerability CVE-2025-66416 (GHSA-9h52-p55h-vw2f) \u2014 HTTP-based MCP servers in mcp < 1.23.0 lack DNS rebinding protection, allowing cross-origin tool hijacking.",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-010",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:30.895675+00:00"
+    },
+    {
+      "id": "organic_psv011_crewai_rce_ssrf_chain_20260410",
+      "demo_title": "CrewAI prompt injection to RCE/SSRF chain VU#221883 \u2014 CVE-2026-2275/2285/2286...",
+      "demo_description": "CrewAI prompt injection to RCE/SSRF chain VU#221883 \u2014 CVE-2026-2275/2285/2286/2287 allow sandbox escape via CodeInterpreterTool ctypes fallback, SSRF via RAG search, and arbitrary file read via JSO...",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-011",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:32.005171+00:00"
+    },
+    {
+      "id": "organic_psv012_aws_mcp_server_cmd_injection_20260411",
+      "demo_title": "aws-mcp-server command injection RCE (CVE-2026-5058 / CVE-2026-5059, ZDI-26-2...",
+      "demo_description": "aws-mcp-server command injection RCE (CVE-2026-5058 / CVE-2026-5059, ZDI-26-246/247, CVSS 9.8) \u2014 user-supplied strings in the allowed-commands list are passed to system calls without validation, en...",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-012",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:33.113609+00:00"
+    },
+    {
+      "id": "organic_psv015_mcp_go_sdk_dns_rebinding_20260413",
+      "demo_title": "MCP Go SDK DNS rebinding vulnerability (CVE-2026-34742, GHSA-xw59-hvm2-8pj6, ...",
+      "demo_description": "MCP Go SDK DNS rebinding vulnerability (CVE-2026-34742, GHSA-xw59-hvm2-8pj6, go-sdk < v1.4.0) \u2014 HTTP-based MCP servers do not enable DNS rebinding protection by default on localhost without authent...",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-015",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:34.254938+00:00"
+    },
+    {
+      "id": "organic_psv016_mobile_mcp_android_intent_rce_20260413",
+      "demo_title": "mobile-mcp arbitrary Android intent execution via unvalidated URL in mobile_o...",
+      "demo_description": "mobile-mcp arbitrary Android intent execution via unvalidated URL in mobile_open_url tool (CVE-2026-35394, GHSA-5qhv-x9j4-c3vm, mobilenexthq mobile-mcp < 0.0.50).",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-016",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:35.399600+00:00"
+    },
+    {
+      "id": "organic_psv017_openclaw_websocket_scope_elevation_20260413",
+      "demo_title": "OpenClaw WebSocket authorization bypass \u2014 self-declared scope elevation (CVE-...",
+      "demo_description": "OpenClaw WebSocket authorization bypass \u2014 self-declared scope elevation (CVE-2026-22172, pre-2026.3.12) \u2014 WebSocket connect path allows self-declaration of operator.admin scope without server-side ...",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-017",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:36.522815+00:00"
+    },
+    {
+      "id": "organic_psv018_n8n_mcp_ssrf_cve_2026_39974_20260414",
+      "demo_title": "n8n-MCP Server SSRF via multi-tenant HTTP header (CVE-2026-39974, < 2",
+      "demo_description": "n8n-MCP Server SSRF via multi-tenant HTTP header (CVE-2026-39974, < 2.47.4) \u2014 authenticated attacker can inject arbitrary URLs through multi-tenant HTTP headers enabling cloud metadata harvesting.",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-018",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:37.650052+00:00"
+    },
+    {
+      "id": "organic_psv019_mcp_taskwarrior_rce_cve_2026_5833_20260414",
+      "demo_title": "mcp-server-taskwarrior command injection RCE (CVE-2026-5833, awwaiid <= 1",
+      "demo_description": "mcp-server-taskwarrior command injection RCE (CVE-2026-5833, awwaiid <= 1.0.1) \u2014 unsanitized input reaches shell command execution paths enabling local RCE.",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-019",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:38.783346+00:00"
+    },
+    {
+      "id": "organic_psv023_nginx_ui_mcp_auth_bypass_20260416",
+      "demo_title": "nginx-ui MCP endpoint authentication bypass (CVE-2026-33032, CVSS 9",
+      "demo_description": "nginx-ui MCP endpoint authentication bypass (CVE-2026-33032, CVSS 9.8) \u2014 unauthenticated /mcp_message endpoint allows full nginx service takeover.",
+      "label": "injection",
+      "archetype": "passive_surveillance",
+      "rule_id": "PSV-023",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:39.896824+00:00"
+    },
+    {
+      "id": "organic_se004_eviltokens_device_code_phishing_20260414",
+      "demo_title": "EvilTokens OAuth device code phishing (PhaaS, Microsoft 365 token hijack) \u2014 w...",
+      "demo_description": "EvilTokens OAuth device code phishing (PhaaS, Microsoft 365 token hijack) \u2014 widespread campaign exploiting OAuth 2.0 device code flow to compromise Microsoft 365 accounts at scale, bypassing MFA.",
+      "label": "injection",
+      "archetype": "social_engineering",
+      "rule_id": "SE-004",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:41.029579+00:00"
+    },
+    {
+      "id": "organic_se005_obsidian_vault_lure_20260416",
+      "demo_title": "Obsidian shared vault social engineering lure (REF6598 / PHANTOMPULSE deliver...",
+      "demo_description": "Obsidian shared vault social engineering lure (REF6598 / PHANTOMPULSE delivery) \u2014 VC firm impersonation on LinkedIn/Telegram directing crypto/finance targets to open shared Obsidian vaults.",
+      "label": "injection",
+      "archetype": "social_engineering",
+      "rule_id": "SE-005",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:42.142150+00:00"
+    },
+    {
+      "id": "organic_sup029_strapi_npm_malware_20260406",
+      "demo_title": "Malicious Strapi npm packages (Redis RCE / Credential Harvesting) \u2014 36 packag...",
+      "demo_description": "Malicious Strapi npm packages (Redis RCE / Credential Harvesting) \u2014 36 packages by umarbek1233/kekylf12 deploying postinstall exploits",
+      "label": "injection",
+      "archetype": "malware_pattern",
+      "rule_id": "SUP-029",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:43.274569+00:00"
+    },
+    {
+      "id": "organic_sup030_a11y_mcp_ssrf_20260407",
+      "demo_title": "a11y-mcp SSRF vulnerability CVE-2026-5323 \u2014 SSRF in priyankark/a11y-mcp <=1",
+      "demo_description": "a11y-mcp SSRF vulnerability CVE-2026-5323 \u2014 SSRF in priyankark/a11y-mcp <=1.0.5 via unsanitized URL parameter in A11yServer. Fixed in 1.0.6.",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-030",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:44.386443+00:00"
+    },
+    {
+      "id": "organic_sup031_packagegate_pnpm_lifecycle_bypass_20260408",
+      "demo_title": "PackageGate pnpm/npm lifecycle script bypass CVE-2025-69264 / CVE-2025-69263 ...",
+      "demo_description": "PackageGate pnpm/npm lifecycle script bypass CVE-2025-69264 / CVE-2025-69263 \u2014 attacker-controlled package.json scripts execute during pnpm install even when lifecycle scripts are disabled via igno...",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-031",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:45.491463+00:00"
+    },
+    {
+      "id": "organic_sup032_velora_dex_sdk_compromised_version_20260409",
+      "demo_title": "Reference to known-malicious @velora-dex/sdk@9",
+      "demo_description": "Reference to known-malicious @velora-dex/sdk@9.4.1 npm package in a DeFi trading bot skill.",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-032",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:46.595448+00:00"
+    },
+    {
+      "id": "organic_sup033_openvsx_zip_slip_20260411",
+      "demo_title": "OpenVSX Code Extension Marketplace Zip Slip vulnerability (CVE-2026-35454, pre-2",
+      "demo_description": "OpenVSX Code Extension Marketplace Zip Slip vulnerability (CVE-2026-35454, pre-2.4.2) \u2014 maliciously crafted .vsix archives bypass pre-publication security checks via path traversal, enabling arbitr...",
+      "label": "injection",
+      "archetype": "supply_chain",
+      "rule_id": "SUP-033",
+      "reference": "",
+      "verdict": "ERROR",
+      "expected_verdict": "BLOCK",
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:47.700650+00:00"
     },
     {
       "id": "demo_benign_commonpaper",
@@ -995,20 +1536,13 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/CommonPaper/claude-skill",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "ALLOW",
-      "verdict_match": true,
-      "severity": "critical",
-      "findings_count": 1,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Secret access + Network exfiltration chain",
-          "severity": "critical",
-          "confidence": 0.95
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:52.996274+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:49.038262+00:00"
     },
     {
       "id": "demo_benign_zendesk",
@@ -1018,26 +1552,13 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/andmarios/zendesk-skill",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "ALLOW",
-      "verdict_match": true,
-      "severity": "high",
-      "findings_count": 2,
-      "top_findings": [
-        {
-          "rule_id": "",
-          "title": "Local semantic social-engineering credential-harvest pattern",
-          "severity": "high",
-          "confidence": 0.92
-        },
-        {
-          "rule_id": "",
-          "title": "Local semantic prompt-injection intent pattern",
-          "severity": "high",
-          "confidence": 0.95
-        }
-      ],
-      "scanned_at": "2026-04-26T06:04:57.515699+00:00"
+      "verdict_match": false,
+      "severity": "",
+      "findings_count": 0,
+      "top_findings": [],
+      "scanned_at": "2026-05-03T06:24:50.251978+00:00"
     },
     {
       "id": "demo_benign_fal_generate",
@@ -1047,13 +1568,13 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/aleSheng/fal-agent",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "ALLOW",
-      "verdict_match": true,
+      "verdict_match": false,
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-26T06:05:01.408733+00:00"
+      "scanned_at": "2026-05-03T06:24:51.466234+00:00"
     },
     {
       "id": "demo_benign_mailescrow",
@@ -1063,13 +1584,13 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/acroca/mailescrow",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "ALLOW",
-      "verdict_match": true,
+      "verdict_match": false,
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-26T06:05:05.258959+00:00"
+      "scanned_at": "2026-05-03T06:24:52.692893+00:00"
     },
     {
       "id": "demo_benign_explain_code",
@@ -1079,13 +1600,13 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/adityamparikh/explain-code-skill",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "ALLOW",
-      "verdict_match": true,
+      "verdict_match": false,
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-26T06:05:09.226766+00:00"
+      "scanned_at": "2026-05-03T06:24:53.902394+00:00"
     },
     {
       "id": "demo_benign_breweries",
@@ -1095,13 +1616,13 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/jeffaf/breweries-skill",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "ALLOW",
-      "verdict_match": true,
+      "verdict_match": false,
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-26T06:05:13.074980+00:00"
+      "scanned_at": "2026-05-03T06:24:55.205277+00:00"
     },
     {
       "id": "demo_benign_typos",
@@ -1111,13 +1632,13 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/luojiyin1987/typos-skill",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "ALLOW",
-      "verdict_match": true,
+      "verdict_match": false,
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-26T06:05:16.911894+00:00"
+      "scanned_at": "2026-05-03T06:24:56.511940+00:00"
     },
     {
       "id": "demo_benign_pr_review",
@@ -1127,13 +1648,13 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/metyatech/skill-pr-review-workflow",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "ALLOW",
-      "verdict_match": true,
+      "verdict_match": false,
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-26T06:05:20.706708+00:00"
+      "scanned_at": "2026-05-03T06:24:57.710414+00:00"
     },
     {
       "id": "demo_benign_leafer_graphics",
@@ -1143,13 +1664,13 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/leaferjs/ai-docs",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "ALLOW",
-      "verdict_match": true,
+      "verdict_match": false,
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-26T06:05:24.618011+00:00"
+      "scanned_at": "2026-05-03T06:24:58.925929+00:00"
     },
     {
       "id": "demo_benign_wechat_formatter",
@@ -1159,13 +1680,13 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/iamzifei/wechat-article-formatter-skill",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "ALLOW",
-      "verdict_match": true,
+      "verdict_match": false,
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-26T06:05:28.725171+00:00"
+      "scanned_at": "2026-05-03T06:25:00.122270+00:00"
     },
     {
       "id": "demo_benign_gitcli",
@@ -1175,13 +1696,13 @@
       "archetype": "",
       "rule_id": "",
       "reference": "https://github.com/junghan0611/gitcli",
-      "verdict": "ALLOW",
+      "verdict": "ERROR",
       "expected_verdict": "ALLOW",
-      "verdict_match": true,
+      "verdict_match": false,
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-04-26T06:05:32.555331+00:00"
+      "scanned_at": "2026-05-03T06:25:01.338208+00:00"
     }
   ]
 }
