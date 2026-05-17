@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-10T06:37:57.641835+00:00",
+  "generated_at": "2026-05-17T06:48:16.107412+00:00",
   "skillscan_version": "1.0.0",
   "entry_count": 106,
   "block_count": 80,
@@ -29,7 +29,7 @@
           "confidence": 0.86
         }
       ],
-      "scanned_at": "2026-05-10T06:29:51.176577+00:00"
+      "scanned_at": "2026-05-17T06:40:47.601437+00:00"
     },
     {
       "id": "organic_mal046_cursorjack_deeplink",
@@ -70,7 +70,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:29:55.785662+00:00"
+      "scanned_at": "2026-05-17T06:40:51.844417+00:00"
     },
     {
       "id": "organic_mal047_claude_hooks_rce",
@@ -117,7 +117,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:30:00.481627+00:00"
+      "scanned_at": "2026-05-17T06:40:56.073836+00:00"
     },
     {
       "id": "organic_mal048_langflow_rce",
@@ -146,7 +146,7 @@
           "confidence": 0.82
         }
       ],
-      "scanned_at": "2026-05-10T06:30:05.278645+00:00"
+      "scanned_at": "2026-05-17T06:41:00.343498+00:00"
     },
     {
       "id": "organic_mal049_litellm_pth_persistence",
@@ -193,7 +193,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:30:09.888505+00:00"
+      "scanned_at": "2026-05-17T06:41:04.697851+00:00"
     },
     {
       "id": "organic_mal050_ghost_campaign_npm",
@@ -216,7 +216,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:30:14.466152+00:00"
+      "scanned_at": "2026-05-17T06:41:09.010727+00:00"
     },
     {
       "id": "organic_pinj007_mcp_sampling_exfil",
@@ -245,7 +245,7 @@
           "confidence": 0.68
         }
       ],
-      "scanned_at": "2026-05-10T06:30:19.097735+00:00"
+      "scanned_at": "2026-05-17T06:41:13.188423+00:00"
     },
     {
       "id": "organic_pinj015_prompt_poaching_extension",
@@ -268,7 +268,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-05-10T06:30:23.706414+00:00"
+      "scanned_at": "2026-05-17T06:41:17.380851+00:00"
     },
     {
       "id": "organic_sup016_mcp_server_cmd_injection",
@@ -309,7 +309,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:30:28.298707+00:00"
+      "scanned_at": "2026-05-17T06:41:21.553409+00:00"
     },
     {
       "id": "organic_sup017_checkmarx_actions",
@@ -356,7 +356,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:30:32.918422+00:00"
+      "scanned_at": "2026-05-17T06:41:25.718200+00:00"
     },
     {
       "id": "organic_sup019_litellm_compromised_version",
@@ -391,7 +391,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-05-10T06:30:37.562618+00:00"
+      "scanned_at": "2026-05-17T06:41:29.920366+00:00"
     },
     {
       "id": "organic_sup020_clawhavoc_typosquat",
@@ -426,7 +426,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:30:42.246341+00:00"
+      "scanned_at": "2026-05-17T06:41:34.091128+00:00"
     },
     {
       "id": "organic_sup021_teampcp_checkmarx_vscode",
@@ -461,7 +461,7 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-05-10T06:30:46.859167+00:00"
+      "scanned_at": "2026-05-17T06:41:38.279780+00:00"
     },
     {
       "id": "organic_sup022_react_native_account_takeover",
@@ -484,7 +484,7 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-05-10T06:30:51.513703+00:00"
+      "scanned_at": "2026-05-17T06:41:42.440794+00:00"
     },
     {
       "id": "organic_mal054_glassworm_chrome_rat",
@@ -513,7 +513,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:30:56.082792+00:00"
+      "scanned_at": "2026-05-17T06:41:46.615041+00:00"
     },
     {
       "id": "organic_pinj016_contexthub_doc_poisoning",
@@ -542,7 +542,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-05-10T06:31:00.672749+00:00"
+      "scanned_at": "2026-05-17T06:41:50.804596+00:00"
     },
     {
       "id": "organic_exf020_teampcp_kubernetes_lateral",
@@ -589,7 +589,7 @@
           "confidence": 0.78
         }
       ],
-      "scanned_at": "2026-05-10T06:31:05.303077+00:00"
+      "scanned_at": "2026-05-17T06:41:54.965861+00:00"
     },
     {
       "id": "organic_cap001_capability_laundering",
@@ -618,7 +618,7 @@
           "confidence": 0.78
         }
       ],
-      "scanned_at": "2026-05-10T06:31:09.916038+00:00"
+      "scanned_at": "2026-05-17T06:41:59.165613+00:00"
     },
     {
       "id": "organic_obf005_dns_covert_channel",
@@ -647,7 +647,7 @@
           "confidence": 0.73
         }
       ],
-      "scanned_at": "2026-05-10T06:31:14.594834+00:00"
+      "scanned_at": "2026-05-17T06:42:03.403418+00:00"
     },
     {
       "id": "organic_sup039_xinference_pypi",
@@ -694,7 +694,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:31:19.247853+00:00"
+      "scanned_at": "2026-05-17T06:42:07.610214+00:00"
     },
     {
       "id": "organic_psv036_magento2_dev_mcp_shellquote",
@@ -735,7 +735,7 @@
           "confidence": 0.64
         }
       ],
-      "scanned_at": "2026-05-10T06:31:23.834957+00:00"
+      "scanned_at": "2026-05-17T06:42:11.866831+00:00"
     },
     {
       "id": "organic_psv038_flowise_csv_agent_rce",
@@ -764,7 +764,7 @@
           "confidence": 0.69
         }
       ],
-      "scanned_at": "2026-05-10T06:31:28.512218+00:00"
+      "scanned_at": "2026-05-17T06:42:16.109390+00:00"
     },
     {
       "id": "organic_psv039_splunk_mcp_token_log_disclosure",
@@ -787,7 +787,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-05-10T06:31:33.285272+00:00"
+      "scanned_at": "2026-05-17T06:42:20.319931+00:00"
     },
     {
       "id": "organic_sup045_gpt_proxy_kube_health",
@@ -816,7 +816,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:31:37.959531+00:00"
+      "scanned_at": "2026-05-17T06:42:24.542191+00:00"
     },
     {
       "id": "organic_psv043_azure_data_explorer_mcp_kqli",
@@ -845,7 +845,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-05-10T06:31:42.643537+00:00"
+      "scanned_at": "2026-05-17T06:42:28.798970+00:00"
     },
     {
       "id": "organic_pinj024_windsurf_mcp_stdio_rce",
@@ -868,7 +868,7 @@
           "confidence": 0.93
         }
       ],
-      "scanned_at": "2026-05-10T06:31:47.282894+00:00"
+      "scanned_at": "2026-05-17T06:42:33.032615+00:00"
     },
     {
       "id": "organic_psv040_azure_devops_mcp_cve_2026_32211_20260425",
@@ -909,7 +909,7 @@
           "confidence": 0.79
         }
       ],
-      "scanned_at": "2026-05-10T06:31:51.949699+00:00"
+      "scanned_at": "2026-05-17T06:42:37.265365+00:00"
     },
     {
       "id": "organic_sup042_shai_hulud_bitwarden_cli_20260425",
@@ -956,7 +956,7 @@
           "confidence": 0.67
         }
       ],
-      "scanned_at": "2026-05-10T06:31:56.591729+00:00"
+      "scanned_at": "2026-05-17T06:42:41.463915+00:00"
     },
     {
       "id": "organic_psv041_mcp_ruby_sdk_sse_hijack",
@@ -991,7 +991,7 @@
           "confidence": 0.64
         }
       ],
-      "scanned_at": "2026-05-10T06:32:01.248459+00:00"
+      "scanned_at": "2026-05-17T06:42:45.738039+00:00"
     },
     {
       "id": "organic_mal071_tradingclaw_needle_stealer",
@@ -1038,7 +1038,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:32:05.944153+00:00"
+      "scanned_at": "2026-05-17T06:42:50.076599+00:00"
     },
     {
       "id": "organic_mal072_amos_cursor_agent_clickfix",
@@ -1079,7 +1079,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:32:10.635448+00:00"
+      "scanned_at": "2026-05-17T06:42:54.370950+00:00"
     },
     {
       "id": "organic_se006_athr_ai_vishing_platform",
@@ -1102,7 +1102,7 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-05-10T06:32:15.366213+00:00"
+      "scanned_at": "2026-05-17T06:42:58.712704+00:00"
     },
     {
       "id": "organic_exec042_ide_config_injection",
@@ -1137,7 +1137,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:32:19.995903+00:00"
+      "scanned_at": "2026-05-17T06:43:02.940554+00:00"
     },
     {
       "id": "organic_mal055_postmark_mcp_bcc_harvest",
@@ -1160,7 +1160,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-05-10T06:32:24.580147+00:00"
+      "scanned_at": "2026-05-17T06:43:07.166905+00:00"
     },
     {
       "id": "organic_mal056_nx_s1ngularity_ai_weaponization",
@@ -1207,7 +1207,7 @@
           "confidence": 0.67
         }
       ],
-      "scanned_at": "2026-05-10T06:32:29.166397+00:00"
+      "scanned_at": "2026-05-17T06:43:11.503213+00:00"
     },
     {
       "id": "organic_mal057_jarkastealer_ai_trojan",
@@ -1242,7 +1242,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:32:33.806041+00:00"
+      "scanned_at": "2026-05-17T06:43:15.731071+00:00"
     },
     {
       "id": "organic_mal059_glassworm_mcp_20260403",
@@ -1277,7 +1277,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:32:38.457244+00:00"
+      "scanned_at": "2026-05-17T06:43:19.972870+00:00"
     },
     {
       "id": "organic_mal060_telnyx_wav_steg",
@@ -1324,7 +1324,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:32:43.042840+00:00"
+      "scanned_at": "2026-05-17T06:43:24.173846+00:00"
     },
     {
       "id": "organic_mal061_nomshub_cursor_tunnel",
@@ -1353,7 +1353,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-05-10T06:32:47.707322+00:00"
+      "scanned_at": "2026-05-17T06:43:28.461809+00:00"
     },
     {
       "id": "organic_mal070_nkabuse_huggingface_typosquat_20260420",
@@ -1394,7 +1394,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:32:52.335238+00:00"
+      "scanned_at": "2026-05-17T06:43:32.699807+00:00"
     },
     {
       "id": "organic_pinj018_hidden_prompt_injection",
@@ -1435,7 +1435,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:32:56.903292+00:00"
+      "scanned_at": "2026-05-17T06:43:36.862422+00:00"
     },
     {
       "id": "organic_pinj022_nanobot_email_injection_20260412",
@@ -1458,7 +1458,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:33:01.485817+00:00"
+      "scanned_at": "2026-05-17T06:43:41.014110+00:00"
     },
     {
       "id": "organic_psv008_cursor_rce_20260403",
@@ -1487,7 +1487,7 @@
           "confidence": 0.64
         }
       ],
-      "scanned_at": "2026-05-10T06:33:06.091075+00:00"
+      "scanned_at": "2026-05-17T06:43:45.207140+00:00"
     },
     {
       "id": "organic_psv013_cursor_rce_cve_2026_31854_20260412",
@@ -1522,7 +1522,7 @@
           "confidence": 0.8
         }
       ],
-      "scanned_at": "2026-05-10T06:33:10.665217+00:00"
+      "scanned_at": "2026-05-17T06:43:49.375867+00:00"
     },
     {
       "id": "organic_psv014_apollo_mcp_dns_rebinding_20260412",
@@ -1551,7 +1551,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:33:15.280622+00:00"
+      "scanned_at": "2026-05-17T06:43:53.567404+00:00"
     },
     {
       "id": "organic_psv026_mcp_neo4j_rce",
@@ -1586,7 +1586,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:33:19.898347+00:00"
+      "scanned_at": "2026-05-17T06:43:57.801500+00:00"
     },
     {
       "id": "organic_psv027_aap_mcp_log_injection",
@@ -1609,7 +1609,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-05-10T06:33:24.535396+00:00"
+      "scanned_at": "2026-05-17T06:44:02.037235+00:00"
     },
     {
       "id": "organic_psv028_openclaw_pair_approve",
@@ -1644,7 +1644,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:33:29.132593+00:00"
+      "scanned_at": "2026-05-17T06:44:06.238953+00:00"
     },
     {
       "id": "organic_psv029_openclaw_shared_auth",
@@ -1673,7 +1673,7 @@
           "confidence": 0.83
         }
       ],
-      "scanned_at": "2026-05-10T06:33:33.766348+00:00"
+      "scanned_at": "2026-05-17T06:44:10.476135+00:00"
     },
     {
       "id": "organic_psv030_openclaw_session_kill",
@@ -1702,7 +1702,7 @@
           "confidence": 0.64
         }
       ],
-      "scanned_at": "2026-05-10T06:33:38.394476+00:00"
+      "scanned_at": "2026-05-17T06:44:14.691801+00:00"
     },
     {
       "id": "organic_psv031_openclaw_chat_allowlist",
@@ -1731,7 +1731,7 @@
           "confidence": 0.64
         }
       ],
-      "scanned_at": "2026-05-10T06:33:43.019480+00:00"
+      "scanned_at": "2026-05-17T06:44:18.873043+00:00"
     },
     {
       "id": "organic_psv032_mcp_kubernetes_kubectl_injection_20260420",
@@ -1754,7 +1754,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:33:47.712614+00:00"
+      "scanned_at": "2026-05-17T06:44:23.089608+00:00"
     },
     {
       "id": "organic_psv033_mcp_framework_dos_20260420",
@@ -1783,7 +1783,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:33:52.354555+00:00"
+      "scanned_at": "2026-05-17T06:44:27.277943+00:00"
     },
     {
       "id": "organic_psv034_openclaw_webview_rce_20260420",
@@ -1806,7 +1806,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:33:57.094879+00:00"
+      "scanned_at": "2026-05-17T06:44:31.468123+00:00"
     },
     {
       "id": "organic_psv035_flowise_mcp_rce_20260420",
@@ -1853,7 +1853,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:34:01.815147+00:00"
+      "scanned_at": "2026-05-17T06:44:35.675819+00:00"
     },
     {
       "id": "organic_psv037_cursor_mcp_oauth_rce_cve_2025_61591_20260424",
@@ -1900,7 +1900,7 @@
           "confidence": 0.67
         }
       ],
-      "scanned_at": "2026-05-10T06:34:06.527950+00:00"
+      "scanned_at": "2026-05-17T06:44:39.983050+00:00"
     },
     {
       "id": "organic_psv042_openclaw_channel_shadow_rce_cve_2026_41295_20260425",
@@ -1935,7 +1935,7 @@
           "confidence": 0.7
         }
       ],
-      "scanned_at": "2026-05-10T06:34:11.234185+00:00"
+      "scanned_at": "2026-05-17T06:44:44.318888+00:00"
     },
     {
       "id": "organic_sup023_mcp_remote_oauth_cmd_injection",
@@ -1964,7 +1964,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:34:15.814345+00:00"
+      "scanned_at": "2026-05-17T06:44:48.536110+00:00"
     },
     {
       "id": "organic_sup024_axios_compromised_versions",
@@ -1999,7 +1999,7 @@
           "confidence": 0.93
         }
       ],
-      "scanned_at": "2026-05-10T06:34:20.398578+00:00"
+      "scanned_at": "2026-05-17T06:44:52.731982+00:00"
     },
     {
       "id": "organic_sup026_maliciouscorgi_vscode_20260403",
@@ -2022,7 +2022,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:34:24.956046+00:00"
+      "scanned_at": "2026-05-17T06:44:56.930297+00:00"
     },
     {
       "id": "organic_sup027_telnyx_compromised_version",
@@ -2051,7 +2051,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:34:29.510055+00:00"
+      "scanned_at": "2026-05-17T06:45:01.126873+00:00"
     },
     {
       "id": "organic_sup028_unc1069_onlivemeet",
@@ -2086,7 +2086,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:34:34.115244+00:00"
+      "scanned_at": "2026-05-17T06:45:05.352212+00:00"
     },
     {
       "id": "organic_sup034_claude_code_action_mcp_json_20260412",
@@ -2121,7 +2121,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:34:38.736856+00:00"
+      "scanned_at": "2026-05-17T06:45:09.518424+00:00"
     },
     {
       "id": "organic_sup038_context_ai_chrome_extension_vercel_20260420",
@@ -2156,7 +2156,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:34:43.401512+00:00"
+      "scanned_at": "2026-05-17T06:45:13.743697+00:00"
     },
     {
       "id": "organic_sup040_xinference_pypi_teampcp_20260424",
@@ -2203,7 +2203,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:34:48.111456+00:00"
+      "scanned_at": "2026-05-17T06:45:18.004796+00:00"
     },
     {
       "id": "organic_sup041_namastex_canisterworm_npm_20260424",
@@ -2250,7 +2250,7 @@
           "confidence": 0.87
         }
       ],
-      "scanned_at": "2026-05-10T06:34:52.853563+00:00"
+      "scanned_at": "2026-05-17T06:45:22.297389+00:00"
     },
     {
       "id": "organic_sup043_checkmarx_kics_docker_mcpaddon_20260425",
@@ -2297,7 +2297,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:34:57.562640+00:00"
+      "scanned_at": "2026-05-17T06:45:26.577781+00:00"
     },
     {
       "id": "organic_sup044_elementary_data_pypi_ghcr_gha_injection_20260425",
@@ -2344,7 +2344,7 @@
           "confidence": 0.96
         }
       ],
-      "scanned_at": "2026-05-10T06:35:02.295091+00:00"
+      "scanned_at": "2026-05-17T06:45:30.890825+00:00"
     },
     {
       "id": "organic_mal062_clawhub_keylogger_skill_20260407",
@@ -2391,7 +2391,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:35:06.919972+00:00"
+      "scanned_at": "2026-05-17T06:45:35.155785+00:00"
     },
     {
       "id": "organic_mal063_lazarus_graphalgo_npm_rat_20260408",
@@ -2420,7 +2420,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-05-10T06:35:11.669333+00:00"
+      "scanned_at": "2026-05-17T06:45:39.346068+00:00"
     },
     {
       "id": "organic_mal064_velora_dex_sdk_minirat_20260409",
@@ -2467,7 +2467,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:35:16.334685+00:00"
+      "scanned_at": "2026-05-17T06:45:43.550067+00:00"
     },
     {
       "id": "organic_mal065_hermes_px_ai_prompt_stealer_20260409",
@@ -2514,7 +2514,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:35:20.932125+00:00"
+      "scanned_at": "2026-05-17T06:45:47.757555+00:00"
     },
     {
       "id": "organic_mal066_glassworm_zig_dropper_wakatime_20260410",
@@ -2543,7 +2543,7 @@
           "confidence": 0.85
         }
       ],
-      "scanned_at": "2026-05-10T06:35:25.545281+00:00"
+      "scanned_at": "2026-05-17T06:45:51.990986+00:00"
     },
     {
       "id": "organic_mal067_glassworm_unicode_pua_eval_20260411",
@@ -2578,7 +2578,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:35:30.097173+00:00"
+      "scanned_at": "2026-05-17T06:45:56.255804+00:00"
     },
     {
       "id": "organic_mal069_phantompulse_obsidian_rat_20260416",
@@ -2625,7 +2625,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:35:34.710951+00:00"
+      "scanned_at": "2026-05-17T06:46:00.602465+00:00"
     },
     {
       "id": "organic_pinj019_claudy_day_url_injection_20260407",
@@ -2672,7 +2672,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-05-10T06:35:39.422926+00:00"
+      "scanned_at": "2026-05-17T06:46:04.947661+00:00"
     },
     {
       "id": "organic_pinj020_minja_cross_session_memory_poisoning_20260408",
@@ -2719,7 +2719,7 @@
           "confidence": 0.87
         }
       ],
-      "scanned_at": "2026-05-10T06:35:44.002091+00:00"
+      "scanned_at": "2026-05-17T06:46:09.210810+00:00"
     },
     {
       "id": "organic_pinj021_a2a_agent_card_poisoning_20260410",
@@ -2766,7 +2766,7 @@
           "confidence": 0.87
         }
       ],
-      "scanned_at": "2026-05-10T06:35:48.563675+00:00"
+      "scanned_at": "2026-05-17T06:46:13.548597+00:00"
     },
     {
       "id": "organic_psv009_langflow_agentic_rce_20260406",
@@ -2813,7 +2813,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:35:53.050354+00:00"
+      "scanned_at": "2026-05-17T06:46:17.785340+00:00"
     },
     {
       "id": "organic_psv010_mcp_sdk_dns_rebinding_20260410",
@@ -2842,7 +2842,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:35:57.507932+00:00"
+      "scanned_at": "2026-05-17T06:46:21.975898+00:00"
     },
     {
       "id": "organic_psv011_crewai_rce_ssrf_chain_20260410",
@@ -2871,7 +2871,7 @@
           "confidence": 0.92
         }
       ],
-      "scanned_at": "2026-05-10T06:36:01.981937+00:00"
+      "scanned_at": "2026-05-17T06:46:26.213684+00:00"
     },
     {
       "id": "organic_psv012_aws_mcp_server_cmd_injection_20260411",
@@ -2900,7 +2900,7 @@
           "confidence": 0.65
         }
       ],
-      "scanned_at": "2026-05-10T06:36:06.458928+00:00"
+      "scanned_at": "2026-05-17T06:46:30.427344+00:00"
     },
     {
       "id": "organic_psv015_mcp_go_sdk_dns_rebinding_20260413",
@@ -2935,7 +2935,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:36:10.974059+00:00"
+      "scanned_at": "2026-05-17T06:46:34.670713+00:00"
     },
     {
       "id": "organic_psv016_mobile_mcp_android_intent_rce_20260413",
@@ -2964,7 +2964,7 @@
           "confidence": 0.94
         }
       ],
-      "scanned_at": "2026-05-10T06:36:15.471417+00:00"
+      "scanned_at": "2026-05-17T06:46:38.877232+00:00"
     },
     {
       "id": "organic_psv017_openclaw_websocket_scope_elevation_20260413",
@@ -3005,7 +3005,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:36:19.952393+00:00"
+      "scanned_at": "2026-05-17T06:46:43.090885+00:00"
     },
     {
       "id": "organic_psv018_n8n_mcp_ssrf_cve_2026_39974_20260414",
@@ -3040,7 +3040,7 @@
           "confidence": 0.75
         }
       ],
-      "scanned_at": "2026-05-10T06:36:24.488908+00:00"
+      "scanned_at": "2026-05-17T06:46:47.382829+00:00"
     },
     {
       "id": "organic_psv019_mcp_taskwarrior_rce_cve_2026_5833_20260414",
@@ -3081,7 +3081,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:36:29.021395+00:00"
+      "scanned_at": "2026-05-17T06:46:51.613195+00:00"
     },
     {
       "id": "organic_psv023_nginx_ui_mcp_auth_bypass_20260416",
@@ -3110,7 +3110,7 @@
           "confidence": 0.64
         }
       ],
-      "scanned_at": "2026-05-10T06:36:33.554807+00:00"
+      "scanned_at": "2026-05-17T06:46:55.833880+00:00"
     },
     {
       "id": "organic_se004_eviltokens_device_code_phishing_20260414",
@@ -3151,7 +3151,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:36:38.113084+00:00"
+      "scanned_at": "2026-05-17T06:47:00.106847+00:00"
     },
     {
       "id": "organic_se005_obsidian_vault_lure_20260416",
@@ -3198,7 +3198,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:36:42.617857+00:00"
+      "scanned_at": "2026-05-17T06:47:04.374982+00:00"
     },
     {
       "id": "organic_sup029_strapi_npm_malware_20260406",
@@ -3239,7 +3239,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:36:47.123149+00:00"
+      "scanned_at": "2026-05-17T06:47:08.622114+00:00"
     },
     {
       "id": "organic_sup030_a11y_mcp_ssrf_20260407",
@@ -3274,7 +3274,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:36:51.643757+00:00"
+      "scanned_at": "2026-05-17T06:47:12.882484+00:00"
     },
     {
       "id": "organic_sup031_packagegate_pnpm_lifecycle_bypass_20260408",
@@ -3321,7 +3321,7 @@
           "confidence": 0.88
         }
       ],
-      "scanned_at": "2026-05-10T06:36:56.135139+00:00"
+      "scanned_at": "2026-05-17T06:47:17.101421+00:00"
     },
     {
       "id": "organic_sup032_velora_dex_sdk_compromised_version_20260409",
@@ -3362,7 +3362,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:37:00.585692+00:00"
+      "scanned_at": "2026-05-17T06:47:21.294110+00:00"
     },
     {
       "id": "organic_sup033_openvsx_zip_slip_20260411",
@@ -3391,7 +3391,7 @@
           "confidence": 0.9
         }
       ],
-      "scanned_at": "2026-05-10T06:37:05.083690+00:00"
+      "scanned_at": "2026-05-17T06:47:25.479071+00:00"
     },
     {
       "id": "demo_benign_commonpaper",
@@ -3414,7 +3414,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:37:10.314261+00:00"
+      "scanned_at": "2026-05-17T06:47:30.389268+00:00"
     },
     {
       "id": "demo_benign_zendesk",
@@ -3443,7 +3443,7 @@
           "confidence": 0.95
         }
       ],
-      "scanned_at": "2026-05-10T06:37:15.659622+00:00"
+      "scanned_at": "2026-05-17T06:47:35.417468+00:00"
     },
     {
       "id": "demo_benign_fal_generate",
@@ -3459,7 +3459,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-05-10T06:37:20.277637+00:00"
+      "scanned_at": "2026-05-17T06:47:39.902804+00:00"
     },
     {
       "id": "demo_benign_mailescrow",
@@ -3475,7 +3475,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-05-10T06:37:24.936143+00:00"
+      "scanned_at": "2026-05-17T06:47:44.398185+00:00"
     },
     {
       "id": "demo_benign_explain_code",
@@ -3491,7 +3491,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-05-10T06:37:29.571146+00:00"
+      "scanned_at": "2026-05-17T06:47:48.949521+00:00"
     },
     {
       "id": "demo_benign_breweries",
@@ -3507,7 +3507,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-05-10T06:37:34.276174+00:00"
+      "scanned_at": "2026-05-17T06:47:53.556188+00:00"
     },
     {
       "id": "demo_benign_typos",
@@ -3523,7 +3523,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-05-10T06:37:38.965695+00:00"
+      "scanned_at": "2026-05-17T06:47:57.980282+00:00"
     },
     {
       "id": "demo_benign_pr_review",
@@ -3539,7 +3539,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-05-10T06:37:43.554693+00:00"
+      "scanned_at": "2026-05-17T06:48:02.414308+00:00"
     },
     {
       "id": "demo_benign_leafer_graphics",
@@ -3555,7 +3555,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-05-10T06:37:48.234798+00:00"
+      "scanned_at": "2026-05-17T06:48:06.856677+00:00"
     },
     {
       "id": "demo_benign_wechat_formatter",
@@ -3571,7 +3571,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-05-10T06:37:53.041366+00:00"
+      "scanned_at": "2026-05-17T06:48:11.458710+00:00"
     },
     {
       "id": "demo_benign_gitcli",
@@ -3587,7 +3587,7 @@
       "severity": "",
       "findings_count": 0,
       "top_findings": [],
-      "scanned_at": "2026-05-10T06:37:57.641728+00:00"
+      "scanned_at": "2026-05-17T06:48:16.107322+00:00"
     }
   ]
 }
