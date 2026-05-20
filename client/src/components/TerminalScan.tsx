@@ -15,7 +15,7 @@ interface ScanLine {
 const SCAN_SEQUENCE: ScanLine[] = [
   { type: "cmd",     text: "$ skillscan scan ./skills/ --format compact", delay: 0 },
 // AUTO_SYNC_BEGIN: rulepack
-  { type: "info",    text: "SkillScan v2026.05.16.1  •  rulepack 2026.05.16.1  •  307 rules loaded", delay: 600 },
+  { type: "info",    text: "SkillScan v2026.05.17.1  •  rulepack 2026.05.17.1  •  309 rules loaded", delay: 600 },
 // AUTO_SYNC_END: rulepack
   { type: "info",    text: "Scanning 5 skill files in ./skills/ ...", delay: 400 },
   { type: "blank",   text: "", delay: 300 },
