@@ -1,47 +1,64 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
+import { lazy, Suspense } from "react";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
-import Rules from "./pages/Rules";
-import Docs from "./pages/Docs";
-import Updates from "./pages/Updates";
-import Feed from "./pages/Feed";
-import Model from "./pages/Model";
-import Trace from "./pages/Trace";
-import LintPage from "./pages/LintPage";
-import Blog from "./pages/Blog";
-import BlogSkillsSecurity from "./pages/BlogSkillsSecurity";
-import BlogV12Training from "./pages/BlogV12Training";
-import BlogV15Training from "./pages/BlogV15Training";
-import BlogGenerativePivot from "./pages/BlogGenerativePivot";
-import BlogV42Richer from "./pages/BlogV42Richer";
-import TraceRun from "./pages/TraceRun";
+
+// Route-level code splitting: each page is its own lazily-loaded chunk so the
+// initial bundle only carries the shell + the first route a visitor lands on.
+const Home = lazy(() => import("./pages/Home"));
+const Rules = lazy(() => import("./pages/Rules"));
+const Docs = lazy(() => import("./pages/Docs"));
+const Updates = lazy(() => import("./pages/Updates"));
+const Feed = lazy(() => import("./pages/Feed"));
+const Model = lazy(() => import("./pages/Model"));
+const Trace = lazy(() => import("./pages/Trace"));
+const LintPage = lazy(() => import("./pages/LintPage"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogSkillsSecurity = lazy(() => import("./pages/BlogSkillsSecurity"));
+const BlogV12Training = lazy(() => import("./pages/BlogV12Training"));
+const BlogV15Training = lazy(() => import("./pages/BlogV15Training"));
+const BlogGenerativePivot = lazy(() => import("./pages/BlogGenerativePivot"));
+const BlogV42Richer = lazy(() => import("./pages/BlogV42Richer"));
+const TraceRun = lazy(() => import("./pages/TraceRun"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
+
+function RouteFallback() {
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      style={{ minHeight: "100vh" }}
+      aria-label="Loading page"
+    />
+  );
+}
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/rules" component={Rules} />
-      <Route path="/docs" component={Docs} />
-      <Route path="/linter" component={LintPage} />
-      <Route path="/updates" component={Updates} />
-      <Route path="/feed" component={Feed} />
-      <Route path="/model" component={Model} />
-      <Route path="/trace" component={Trace} />
-      <Route path="/trace/run" component={TraceRun} />
-      <Route path="/lint" component={LintPage} />
-      <Route path="/blog" component={Blog} />
-      <Route path="/blog/skills-security-model" component={BlogSkillsSecurity} />
-      <Route path="/blog/v12-training-methodology" component={BlogV12Training} />
-      <Route path="/blog/v15-model" component={BlogV15Training} />
-      <Route path="/blog/generative-pivot" component={BlogGenerativePivot} />
-      <Route path="/blog/v42-richer" component={BlogV42Richer} />
-      <Route path="/404" component={NotFound} />
-      <Route component={NotFound} />
-    </Switch>
+    <Suspense fallback={<RouteFallback />}>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/rules" component={Rules} />
+        <Route path="/docs" component={Docs} />
+        <Route path="/linter" component={LintPage} />
+        <Route path="/updates" component={Updates} />
+        <Route path="/feed" component={Feed} />
+        <Route path="/model" component={Model} />
+        <Route path="/trace" component={Trace} />
+        <Route path="/trace/run" component={TraceRun} />
+        <Route path="/lint" component={LintPage} />
+        <Route path="/blog" component={Blog} />
+        <Route path="/blog/skills-security-model" component={BlogSkillsSecurity} />
+        <Route path="/blog/v12-training-methodology" component={BlogV12Training} />
+        <Route path="/blog/v15-model" component={BlogV15Training} />
+        <Route path="/blog/generative-pivot" component={BlogGenerativePivot} />
+        <Route path="/blog/v42-richer" component={BlogV42Richer} />
+        <Route path="/404" component={NotFound} />
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 

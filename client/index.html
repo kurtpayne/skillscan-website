@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Primary SEO -->
     <title>SkillScan — Offline Security Analysis for AI Agent Skills</title>
@@ -17,15 +17,15 @@
     <meta property="og:title" content="SkillScan — Offline Security Analysis for AI Agent Skills" />
     <meta property="og:description" content="Static analysis for MCP tools, Claude skills, and agent configurations. 77+ detection rules. Zero network calls. Enterprise-grade." />
      <meta property="og:site_name" content="SkillScan" />
-    <meta property="og:image" content="https://d2xsxph8kpxj0f.cloudfront.net/310519663340703543/GpzBjr25jP63Hgax7fEfrw/blog-og-skills-security-ZfMDp8R78ujif33eTMX3mg.png" />
-    <meta property="og:image:width" content="2752" />
-    <meta property="og:image:height" content="1536" />
+    <meta property="og:image" content="https://skillscan.sh/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="670" />
     <meta property="og:image:alt" content="SkillScan — Security Tooling for AI Agent Skills" />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="SkillScan — Offline Security Analysis for AI Agent Skills" />
     <meta name="twitter:description" content="Static analysis for MCP tools, Claude skills, and agent configurations. 77+ detection rules. Zero network calls." />
-    <meta name="twitter:image" content="https://d2xsxph8kpxj0f.cloudfront.net/310519663340703543/GpzBjr25jP63Hgax7fEfrw/blog-og-skills-security-ZfMDp8R78ujif33eTMX3mg.png" />
+    <meta name="twitter:image" content="https://skillscan.sh/og.png" />
 
     <!-- Robots -->
     <meta name="robots" content="index, follow" />
@@ -71,10 +71,10 @@
     }
     </script>
 
-    <!-- Google Fonts: Space Grotesk + Inter + JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Self-hosted fonts: Space Grotesk + Inter + JetBrains Mono (same-origin, no third party) -->
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
 
     <style>
       /* Prevent FOUC */
