@@ -47,7 +47,7 @@ const features = [
   },
   {
     icon: Shield,
-    title: "250+ Detection Rules",
+    title: "300+ Detection Rules",
     description: "Covers MCP tool poisoning, prompt injection, credential exfiltration, container escape, social engineering chains, and more.",
     color: "oklch(0.72 0.19 45)",
   },
@@ -124,10 +124,9 @@ export default function Home() {
         // Extract version from first line: version: "2026.03.17.2"
         const verMatch = text.match(/^version:\s*["']?([\d.]+)["']?/m);
         if (verMatch) setRulepackVersion(verMatch[1]);
-        // Count static_rules + chain_rules via `  - id:` lines (2-space indent).
-        // This is the same count llms.txt and the rule-table page display —
-        // capability_patterns are not user-facing rules and shouldn't be added.
-        const ids = text.match(/^  - id: /gm);
+        // Count static_rules + chain_rules via `- id:` lines at root indent.
+        // capability_patterns are nested and shouldn't be counted.
+        const ids = text.match(/^- id: /gm);
         if (ids) setRuleCount(ids.length);
       })
       .catch(() => { /* keep defaults on error */ });
@@ -306,7 +305,7 @@ export default function Home() {
                   <div className="text-xs" style={{ color: "oklch(0.58 0.22 290)" }}>Static Analysis</div>
                 </div>
               </div>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: "oklch(0.60 0.015 265)" }}>140+ rules covering MCP tool poisoning, prompt injection, credential exfiltration, supply chain attacks, and chain detection. SARIF output, CI/CD native.</p>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: "oklch(0.60 0.015 265)" }}>300+ rules covering MCP tool poisoning, prompt injection, credential exfiltration, supply chain attacks, and chain detection. SARIF output, CI/CD native.</p>
               <div className="flex flex-wrap gap-2">
                 {["pip install skillscan-security", "SARIF", "GitHub Actions"].map((tag) => (
                   <span key={tag} className="text-xs px-2 py-0.5 rounded" style={{ background: "oklch(0.58 0.22 290 / 0.12)", color: "oklch(0.72 0.18 290)", fontFamily: "'JetBrains Mono', monospace" }}>{tag}</span>

@@ -196,7 +196,7 @@ export default function Footer() {
             className="text-xs"
             style={{ color: "oklch(0.45 0.012 265)", fontFamily: "'Inter', sans-serif" }}
           >
-            © 2026 SkillScan. Open source under the MIT License.
+            © 2026 SkillScan. Open source under the Apache 2.0 License.
           </p>
           <div className="flex items-center gap-4">
             <Link

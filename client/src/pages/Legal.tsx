@@ -82,7 +82,7 @@ export default function Legal() {
                 className="underline underline-offset-2 transition-colors duration-200"
                 style={{ color: "oklch(0.78 0.18 290)" }}
               >
-                MIT License
+                Apache 2.0 License
               </a>
               .
             </p>
@@ -167,6 +167,40 @@ export default function Legal() {
                   CWE
                 </a>{" "}
                 (Common Weakness Enumeration)
+              </li>
+              <li>
+                <a
+                  href="https://urlhaus.abuse.ch/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2"
+                  style={{ color: "oklch(0.78 0.18 290)" }}
+                >
+                  URLhaus
+                </a>{" "}
+                and{" "}
+                <a
+                  href="https://feodotracker.abuse.ch/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2"
+                  style={{ color: "oklch(0.78 0.18 290)" }}
+                >
+                  Feodo Tracker
+                </a>{" "}
+                by abuse.ch (CC0)
+              </li>
+              <li>
+                <a
+                  href="https://osv.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2"
+                  style={{ color: "oklch(0.78 0.18 290)" }}
+                >
+                  OSV.dev
+                </a>{" "}
+                for vulnerable package detection
               </li>
               <li>Community-submitted detection patterns via GitHub issues</li>
             </ul>
