@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 import TerminalScan from "@/components/TerminalScan";
 import TerminalDemo from "@/components/TerminalDemo";
 
-const HERO_BG = "/hero-bg.png";
+const HERO_BG = "/hero-bg.webp";
 
 const INSTALL_CMD = "pip install skillscan-security";
 const SCAN_CMD = "skillscan scan ./skills/ --format sarif --out results.sarif";

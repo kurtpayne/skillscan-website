@@ -76,9 +76,25 @@
     <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/fonts/fonts.css" />
 
+    <!-- Preload hero image (LCP element background) -->
+    <link rel="preload" href="/hero-bg.webp" as="image" type="image/webp" />
+
     <style>
-      /* Prevent FOUC */
+      /* Prevent FOUC + critical hero styles for instant LCP */
       html { background: oklch(0.12 0.025 265); }
+      /* Hero shell: removed once React mounts */
+      .hero-shell{min-height:100vh;font-family:'Inter',system-ui,-apple-system,sans-serif;color:#e8e8ef}
+      .hero-shell-nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:1rem 1.5rem}
+      .hero-shell-nav-inner{max-width:80rem;margin:0 auto;display:flex;align-items:center}
+      .hero-shell-logo{display:flex;align-items:center;gap:.5rem;text-decoration:none;color:#f0eef5}
+      .hero-shell-logo span{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:1.125rem}
+      .hero-shell-section{position:relative;padding:8rem 1rem 5rem;overflow:hidden;background:url(/hero-bg.webp) center top/cover}
+      .hero-shell-overlay{position:absolute;inset:0;background:linear-gradient(to right,oklch(0.12 0.025 265/.95) 0%,oklch(0.12 0.025 265/.75) 50%,oklch(0.12 0.025 265/.40) 100%)}
+      .hero-shell-content{max-width:80rem;margin:0 auto;position:relative;z-index:10}
+      .hero-shell h1{font-family:'Space Grotesk',system-ui,sans-serif;font-size:clamp(2.25rem,5vw,3.75rem);font-weight:700;line-height:1.1;margin:0 0 1.5rem;color:#f0eef5}
+      .hero-shell h1 em{font-style:normal;background:linear-gradient(135deg,#b07ee8,#d4944a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+      .hero-shell p{font-size:1.125rem;line-height:1.75;color:#9a99a8;max-width:480px;margin:0 0 2rem}
+      .hero-shell-cmd{border-radius:.5rem;padding:1rem;background:rgba(18,17,28,.9);border:1px solid rgba(128,80,210,.25);max-width:480px;font-family:'JetBrains Mono',monospace;font-size:.875rem;color:#b07ee8}
     </style>
 
     <!-- GitHub Pages SPA routing: restore path encoded by 404.html -->
@@ -89,7 +105,29 @@
       href="#main-content"
       class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:rounded focus:text-sm focus:font-semibold"
     >Skip to content</a>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static hero shell for instant LCP — replaced by React on mount -->
+      <div class="hero-shell">
+        <nav class="hero-shell-nav"><div class="hero-shell-nav-inner">
+          <a href="/" class="hero-shell-logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8050d2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>SkillScan</span>
+          </a>
+        </div></nav>
+        <main>
+          <section class="hero-shell-section">
+            <div class="hero-shell-overlay"></div>
+            <div class="hero-shell-content">
+              <h1>Security Tooling<br/>for <em>AI Agent Skills</em></h1>
+              <p>Three open-source tools that cover the full lifecycle of AI skill security: static analysis to catch malicious patterns before deployment, quality linting to enforce best practices, and live behavioural tracing to verify what a skill actually does at runtime.</p>
+              <div class="hero-shell-cmd">
+                <span style="color:#6b6a7a">$</span> pip install skillscan-security
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
     <script
       defer
