@@ -1,7 +1,7 @@
 /* ============================================================
    FOOTER — SkillScan Deep Navy Design System
    ============================================================ */
-import { Shield, ShieldCheck, Github, ExternalLink } from "lucide-react";
+import { Shield, Github, ExternalLink } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Footer() {
@@ -76,32 +76,19 @@ export default function Footer() {
               </a>
             </div>
 
-            {/* Domain security badge — yoke.lol (self-hosted, links to live report) */}
+            {/* Domain security badge — yoke.lol (live SVG badge, links to report) */}
             <a
               href="https://yoke.lol/skillscan.sh"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Domain security audit by yoke.lol — view the live report"
-              className="inline-flex items-center gap-2 mt-5 rounded-full py-1.5 pl-2.5 pr-3 text-xs font-medium transition-all duration-200"
-              style={{
-                background: "oklch(0.16 0.02 265)",
-                border: "1px solid oklch(0.58 0.22 290 / 0.22)",
-                color: "oklch(0.78 0.012 265)",
-                fontFamily: "'Space Grotesk', sans-serif",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "oklch(0.58 0.22 290 / 0.55)";
-                (e.currentTarget as HTMLElement).style.background = "oklch(0.18 0.025 265)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "oklch(0.58 0.22 290 / 0.22)";
-                (e.currentTarget as HTMLElement).style.background = "oklch(0.16 0.02 265)";
-              }}
+              aria-label="Domain security score by yoke.lol — view the live report"
+              className="inline-block mt-5 opacity-80 hover:opacity-100 transition-opacity duration-200"
             >
-              <ShieldCheck className="w-3.5 h-3.5" style={{ color: "oklch(0.78 0.18 290)" }} />
-              <span>Domain Security Audit</span>
-              <span style={{ color: "oklch(0.40 0.010 265)" }}>·</span>
-              <span style={{ color: "oklch(0.82 0.16 290)", fontWeight: 600 }}>yoke.lol</span>
+              <img
+                src="https://yoke.lol/badge/skillscan.sh.svg"
+                alt="Yoke domain score"
+                height="20"
+              />
             </a>
           </div>
 

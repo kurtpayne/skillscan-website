@@ -1,0 +1,27 @@
+# skillscan.sh
+
+[![Deploy](https://github.com/kurtpayne/skillscan-website/actions/workflows/deploy.yml/badge.svg)](https://github.com/kurtpayne/skillscan-website/actions/workflows/deploy.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![Yoke](https://yoke.lol/badge/skillscan.sh.svg)](https://yoke.lol/skillscan.sh)
+
+Website and documentation for [SkillScan Security](https://github.com/kurtpayne/skillscan-security) — a free, offline security scanner for AI agent skills and MCP tool bundles.
+
+**Live:** [skillscan.sh](https://skillscan.sh)
+
+## Stack
+
+- React SPA (Vite 7, TypeScript)
+- Tailwind CSS
+- GitHub Pages + Cloudflare CDN
+- Deployed via GitHub Actions
+
+## Development
+
+```bash
+pnpm install
+pnpm dev
+```
+
+## License
+
+Apache 2.0
