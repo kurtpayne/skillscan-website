@@ -1,6 +1,18 @@
 export default {
   async fetch(request) {
     const url = new URL(request.url);
+
+    // CORS preflight
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "https://skillscan.sh",
+          "Access-Control-Allow-Methods": "GET",
+          "Access-Control-Max-Age": "86400",
+        },
+      });
+    }
+
     const filePath = url.pathname.replace(/^\/raw_code\//, ''); 
 
     if (!filePath) {
@@ -10,11 +22,19 @@ export default {
       );
     }
 
-    if (filePath.includes("..") || filePath.includes("//")) {
+    // Decode and normalize the path, then check for traversal
+    const decoded = decodeURIComponent(filePath);
+    if (decoded.includes("..") || decoded.includes("//") || decoded.includes("\\")) {
       return new Response("Invalid path", { status: 400 });
     }
 
-    const rawUrl = `https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/${filePath}`;
+    // Allowlist: only serve files from known source directories
+    const allowedPrefixes = ["src/", "docs/", "tests/", "rules/", "README", "LICENSE", "CONTRIBUTING", "CHANGELOG"];
+    if (!allowedPrefixes.some(p => decoded.startsWith(p))) {
+      return new Response("Path not allowed", { status: 403 });
+    }
+
+    const rawUrl = `https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/${decoded}`;
 
     let response;
     try {
@@ -27,7 +47,7 @@ export default {
 
     if (!response.ok) {
       return new Response(
-        `Not found: ${filePath} (status ${response.status})`,
+        `Not found: ${decoded} (status ${response.status})`,
         { status: response.status }
       );
     }
@@ -37,7 +57,7 @@ export default {
     return new Response(text, {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "https://skillscan.sh",
         "Cache-Control": "public, max-age=300",
       },
     });

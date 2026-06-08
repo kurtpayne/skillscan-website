@@ -221,7 +221,7 @@ export default function Footer() {
               className="text-xs"
               style={{ color: "oklch(0.45 0.012 265)", fontFamily: "'Inter', sans-serif" }}
             >
-              No telemetry. No tracking.
+              No telemetry. Privacy-respecting analytics only.
             </p>
           </div>
         </div>

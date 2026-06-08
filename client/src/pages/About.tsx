@@ -69,9 +69,9 @@ export default function About() {
             How it works
           </h2>
           <p>
-            Pattern-based static analysis with a growing rule set. SARIF and
-            JUnit output for CI/CD integration. No machine learning inference, no
-            cloud calls — just pattern matching you can audit yourself.
+            Static analysis with a growing rule set, plus a fine-tuned ML
+            classifier for semantic attack detection. SARIF and JUnit output for
+            CI/CD integration. Everything runs locally — no cloud calls required.
           </p>
 
           <h2
