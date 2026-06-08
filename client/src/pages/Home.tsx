@@ -138,8 +138,11 @@ export default function Home() {
       <Navbar />
 
       {/* ── HERO ── */}
+      <main id="main-content">
       <section
         className="relative pt-32 pb-20 overflow-hidden"
+        role="img"
+        aria-label="SkillScan hero background"
         style={{
           backgroundImage: `url(${HERO_BG})`,
           backgroundSize: "cover",
@@ -1481,6 +1484,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </main>
 
       <Footer />
     </div>

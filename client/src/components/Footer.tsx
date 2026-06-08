@@ -198,12 +198,32 @@ export default function Footer() {
           >
             © 2026 SkillScan. Open source under the MIT License.
           </p>
-          <p
-            className="text-xs"
-            style={{ color: "oklch(0.45 0.012 265)", fontFamily: "'Inter', sans-serif" }}
-          >
-            Built for the security community. No telemetry. No tracking.
-          </p>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/about"
+              className="text-xs transition-colors duration-200"
+              style={{ color: "oklch(0.45 0.012 265)" }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.45 0.012 265)")}
+            >
+              About
+            </Link>
+            <Link
+              href="/legal"
+              className="text-xs transition-colors duration-200"
+              style={{ color: "oklch(0.45 0.012 265)" }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.78 0.18 290)")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "oklch(0.45 0.012 265)")}
+            >
+              Legal
+            </Link>
+            <p
+              className="text-xs"
+              style={{ color: "oklch(0.45 0.012 265)", fontFamily: "'Inter', sans-serif" }}
+            >
+              No telemetry. No tracking.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

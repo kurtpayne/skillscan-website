@@ -82,24 +82,13 @@
     </style>
 
     <!-- GitHub Pages SPA routing: restore path encoded by 404.html -->
-    <script>
-      (function() {
-        var params = new URLSearchParams(window.location.search);
-        var p = params.get('p');
-        if (p) {
-          var h = params.get('h') || '';
-          params.delete('p');
-          params.delete('h');
-          var qs = params.toString();
-          window.history.replaceState(
-            null, null,
-            p + (qs ? '?' + qs : '') + h
-          );
-        }
-      })();
-    </script>
+    <script src="/spa-redirect.js"></script>
   </head>
   <body>
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:rounded focus:text-sm focus:font-semibold"
+    >Skip to content</a>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script

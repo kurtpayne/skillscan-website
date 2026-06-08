@@ -22,6 +22,8 @@ const BlogV15Training = lazy(() => import("./pages/BlogV15Training"));
 const BlogGenerativePivot = lazy(() => import("./pages/BlogGenerativePivot"));
 const BlogV42Richer = lazy(() => import("./pages/BlogV42Richer"));
 const TraceRun = lazy(() => import("./pages/TraceRun"));
+const About = lazy(() => import("./pages/About"));
+const Legal = lazy(() => import("./pages/Legal"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 function RouteFallback() {
@@ -55,6 +57,8 @@ function Router() {
         <Route path="/blog/v15-model" component={BlogV15Training} />
         <Route path="/blog/generative-pivot" component={BlogGenerativePivot} />
         <Route path="/blog/v42-richer" component={BlogV42Richer} />
+        <Route path="/about" component={About} />
+        <Route path="/legal" component={Legal} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
