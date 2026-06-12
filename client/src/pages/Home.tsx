@@ -1451,7 +1451,7 @@ export default function Home() {
             Start scanning in 30 seconds
           </h2>
           <p className="text-lg mb-10 max-w-xl mx-auto" style={{ color: "oklch(0.60 0.015 265)" }}>
-            Open source. MIT licensed. No account required. No data leaves your machine.
+            Open source. Apache 2.0 licensed. No account required. No data leaves your machine.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a
