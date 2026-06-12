@@ -147,7 +147,7 @@ const COMPARISON = [
   {
     tool: "skillscan scan",
     what: "Security threats",
-    how: "147 static rules + ML classifier on skill content",
+    how: "341 static rules + ML classifier on skill content",
     when: "Every PR — still fast, no API key",
     cost: "Free",
     color: "oklch(0.72 0.19 45)",

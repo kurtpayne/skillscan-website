@@ -774,7 +774,7 @@ verdict=block  score=285  findings=3  exit=1`} />
 
 {
   "meta": {
-    "scanner_version": "2026.03.29.1",
+    "scanner_version": "2026.06.11.1",
     "rules_sha": "a3f9c2...",
     "model_version": "v18258-5ep",
     "policy_profile": "strict",
@@ -1079,7 +1079,7 @@ docker run --rm \\
   scan /skills --ml-detect`} />
 
                 <SubTitle>Specific version</SubTitle>
-                <CodeBlock code="docker pull kurtpayne/skillscan-security:v2026.03.29" />
+                <CodeBlock code="docker pull kurtpayne/skillscan-security:latest" />
               </section>
 
               {/* ── GITHUB ACTIONS ── */}

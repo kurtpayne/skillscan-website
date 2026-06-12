@@ -23,9 +23,18 @@ interface TabDef {
   sequence: DemoLine[];
 }
 
+// Generate a calver string from today's date so the demo never goes stale
+function todayCalver(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}.${m}.${day}.1`;
+}
+
 const SCAN_SEQUENCE: DemoLine[] = [
   { type: "cmd",     text: "$ skillscan scan ./skills/ --format compact", delay: 0 },
-  { type: "info",    text: "SkillScan v2026.03.29.1  •  rulepack 2026.03.29.1  •  156 rules", delay: 600 },
+  { type: "info",    text: `SkillScan v${todayCalver()}  •  rulepack ${todayCalver()}  •  341 rules`, delay: 600 },
   { type: "info",    text: "Scanning 5 skill files in ./skills/ ...", delay: 400 },
   { type: "blank",   text: "", delay: 300 },
   { type: "pass",    text: "verdict=allow  score=0    findings=0  search_tool.md", delay: 350 },
