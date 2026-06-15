@@ -1,0 +1,112 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Methodology</title><link rel="stylesheet" href="assets/styles.css">
+<style>
+.draftbar{background:#5a1d1d;color:#ffd7d7;border:1px solid #8a2a2a;border-radius:6px;padding:8px 12px;margin:0 0 16px;font-size:13px}
+body{max-width:980px;margin:0 auto;padding:24px;line-height:1.5}
+table.data{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0 20px}
+table.data th,table.data td{border:1px solid #2a2f3a;padding:6px 9px;text-align:left}
+table.data th{background:#1b1f29} .chip{display:inline-block;border:1px solid #3a3f4a;border-radius:14px;padding:3px 10px;margin:2px;font-size:12px}
+.yes{color:#ff6b6b;font-weight:600} .muted{color:#8a92a6} .big{font-size:20px;font-weight:600;margin:14px 0}
+.frontier{background:#12151c;border:1px solid #2a2f3a;border-radius:8px;padding:8px}
+nav a{margin-right:14px} footer{margin-top:40px;border-top:1px solid #2a2f3a;padding-top:16px;font-size:12px;color:#8a92a6}
+</style></head><body>
+<header><div class="brand">skillscan.sh</div>
+<div class="muted">Independent scoreboard for AI-skill security scanners · </div>
+<nav><a href="index.html">Scoreboard</a><a href="methodology.html">Methodology</a><a href="about.html">About</a></nav></header>
+<div class="draftbar">⚠ <strong>DRAFT / PREVIEW</strong> — directional, small-n, <strong>scanners run static-only (LLM modes pending)</strong>. Not final, not for citation. Numbers will change.</div>
+<pre style='white-space:pre-wrap'><h1>skillscan.sh Scoreboard — Methodology (pre-registered v1)</h1>
+
+Pre-registered <strong>before</strong> running, so the schema/metrics/tests can&#x27;t be retrofit to a
+conclusion. We grade skill-security *scanners*; we are not a scanner and have nothing to sell.
+
+<h2>1. What we measure</h2>
+Each scanner, in each <strong>mode</strong> (<code>static</code> / <code>+llm</code>), is scored on a curated corpus stratified
+by <strong>archetype × provenance × difficulty tier</strong>, plus benign controls. We report **recall,
+false-positive rate, and refusal/error rate as three separate columns** (a miss ≠ a refusal),
+each with a confidence interval, and never collapse to a single rank.
+
+<h2>2. Schema (the axes)</h2>
+
+<h3>2.1 Archetype — 3 behavioral classes (what the attack *does*)</h3>
+| Archetype | Behavior | Absorbs (attack_vector) |
+|---|---|---|
+| <strong>code_execution</strong> | get attacker code running | supply_chain install-exec, command_injection, rce, code_injection |
+| <strong>data_exfiltration</strong> | steal secrets/data/telemetry | information_disclosure, data_exfiltration, passive_surveillance, credential_theft |
+| <strong>agent_hijacking</strong> | subvert the agent&#x27;s goals/instructions | prompt_injection, instruction override, tool/MCP poisoning |
+
+Behavioral (not vector-based) because behavioral detection is what we&#x27;re testing. The finer
+<code>attack_vector</code> is kept as a secondary tag (so supply-chain etc. stay queryable).
+
+<h3>2.2 Provenance — 3 levels (the credibility axis)</h3>
+| Provenance | Definition | Role |
+|---|---|---|
+| <strong>wild_verbatim</strong> | actual malicious skill file captured from a real repo/marketplace (has <code>corpus-url</code>) | strict, unimpeachable recall |
+| <strong>organic_authored</strong> | written by our tooling, anchored to a real documented campaign (real CVE/IOC/reference), <strong>disclosed as authored</strong> | real-threat-grounded recall |
+| <strong>synthetic_novel</strong> | novel, <strong>defanged</strong> variants generated open-weight to exercise the same behavior with unseen surface form; <strong>held-out, never published</strong> | the generalization probe (§4) |
+
+<code>synthetic_novel</code> is generated on an <strong>open-weight model (Modal), never on a commercial API</strong>
+(Principle 2), uses <strong>inert placeholders</strong> (<code>attacker.invalid</code>, benign-decoding base64, no working
+payloads — detection fixtures, like EICAR, not weapons), and is <strong>kept private</strong> (anti-gaming).
+
+<h3>2.3 Difficulty tier (orthogonal)</h3>
+<code>overt</code> / <code>obfuscated</code> / <code>indirect</code> — tracked as a separate axis, reported per tier.
+
+<h3>2.4 Benign controls</h3>
+<code>benign</code> with a <code>dual_use</code> sub-flag (legit Stripe/SSH/MCP skills that *should not* be flagged).
+
+<h3>2.5 No in-file labels</h3>
+Labels live in <code>manifest.jsonl</code>; content is label-stripped and (for organic) <strong>de-wrapped</strong> of its
+corpus-metadata frontmatter before any scanner sees it — no leakage.
+
+<h2>3. Scanners &amp; modes</h2>
+Runnable OSS, pinned: <strong>NVIDIA SkillSpector</strong>, <strong>Cisco skill-scanner</strong> (each in <code>static</code> and
+<code>+llm</code>), <strong>Snyk agent-scan</strong> (LLM/cloud). Plus an <strong>open-weight LLM-read baseline</strong>. The <code>+llm</code>
+backend for every scanner is <strong>our open-weight Modal endpoint</strong> (Principle-2-clean, apples-to-apples;
+reported as &quot;LLM mode, open-weight backend,&quot; not the vendor&#x27;s default frontier model). Closed/hosted
+(SandyClaw, Mobb) = cite-and-flag, not run.
+
+<h2>4. The headline metric — Generalization Gap</h2>
+For each scanner × archetype:
+&gt; <strong>Gen-Gap = recall(wild_verbatim + organic_authored) − recall(synthetic_novel)</strong>
+
+Wild/organic attacks are *public* (known campaigns, CVEs) → a scanner can score high by **memorizing
+IOCs<strong>. <code>synthetic_novel</code> is unseen and defanged (no known IOC to match) → it isolates </strong>behavioral
+detection**. A large positive gap = memorization, not detection. This is the scoreboard&#x27;s core,
+field-level finding (&quot;prove or disprove the category&quot;).
+
+<h2>5. Statistics (the rigor)</h2>
+- <strong>Wilson 95% score intervals</strong> on every recall/FP — never bare point estimates.
+- <strong>Sample size:</strong> target <strong>n ≥ 75 per (archetype × provenance) cell</strong> (≈±12% CI), ~100 for headline
+  cells; report thin cells (esp. wild_verbatim) honestly with wide CIs rather than padding.
+- <strong>Paired comparisons</strong> (scanner A vs B; static vs +llm — same samples) → <strong>McNemar&#x27;s test</strong>.
+- <strong>Unpaired</strong> (gen-gap, different sample sets) → two-proportion <strong>Newcombe</strong> difference CI.
+- <strong>Multiple comparisons</strong> → <strong>Benjamini–Hochberg FDR</strong> across cells.
+- <strong>Stochastic scanners</strong> (Snyk cloud, +llm modes, LLM baseline) → <strong>K = 5 runs</strong>, report mean ±
+  between-run spread (temp 0; residual nondeterminism disclosed).
+- <strong>Stratified + balanced/weighted</strong> reporting (don&#x27;t let the biggest class dominate the top-line;
+  guards against Simpson&#x27;s paradox).
+- <strong>Excluded:</strong> truly-ambiguous samples (reported separately, not scored).
+
+<h2>6. Outputs (digestible, in order)</h2>
+1. <strong>Recall-vs-FP frontier</strong> scatter (no single winner; the trade-off).
+2. <strong>Generalization-gap</strong> chart (wild/organic recall vs synthetic recall, per scanner).
+3. <strong>Per-scanner report cards</strong> — archetype × tier matrix, each cell <code>recall [Wilson CI]</code>, plus
+   mode-lift (static→+llm) and the refusal column.
+
+<h2>7. Reproducibility &amp; integrity</h2>
+Pinned scanner versions + corpus version + run date stamped on every result. Methodology + aggregate
+results are <strong>public</strong>; the malicious corpus (esp. <code>synthetic_novel</code>) stays <strong>private</strong> (anti-gaming).
+Vendor neutrality: no preferential treatment, no right of reply, no methodology accommodation; an
+optional vendor note may be posted at our discretion (never alters scoring); corrections (factual/
+method errors) accepted from anyone. <code>/reproduce</code> ships commands + the pinned versions.
+</pre><footer>
+<p><strong>Not a certification.</strong> We grade <em>scanners</em>, not skills. Results describe specific
+pinned versions on a dated, directional corpus and may not generalise. No warranty; not security advice.</p>
+<p>Scanner names are trademarks of their owners, used nominatively to identify the tools tested. No
+affiliation or endorsement; no vendor logos. <strong>Vendor neutrality:</strong> no preferential treatment,
+no right of reply, no methodology accommodation; a vendor note may be posted at our discretion and never
+alters scoring. Spot a factual/method error? Corrections welcome from anyone.</p>
+<p>Methodology pre-registered. Open data &amp; code. © 2026 skillscan.sh</p>
+</footer></body></html>

@@ -1,0 +1,51 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>skillscan.sh — scoreboard</title><link rel="stylesheet" href="assets/styles.css">
+<style>
+.draftbar{background:#5a1d1d;color:#ffd7d7;border:1px solid #8a2a2a;border-radius:6px;padding:8px 12px;margin:0 0 16px;font-size:13px}
+body{max-width:980px;margin:0 auto;padding:24px;line-height:1.5}
+table.data{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0 20px}
+table.data th,table.data td{border:1px solid #2a2f3a;padding:6px 9px;text-align:left}
+table.data th{background:#1b1f29} .chip{display:inline-block;border:1px solid #3a3f4a;border-radius:14px;padding:3px 10px;margin:2px;font-size:12px}
+.yes{color:#ff6b6b;font-weight:600} .muted{color:#8a92a6} .big{font-size:20px;font-weight:600;margin:14px 0}
+.frontier{background:#12151c;border:1px solid #2a2f3a;border-radius:8px;padding:8px}
+nav a{margin-right:14px} footer{margin-top:40px;border-top:1px solid #2a2f3a;padding-top:16px;font-size:12px;color:#8a92a6}
+</style></head><body>
+<header><div class="brand">skillscan.sh</div>
+<div class="muted">Independent scoreboard for AI-skill security scanners · corpus v1 · directional · 2026-06-15</div>
+<nav><a href="index.html">Scoreboard</a><a href="methodology.html">Methodology</a><a href="about.html">About</a></nav></header>
+<div class="draftbar">⚠ <strong>DRAFT / PREVIEW</strong> — directional, small-n, <strong>scanners run static-only (LLM modes pending)</strong>. Not final, not for citation. Numbers will change.</div>
+
+<p class="chip">⚠ Directional, small-n</p><p class="chip">Not a certification</p><p class="chip">Scanners run static (LLM modes pending)</p>
+<p class='muted'>543 samples · malicious by archetype {&#x27;code_execution&#x27;: 184, &#x27;data_exfiltration&#x27;: 138, &#x27;agent_hijacking&#x27;: 101}.</p>
+<div class="big">Recall vs false-positives</div>
+<svg class="frontier" viewBox="0 0 520 300" role="img" aria-label="Recall versus false-positive rate; top-left is ideal."><text x="44" y="16" fill="#8a92a6" font-size="11">↑ recall (catches more)</text><text x="346" y="288" fill="#8a92a6" font-size="11">false-positive →</text><line x1="44" y1="256" x2="476" y2="256" stroke="#2a2f3a"/><line x1="44" y1="44" x2="44" y2="256" stroke="#2a2f3a"/><circle cx="44" cy="245" r="5" fill="#6ea8fe"/><text x="52" y="249" fill="#cfd6e4" font-size="11">cisco-skill-scanner</text><circle cx="51" cy="116" r="5" fill="#6ea8fe"/><text x="59" y="120" fill="#cfd6e4" font-size="11">llm-baseline</text><circle cx="72" cy="243" r="5" fill="#6ea8fe"/><text x="80" y="247" fill="#cfd6e4" font-size="11">skillspector</text></svg>
+<div class="big">Generalization gap — known vs novel attacks</div>
+<p class="muted">A large positive gap = the scanner recognises <em>known</em> campaigns but fails on <em>novel</em> disguised behaviour (memorisation, not detection).</p>
+<table class="data"><tr><th>Scanner</th><th>Archetype</th><th>Recall: known</th><th>Recall: novel</th><th>Gap (95% CI)</th><th>Memorising?</th></tr>
+<tr><td>cisco-skill-scanner</td><td>agent_hijacking</td><td>16% <span class='muted'>[6–35] n=25</span></td><td>0% <span class='muted'>[0–18] n=18</span></td><td>+16% [-4–+35]</td><td>no</td></tr>
+<tr><td>cisco-skill-scanner</td><td>code_execution</td><td>4% <span class='muted'>[2–10] n=103</span></td><td>10% <span class='muted'>[3–30] n=20</span></td><td>-6% [-26–+3]</td><td>no</td></tr>
+<tr><td>cisco-skill-scanner</td><td>data_exfiltration</td><td>5% <span class='muted'>[2–13] n=63</span></td><td>0% <span class='muted'>[0–18] n=17</span></td><td>+5% [-14–+13]</td><td>no</td></tr>
+<tr><td>llm-baseline</td><td>agent_hijacking</td><td>73% <span class='muted'>[54–86] n=26</span></td><td>52% <span class='muted'>[41–63] n=75</span></td><td>+21% [-1–+38]</td><td>no</td></tr>
+<tr><td>llm-baseline</td><td>code_execution</td><td>73% <span class='muted'>[64–81] n=109</span></td><td>51% <span class='muted'>[40–62] n=75</span></td><td>+23% [+9–+36]</td><td><span class="yes">yes</span></td></tr>
+<tr><td>llm-baseline</td><td>data_exfiltration</td><td>89% <span class='muted'>[79–95] n=63</span></td><td>63% <span class='muted'>[51–73] n=75</span></td><td>+26% [+12–+39]</td><td><span class="yes">yes</span></td></tr>
+<tr><td>skillspector</td><td>agent_hijacking</td><td>8% <span class='muted'>[2–24] n=26</span></td><td>0% <span class='muted'>[0–5] n=75</span></td><td>+8% [+0–+24]</td><td><span class="yes">yes</span></td></tr>
+<tr><td>skillspector</td><td>code_execution</td><td>6% <span class='muted'>[3–13] n=109</span></td><td>8% <span class='muted'>[4–16] n=75</span></td><td>-2% [-11–+6]</td><td>no</td></tr>
+<tr><td>skillspector</td><td>data_exfiltration</td><td>3% <span class='muted'>[1–11] n=63</span></td><td>12% <span class='muted'>[6–21] n=75</span></td><td>-9% [-18–+1]</td><td>no</td></tr>
+</table>
+<div class="big">False-positive rate (benign / dual-use)</div><table class="data"><tr><th>Scanner</th><th>Plain benign</th><th>Dual-use</th></tr>
+<tr><td>cisco-skill-scanner</td><td>0% <span class='muted'>[0–32] n=8</span></td><td>0% <span class='muted'>[0–18] n=17</span></td></tr>
+<tr><td>llm-baseline</td><td>0% <span class='muted'>[0–6] n=59</span></td><td>2% <span class='muted'>[0–9] n=61</span></td></tr>
+<tr><td>skillspector</td><td>0% <span class='muted'>[0–6] n=59</span></td><td>7% <span class='muted'>[3–16] n=61</span></td></tr>
+</table>
+<p><strong>Cross-scanner consensus:</strong> full agreement on only 4% of 423 malicious samples.</p>
+<footer>
+<p><strong>Not a certification.</strong> We grade <em>scanners</em>, not skills. Results describe specific
+pinned versions on a dated, directional corpus and may not generalise. No warranty; not security advice.</p>
+<p>Scanner names are trademarks of their owners, used nominatively to identify the tools tested. No
+affiliation or endorsement; no vendor logos. <strong>Vendor neutrality:</strong> no preferential treatment,
+no right of reply, no methodology accommodation; a vendor note may be posted at our discretion and never
+alters scoring. Spot a factual/method error? Corrections welcome from anyone.</p>
+<p>Methodology pre-registered. Open data &amp; code. © 2026 skillscan.sh</p>
+</footer></body></html>
