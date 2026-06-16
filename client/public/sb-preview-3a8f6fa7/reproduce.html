@@ -1,0 +1,68 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Reproduce</title><link rel="stylesheet" href="assets/styles.css">
+<style>
+.draftbar{background:#5a1d1d;color:#ffd7d7;border:1px solid #8a2a2a;border-radius:6px;padding:8px 12px;margin:0 0 16px;font-size:13px}
+body{max-width:980px;margin:0 auto;padding:24px;line-height:1.5}
+table.data{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0 20px}
+table.data th,table.data td{border:1px solid #2a2f3a;padding:6px 9px;text-align:left}
+table.data th{background:#1b1f29} .chip{display:inline-block;border:1px solid #3a3f4a;border-radius:14px;padding:3px 10px;margin:2px;font-size:12px}
+.yes{color:#ff6b6b;font-weight:600} .muted{color:#8a92a6} .big{font-size:20px;font-weight:600;margin:14px 0}
+.frontier{background:#12151c;border:1px solid #2a2f3a;border-radius:8px;padding:8px}
+nav a{margin-right:14px} footer{margin-top:40px;border-top:1px solid #2a2f3a;padding-top:16px;font-size:12px;color:#8a92a6}
+</style></head><body>
+<header><div class="brand">skillscan.sh</div>
+<div class="muted">Independent scoreboard for AI-skill security scanners · </div>
+<nav><a href="index.html">Scoreboard</a><a href="methodology.html">Methodology</a><a href="reproduce.html">Reproduce</a><a href="about.html">About</a></nav></header>
+<div class="draftbar">⚠ <strong>DRAFT / PREVIEW</strong> — directional, small-n (wild malicious n≈5). Not final, not for citation. Numbers will change.</div>
+<pre style='white-space:pre-wrap'><h1>Reproduce</h1>
+
+The method and harness are public; the corpus is private (anti-gaming). You can reproduce the
+*pipeline* on the shipped example corpus, or point it at your own (see CORPUS_FORMAT.md).
+
+<h2>Pinned versions (this board run · 2026-06-16 · corpus v1)</h2>
+| component | pin |
+|---|---|
+| SkillSpector | git <code>cff7ecc</code> (static layer) |
+| Cisco AI Defense skill-scanner | git <code>ff708ea</code> (static layer) |
+| Snyk Agent Scan | <code>0.5.10</code> (cloud) |
+| LLM baseline (in-set) | <code>Qwen/Qwen2.5-72B-Instruct-AWQ</code>, temp 0, generic prompt |
+| LLM baseline (disjoint control) | <code>microsoft/phi-4</code>, temp 0, generic prompt |
+| Frontier baselines | <code>gpt-4o</code>, <code>gpt-4o-mini</code>, <code>claude-sonnet-4-6</code>, <code>claude-haiku-4-5</code> (raw read, temp 0) |
+
+<h2>Run the pipeline on the example corpus (offline, static scanners)</h2>
+<code>`</code>bash
+SKILLSCAN_CORPUS=example_corpus python3 -m scoreboard.run_board --no-baseline --benign-cap 0 \
+    --out board.json
+python3 scripts/build_site.py --board board.json     # renders docs/
+<code>`</code>
+
+<h2>Run on your own corpus</h2>
+Put your corpus in the layout in <code>CORPUS_FORMAT.md</code>, then:
+<code>`</code>bash
+python3 -m scoreboard.run_board --corpus /path/to/your/corpus --snyk --out board.json
+<code>`</code>
+Flags: <code>--scanner-llm</code> (+llm via an OpenAI-compatible endpoint), <code>--frontier-model &lt;id&gt;</code> (separate
+frontier board), <code>--k N</code> (repeats for stochastic scanners), <code>--workers N</code>.
+
+<h2>What&#x27;s reproducible vs not</h2>
+- <strong>Reproducible by anyone:</strong> the full pipeline + analysis (recall/FP/Wilson CIs/BH-FDR/cross-family/
+  generalization-gap/balance score) on *any* corpus in the documented format — run it on the example
+  or your own.
+- <strong>Not bit-for-bit public:</strong> our exact corpus (private, anti-gaming). We publish aggregate results +
+  per-sample provenance metadata + this method, and offer audit access on request.
+- <strong>Cloud-scanner / frontier numbers</strong> depend on vendor backends that change over time; we pin dates
+  and re-run on a cadence. Open-weight + static runs are deterministic (temp 0).
+
+<h2>Code</h2>
+Harness, adapters, analysis, and methodology are in this repo. Tests: <code>pytest -q</code> (40 tests).
+</pre><footer>
+<p><strong>Not a certification.</strong> We grade <em>scanners</em>, not skills. Results describe specific
+pinned versions on a dated, directional corpus and may not generalise. No warranty; not security advice.</p>
+<p>Scanner names are trademarks of their owners, used nominatively to identify the tools tested. No
+affiliation or endorsement; no vendor logos. <strong>Vendor neutrality:</strong> no preferential treatment,
+no right of reply, no methodology accommodation; a vendor note may be posted at our discretion and never
+alters scoring. Spot a factual/method error? Corrections welcome from anyone.</p>
+<p>Methodology &amp; harness code public; aggregate results public. <strong>Corpus kept private</strong> (anti-gaming) with audit access on request — so this is open-<em>method</em>, not open-data. © 2026 skillscan.sh</p>
+</footer></body></html>
