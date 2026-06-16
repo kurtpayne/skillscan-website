@@ -25,26 +25,26 @@ nav a{margin-right:14px} footer{margin-top:40px;border-top:1px solid #2a2f3a;pad
 <p class="muted">Not self-recognition: the best detector (phi-4) generated <em>none</em> of the test corpus and is scored cross-family; the in-set model (Qwen) scores <em>worst</em> on its own generated samples. LLM baselines are open-weight controls, not products. SkillSpector &amp; Cisco are graded on their <strong>static layer only</strong> (their +llm modes did not complete on our endpoint — see Methodology).</p>
 <table class="data"><tr><th>Scanner</th><th>Approach</th><th>Recall (known: organic+wild)</th><th>Recall (novel, x-family)</th><th>Wild only (n≈5)</th><th>FP benign / dual-use</th></tr>
 <tr><td>Cisco AI Defense skill-scanner</td><td class='muted'>static rules</td><td>6%</td><td>5%</td><td>25% <span class='muted'>(n=4)</span></td><td>0% / 8%</td></tr>
-<tr><td>LLM baseline (Qwen-72B, in-set)</td><td class='muted'>LLM baseline (control)</td><td>78%</td><td>54%</td><td>0% <span class='muted'>(n=5)</span></td><td>0% / 1%</td></tr>
-<tr><td>LLM baseline (phi-4, disjoint)</td><td class='muted'>LLM baseline (control)</td><td>95%</td><td>82%</td><td>25% <span class='muted'>(n=4)</span></td><td>18% / 24%</td></tr>
+<tr><td>LLM baseline (Qwen-72B, in-set)</td><td class='muted'>LLM baseline (control)</td><td>58%</td><td>32%</td><td>0% <span class='muted'>(n=5)</span></td><td>0% / 1%</td></tr>
+<tr><td>LLM baseline (phi-4, disjoint)</td><td class='muted'>LLM baseline (control)</td><td>65%</td><td>53%</td><td>0% <span class='muted'>(n=4)</span></td><td>0% / 3%</td></tr>
 <tr><td>SkillSpector</td><td class='muted'>static rules</td><td>6%</td><td>7%</td><td>40% <span class='muted'>(n=5)</span></td><td>0% / 25%</td></tr>
 <tr><td>Snyk Agent Scan</td><td class='muted'>cloud LLM product</td><td>72%</td><td>81%</td><td>60% <span class='muted'>(n=5)</span></td><td>15% / 34%</td></tr>
 </table>
 <div class="big">Recall vs false-positives</div>
 <p class="muted">Top-left is ideal (catches much, cries wolf little). High-recall scanners sit further right — recall is bought with false positives, so we never rank on recall alone.</p>
-<svg class="frontier" viewBox="0 0 520 300" role="img" aria-label="Recall versus false-positive rate; top-left is ideal."><text x="44" y="16" fill="#8a92a6" font-size="11">↑ recall (catches more)</text><text x="346" y="288" fill="#8a92a6" font-size="11">false-positive →</text><line x1="44" y1="256" x2="476" y2="256" stroke="#2a2f3a"/><line x1="44" y1="44" x2="44" y2="256" stroke="#2a2f3a"/><circle cx="81" cy="244" r="5" fill="#6ea8fe"/><text x="89" y="248" fill="#cfd6e4" font-size="11">Cisco AI Defense skill-scanner</text><circle cx="48" cy="123" r="5" fill="#6ea8fe"/><text x="56" y="127" fill="#cfd6e4" font-size="11">LLM baseline</text><circle cx="148" cy="69" r="5" fill="#6ea8fe"/><text x="156" y="73" fill="#cfd6e4" font-size="11">LLM baseline</text><circle cx="153" cy="243" r="5" fill="#6ea8fe"/><text x="161" y="247" fill="#cfd6e4" font-size="11">SkillSpector</text><circle cx="191" cy="93" r="5" fill="#6ea8fe"/><text x="199" y="97" fill="#cfd6e4" font-size="11">Snyk Agent Scan</text></svg>
+<svg class="frontier" viewBox="0 0 520 300" role="img" aria-label="Recall versus false-positive rate; top-left is ideal."><text x="44" y="16" fill="#8a92a6" font-size="11">↑ recall (catches more)</text><text x="346" y="288" fill="#8a92a6" font-size="11">false-positive →</text><line x1="44" y1="256" x2="476" y2="256" stroke="#2a2f3a"/><line x1="44" y1="44" x2="44" y2="256" stroke="#2a2f3a"/><circle cx="81" cy="244" r="5" fill="#6ea8fe"/><text x="89" y="248" fill="#cfd6e4" font-size="11">Cisco AI Defense skill-scanner</text><circle cx="47" cy="166" r="5" fill="#6ea8fe"/><text x="55" y="170" fill="#cfd6e4" font-size="11">LLM baseline</text><circle cx="56" cy="132" r="5" fill="#6ea8fe"/><text x="64" y="136" fill="#cfd6e4" font-size="11">LLM baseline</text><circle cx="153" cy="243" r="5" fill="#6ea8fe"/><text x="161" y="247" fill="#cfd6e4" font-size="11">SkillSpector</text><circle cx="191" cy="93" r="5" fill="#6ea8fe"/><text x="199" y="97" fill="#cfd6e4" font-size="11">Snyk Agent Scan</text></svg>
 <div class="big">Generalization gap — known vs novel attacks</div>
 <p class="muted">A large positive gap = recognises <em>known</em> campaigns but fails on <em>novel</em> disguised behaviour (memorisation, not detection). Novel recall excludes a scanner's own generator family. Significance is <strong>BH-FDR corrected</strong> across all 15 comparisons (q=0.05).</p>
 <table class="data"><tr><th>Scanner</th><th>Archetype</th><th>Recall: known (organic+wild)</th><th>Recall: novel (x-family)</th><th>Gap (95% CI)</th><th>Memorising?</th></tr>
 <tr><td>Cisco AI Defense skill-scanner</td><td>agent_hijacking</td><td>16% <span class='muted'>[6–35] n=25</span></td><td>0% <span class='muted'>[0–6] n=64</span></td><td>+16% [+5–+35]</td><td><span class="yes">yes</span></td></tr>
 <tr><td>Cisco AI Defense skill-scanner</td><td>code_execution</td><td>5% <span class='muted'>[2–10] n=107</span></td><td>15% <span class='muted'>[8–25] n=67</span></td><td>-10% [-21–-1]</td><td>no</td></tr>
 <tr><td>Cisco AI Defense skill-scanner</td><td>data_exfiltration</td><td>5% <span class='muted'>[2–13] n=63</span></td><td>0% <span class='muted'>[0–6] n=66</span></td><td>+5% [-2–+13]</td><td>no</td></tr>
-<tr><td>LLM baseline (Qwen-72B, in-set)</td><td>agent_hijacking</td><td>73% <span class='muted'>[54–86] n=26</span></td><td>50% <span class='muted'>[38–62] n=62</span></td><td>+23% [+0–+41]</td><td>no</td></tr>
-<tr><td>LLM baseline (Qwen-72B, in-set)</td><td>code_execution</td><td>73% <span class='muted'>[64–81] n=109</span></td><td>51% <span class='muted'>[39–63] n=61</span></td><td>+23% [+7–+37]</td><td><span class="yes">yes</span></td></tr>
-<tr><td>LLM baseline (Qwen-72B, in-set)</td><td>data_exfiltration</td><td>87% <span class='muted'>[77–93] n=63</span></td><td>60% <span class='muted'>[47–71] n=62</span></td><td>+28% [+12–+41]</td><td><span class="yes">yes</span></td></tr>
-<tr><td>LLM baseline (phi-4, disjoint)</td><td>agent_hijacking</td><td>100% <span class='muted'>[85–100] n=21</span></td><td>77% <span class='muted'>[67–85] n=75</span></td><td>+23% [+5–+33]</td><td><span class="yes">yes</span></td></tr>
-<tr><td>LLM baseline (phi-4, disjoint)</td><td>code_execution</td><td>92% <span class='muted'>[85–96] n=108</span></td><td>80% <span class='muted'>[70–87] n=75</span></td><td>+12% [+2–+23]</td><td><span class="yes">yes</span></td></tr>
-<tr><td>LLM baseline (phi-4, disjoint)</td><td>data_exfiltration</td><td>98% <span class='muted'>[91–100] n=62</span></td><td>90% <span class='muted'>[81–95] n=72</span></td><td>+8% [-0–+17]</td><td>no</td></tr>
+<tr><td>LLM baseline (Qwen-72B, in-set)</td><td>agent_hijacking</td><td>58% <span class='muted'>[39–74] n=26</span></td><td>34% <span class='muted'>[23–46] n=62</span></td><td>+24% [+1–+44]</td><td>no</td></tr>
+<tr><td>LLM baseline (Qwen-72B, in-set)</td><td>code_execution</td><td>58% <span class='muted'>[48–67] n=109</span></td><td>31% <span class='muted'>[21–44] n=61</span></td><td>+27% [+11–+40]</td><td><span class="yes">yes</span></td></tr>
+<tr><td>LLM baseline (Qwen-72B, in-set)</td><td>data_exfiltration</td><td>57% <span class='muted'>[45–69] n=63</span></td><td>31% <span class='muted'>[21–43] n=62</span></td><td>+26% [+9–+42]</td><td><span class="yes">yes</span></td></tr>
+<tr><td>LLM baseline (phi-4, disjoint)</td><td>agent_hijacking</td><td>62% <span class='muted'>[41–79] n=21</span></td><td>47% <span class='muted'>[36–58] n=75</span></td><td>+15% [-9–+36]</td><td>no</td></tr>
+<tr><td>LLM baseline (phi-4, disjoint)</td><td>code_execution</td><td>64% <span class='muted'>[55–72] n=108</span></td><td>56% <span class='muted'>[45–67] n=75</span></td><td>+8% [-6–+22]</td><td>no</td></tr>
+<tr><td>LLM baseline (phi-4, disjoint)</td><td>data_exfiltration</td><td>68% <span class='muted'>[55–78] n=62</span></td><td>56% <span class='muted'>[44–66] n=72</span></td><td>+12% [-4–+28]</td><td>no</td></tr>
 <tr><td>SkillSpector</td><td>agent_hijacking</td><td>8% <span class='muted'>[2–24] n=26</span></td><td>0% <span class='muted'>[0–5] n=75</span></td><td>+8% [+0–+24]</td><td><span class="yes">yes</span></td></tr>
 <tr><td>SkillSpector</td><td>code_execution</td><td>6% <span class='muted'>[3–13] n=109</span></td><td>8% <span class='muted'>[4–16] n=75</span></td><td>-2% [-11–+6]</td><td>no</td></tr>
 <tr><td>SkillSpector</td><td>data_exfiltration</td><td>3% <span class='muted'>[1–11] n=63</span></td><td>12% <span class='muted'>[6–21] n=75</span></td><td>-9% [-18–+1]</td><td>no</td></tr>
@@ -57,11 +57,11 @@ nav a{margin-right:14px} footer{margin-top:40px;border-top:1px solid #2a2f3a;pad
 <table class="data"><tr><th>Scanner</th><th>Wild recall</th></tr>
 <tr><td>Cisco AI Defense skill-scanner</td><td>25% <span class='muted'>[5–70] n=4</span></td></tr>
 <tr><td>LLM baseline (Qwen-72B, in-set)</td><td>0% <span class='muted'>[0–43] n=5</span></td></tr>
-<tr><td>LLM baseline (phi-4, disjoint)</td><td>25% <span class='muted'>[5–70] n=4</span></td></tr>
+<tr><td>LLM baseline (phi-4, disjoint)</td><td>0% <span class='muted'>[0–49] n=4</span></td></tr>
 <tr><td>SkillSpector</td><td>40% <span class='muted'>[12–77] n=5</span></td></tr>
 <tr><td>Snyk Agent Scan</td><td>60% <span class='muted'>[23–88] n=5</span></td></tr>
 </table>
-<p><strong>Cross-scanner consensus:</strong> full agreement on only 1.7% of 423 malicious samples — the tools disagree far more than they agree.</p>
+<p><strong>Cross-scanner consensus:</strong> full agreement on only 1.2% of 423 malicious samples — the tools disagree far more than they agree.</p>
 <footer>
 <p><strong>Not a certification.</strong> We grade <em>scanners</em>, not skills. Results describe specific
 pinned versions on a dated, directional corpus and may not generalise. No warranty; not security advice.</p>
