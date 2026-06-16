@@ -102,6 +102,25 @@ The prompt, decode rule, models, the primed-vs-generic ablation, and per-sample 
 open-source harness (<code>scoreboard/adapters/llm_baseline.py</code>, <code>scripts/baseline_prompt_ablation.py</code>) for
 independent audit.
 
+<h3>3b. Backend availability — an operational caveat (a finding in itself)</h3>
+LLM-backed scanning needs an LLM backend, and **every backend option has friction for malicious-content
+analysis** — which makes these tools genuinely hard to run in practice:
+- <strong>Managed gateway (OpenRouter):</strong> a prompt-injection gateway filter blocks <strong>~100%</strong> of the products&#x27;
+  skill-content requests (<code>HTTP403 &quot;prompt injection patterns detected&quot;</code>) — before the model sees them.
+- <strong>Self-hosted open-weight (our Modal vLLM):</strong> no moderation wall, but hits <strong>structured-output gaps</strong>
+  (Cisco&#x27;s required <code>json_schema</code> → HTTP500 on the AWQ endpoint) and <strong>single-GPU throughput limits</strong>
+  (SkillSpector&#x27;s multi-call analysis timed out on ~99% of a corpus-scale concurrent run).
+- <strong>Direct frontier APIs (OpenAI / Anthropic):</strong> these *work* — low refusal on *reading* malicious
+  skills (gpt-4o 0%, Claude 0–2% in our run) and the best detection on the board — <strong>but</strong> they require
+  sending malicious content straight to a commercial account, where provider abuse-guards / account
+  flagging are a real operational + ToS risk for anyone doing this at scale (and the reason we routed
+  open-weight by default).
+
+<strong>The finding:</strong> a scanner&#x27;s &quot;LLM mode&quot; is only as deployable as the backend you can provision for
+*exactly the malicious content it must analyze* — and none of the three routes is friction-free. A
+vendor shipping an LLM mode inherits this. We report each scanner&#x27;s <code>+llm</code> results under the backend we
+could actually run, and label it.
+
 <h2>4. The headline metric — Generalization Gap</h2>
 For each scanner × archetype:
 &gt; <strong>Gen-Gap = recall(wild_verbatim + organic_authored) − recall(synthetic_novel)</strong>
@@ -110,6 +129,18 @@ Wild/organic attacks are *public* (known campaigns, CVEs) → a scanner can scor
 IOCs<strong>. <code>synthetic_novel</code> is unseen and defanged (no known IOC to match) → it isolates </strong>behavioral
 detection**. A large positive gap = memorization, not detection. This is the scoreboard&#x27;s core,
 field-level finding (&quot;prove or disprove the category&quot;).
+
+<strong>What &quot;memorising? = yes&quot; means depends on the scanner (read it carefully):</strong>
+- <strong>Static / signature scanners</strong> (SkillSpector, Cisco): the label is *clean*. With no signature for a
+  novel sample they literally cannot fire, so a known≫novel gap is straightforwardly memorization.
+- <strong>LLM scanners</strong> (baselines, products&#x27; +llm): the gap is an <strong>upper bound</strong> on memorization, not a
+  clean measure. An LLM &quot;memorises&quot; via *pretraining* — the organic tier reconstructs real documented
+  campaigns (shai-hulud, AMOS, real CVEs/IOCs) the model saw in training write-ups, so it *recognises*
+  them; the synthetic tier is unseen. <strong>But</strong> organic is also more *blatant* (embeds real IOCs) than the
+  deliberately-disguised synthetic, so an LLM&#x27;s gap **conflates training-recognition with
+  disguise-difficulty**. Read an LLM &quot;memorising = yes&quot; as *&quot;recognises known threats better than it
+  generalises to novel disguised behaviour,&quot;* not literal sample memorisation. (Tellingly, the in-set
+  Qwen baseline shows a significant gap while the disjoint phi-4 does not.)
 
 <h2>5. Statistics (the rigor)</h2>
 - <strong>Wilson 95% score intervals</strong> on every recall/FP — never bare point estimates.
