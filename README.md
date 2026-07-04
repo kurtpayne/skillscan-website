@@ -1,3 +1,13 @@
+# ⚠️ RETIRED — no longer maintained
+
+> Retired 2026-07-03. We benchmarked this product family honestly — including against our own tools — and the results said stop: static scanning of AI skills doesn't work as a security boundary. The full story and the measurements are at [skillscan.sh](https://skillscan.sh/about.html), which now lives on as an independent benchmark of skill-security scanners.
+>
+> No further updates, releases, or security fixes.
+> skillscan.sh now serves the scanner benchmark from [`kurtpayne/skillscan-benchmark`](https://github.com/kurtpayne/skillscan-benchmark).
+
+
+---
+
 # skillscan.sh
 
 [![Deploy](https://github.com/kurtpayne/skillscan-website/actions/workflows/deploy.yml/badge.svg)](https://github.com/kurtpayne/skillscan-website/actions/workflows/deploy.yml)
